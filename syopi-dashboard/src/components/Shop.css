@@ -1,9 +1,9 @@
-.product-card{
-    border: 1px solid white;
-}
-
-.product-list{
+.shop-list{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+
+.shop-card{
+    border: 1px solid white;
 }

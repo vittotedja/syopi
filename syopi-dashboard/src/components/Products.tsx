@@ -1,14 +1,16 @@
 import React from 'react'
 import productpics from '../assets/logofornow.jpg'
-import './Products.css'
+
 
 function Products() {
   return (
     <div className='product-card'>
         <img src = {productpics} alt="products pic" width={"80px"}/>
-        <p>Product Title</p>
-        <p>Price</p>
-        <p></p>
+        <p className='product-title'>Product Title</p>
+        <p className='short-desc'>Lorem Ipsum</p>
+        <p className='price'>Price</p>
+        <p className='rating'>4.5 STAR</p>
+        <button>Add To Cart</button>
         
     </div>
   )
