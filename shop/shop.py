@@ -11,7 +11,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-CORS(app)  
+CORS(app)
+
 
 class Shop(db.Model):
     __tablename__ = 'shops'
@@ -20,14 +21,16 @@ class Shop(db.Model):
     name = db.Column(db.String(255), nullable=False)
     address = db.Column(db.String(255), nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
+    active = db.Column(db.String(20), nullable=False)
 
-    def __init__(self, name, address, phone_number):
+    def __init__(self, name, address, phone_number, active):
         self.name = name
         self.address = address
         self.phone_number = phone_number
+        self.active = active
 
     def json(self):
-        return {"id": self.id, "name": self.name, "address": self.address, "phone_number": self.phone_number}
+        return {"id": self.id, "name": self.name, "address": self.address, "phone_number": self.phone_number, "active": self.active}
 
 
 @app.route("/shop")
@@ -57,16 +60,20 @@ def search_by_name(search_term, limit=10):
             {
                 'message': 'No products found.'
             }), 404
-    
-    exact_match = [shop for shop in shops if shop.name.lower() == search_term.lower()]
+
+    exact_match = [shop for shop in shops if shop.name.lower() ==
+                   search_term.lower()]
     similar_shops = [shop for shop in shops if shop not in exact_match]
-    similar_shops = sorted(similar_shops, key=lambda p: Levenshtein.distance(p.name.lower(), search_term.lower()))
+    similar_shops = sorted(similar_shops, key=lambda p: Levenshtein.distance(
+        p.name.lower(), search_term.lower()))
 
     sorted_shops = exact_match + similar_shops
-    
-    results = [{'id': shop.id, 'name': shop.name, 'address': shop.address, 'phone_number': shop.phone_number} for shop in sorted_shops]
+
+    results = [{'id': shop.id, 'name': shop.name, 'address': shop.address,
+                'phone_number': shop.phone_number, "activation": shop.activation} for shop in sorted_shops]
 
     return jsonify({'results': results})
+
 
 @app.route("/shop/<string:name>")
 def find_by_name(name):
@@ -85,24 +92,22 @@ def find_by_name(name):
         }
     ), 404
 
+
 @app.route("/shop/add_shop_form/")
 def add_shop_form():
     return render_template("add_shop.html")
 
+
 @app.route("/shop/add_shop", methods=['POST'])
 def add_shop():
-    # data = request.get_json()
-    # name = data["name"]
-    # address = data["address"]
-    # phone_number = data["phone_number"]
     form_name = request.form["name"]
     form_address = request.form["address"]
     form_phone_number = request.form["phone_number"]
-    
+
     print("REQUEST IS LOGGED")
 
     if (Shop.query.filter_by(name=form_name).first()):
-        return jsonify( 
+        return jsonify(
             {
                 "code": 400,
                 "data": {
@@ -112,7 +117,8 @@ def add_shop():
             }
         ), 400
 
-    shop = Shop(name=form_name, address=form_address, phone_number=form_phone_number)
+    shop = Shop(name=form_name, address=form_address,
+                phone_number=form_phone_number, active="Active")
 
     try:
         db.session.add(shop)
@@ -127,7 +133,7 @@ def add_shop():
                 "message": "An error occurred creating the book."
             }
         ), 500
-    
+
     return redirect(url_for('find_by_name', name=form_name))
 
     # return jsonify(
@@ -137,29 +143,65 @@ def add_shop():
     #     }
     # ), 201
 
-@app.route("/shop/update_shop_form/")
-def update_shop_form():
-    return render_template("update_shop.html")
+@app.route("/shop/update_shop_form/<string:name>")
+def update_shop_form(name):
+    shop = Shop.query.filter_by(name=name).first()
+    return render_template("update_shop.html", shop=shop)
 
-@app.route("/shop/update_shop", methods=['PUT'])
+
+@app.route("/shop/update_shop", methods=["POST", 'PUT'])
 def update_shop():
     form_name = request.form["name"]
     form_address = request.form["address"]
     form_phone_number = request.form["phone_number"]
-    
+
     shop = Shop.query.filter_by(name=form_name).first()
-    if shop:
-        if form_name:
-            book.title = data['title']
-        if data['price']:
-            book.price = data['price']
-        if data['availability']:
-            book.availability = data['availability'] 
+    if request.form['submit_button'] == "Update":
+        if shop:
+            if form_address:
+                shop.address = form_address
+            if form_phone_number:
+                shop.phone_number = form_phone_number
+            db.session.commit()
+            return jsonify(
+                {
+                    "code": 200,
+                    "data": shop.json()
+                }
+            )
+        return jsonify(
+            {
+                "code": 404,
+                "data": {
+                    "name": form_name
+                },
+                "message": "Shop not found."
+            }
+        ), 404
+    else:
+        print("Deactivating the store")
+        shop.active = "Inactive"
         db.session.commit()
         return jsonify(
             {
                 "code": 200,
-                "data": book.json()
+                "data": shop.json()
+            }
+        )
+
+
+# @app.route("/shop/delete/<string:name>", methods=['DELETE'])
+# def delete_book(isbn13):
+    book = Book.query.filter_by(isbn13=isbn13).first()
+    if book:
+        db.session.delete(book)
+        db.session.commit()
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "isbn13": isbn13
+                }
             }
         )
     return jsonify(
@@ -171,31 +213,6 @@ def update_shop():
             "message": "Book not found."
         }
     ), 404
-
-
-# @app.route("/book/<string:isbn13>", methods=['DELETE'])
-# def delete_book(isbn13):
-#     book = Book.query.filter_by(isbn13=isbn13).first()
-#     if book:
-#         db.session.delete(book)
-#         db.session.commit()
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": {
-#                     "isbn13": isbn13
-#                 }
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "isbn13": isbn13
-#             },
-#             "message": "Book not found."
-#         }
-#     ), 404
 
 
 if __name__ == '__main__':
