@@ -1,0 +1,8 @@
+﻿ProductId,ProductName,Stock,ShopId
+1,Ayam,69,1
+2,Bebek,420,6
+3,Angsa,123,5
+4,AyamBebek,100,4
+5,ayambebekangsa,1,3
+6,bukan ayam tapi bebek,35,2
+7,kayaknya ini angsa,9999,1
