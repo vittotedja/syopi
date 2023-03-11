@@ -141,12 +141,15 @@ def add_shop():
 def update_shop_form():
     return render_template("update_shop.html")
 
-@app.route("/shop/<string:isbn13>", methods=['PUT'])
-def update_shop(isbn13):
-    book = Book.query.filter_by(isbn13=isbn13).first()
-    if book:
-        data = request.get_json()
-        if data['title']:
+@app.route("/shop/update_shop", methods=['PUT'])
+def update_shop():
+    form_name = request.form["name"]
+    form_address = request.form["address"]
+    form_phone_number = request.form["phone_number"]
+    
+    shop = Shop.query.filter_by(name=form_name).first()
+    if shop:
+        if form_name:
             book.title = data['title']
         if data['price']:
             book.price = data['price']
