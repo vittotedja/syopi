@@ -16,7 +16,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/', methods=['GET', 'POST'])
 def index():    
     response = supabase.table('product').select("*").execute()
-    return 'asuu'
+    return response.data
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
