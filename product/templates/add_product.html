@@ -2,23 +2,23 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Add New Shop</title>
+    <title>Add New Product</title>
   </head>
   <body>
+    <h1>Add New Product</h1>
+    <form action="" method="POST">
+      <label for="ProductName">ProductName:</label>
+      <input type="text" id="ProductName" name="ProductName" required><br>
+
+      <label for="ShopId">ShopId :</label>
+      <input type="text" id="ShopId" name="ShopId" required><br>
+
+      <label for="Stock">Stock:</label>
+      <input type="tel" id="Stock" name="Stock" required><br>
+
+      <p onclick="addProduct()">submit</p>
+    </form>
     <p id="test"></p>
-    <!-- <h1>Add New Shop</h1>
-    <form action="{{url_for('add_shop')}}" method="POST">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required><br>
-
-      <label for="address">Address:</label>
-      <input type="text" id="address" name="address" required><br>
-
-      <label for="phone_number">Phone Number:</label>
-      <input type="tel" id="phone_number" name="phone_number" pattern="[0-9]{8}" required><br>
-
-      <input type="submit" value="Submit">
-    </form> -->
   </body>
   <script src="add_product.js"></script>
 </html>

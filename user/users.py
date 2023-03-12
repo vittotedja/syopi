@@ -1,38 +1,45 @@
-from flask import Flask, request, jsonify
-from flask_pymongo import PyMongo
-from bson.objectid import ObjectId
+from flask import request,jsonify, Flask
+from flask_cors import CORS, cross_origin
+from dotenv import load_dotenv
+load_dotenv()
+import os
+from supabase import create_client
+
+url = os.environ.get('SUPABASE_URL')
+key = os.environ.get('SUPABASE_KEY')
+supabase = create_client(url, key)
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-app.config['MONGO_URI'] = 'mongodb+srv://yozafard:testpassword@cluster0.mpmp1cg.mongodb.net/?retryWrites=true&w=majority'
-mongo = PyMongo(app)
+@app.route('/create', methods=['POST', 'GET'])
+def create_user():
+    email = request.json['email']
+    username = request.json['username']
 
-todos = mongo.db.todos
+    # Insert new user into Supabase
+    user_data = {'email': email, 'username': username, 'shop': ''}
+    res, error = supabase.table('users').insert(user_data).execute()
 
-@app.route('/')
-def index():
-    saved_todos = todos.find()
-    return render_template('index.html', todos=saved_todos)
+    # Return JSON response
+    if error:
+        return jsonify({'error': str(error)}), 400
+    else:
+        return jsonify(res['data'][0]), 201
+    
+    
+@app.route('/getall', methods=['GET', 'POST'])
+def get_all_users():
+    # Fetch all users from Supabase
+    res = supabase.table('users').select('*').execute()
 
-@app.route('/add', methods=['POST'])
-def add_todo():
-    new_todo = request.form.get('new-todo')
-    todos.insert_one({'text' : new_todo, 'complete' : False})
-    return redirect(url_for('index'))
+    # Return JSON response
+    
+    if res:
+        return res.data, 200
+    else:
+        return 'error: No users found.', 404
 
-@app.route('/complete/<oid>')
-def complete(oid):
-    todo_item = todos.find_one({'_id': ObjectId(oid)})
-    todo_item['complete'] = True
-    todos.save(todo_item)
-    return redirect(url_for('index'))
-
-@app.route('/delete_completed')
-def delete_completed():
-    todos.delete_many({'complete' : True})
-    return redirect(url_for('index'))
-
-@app.route('/delete_all')
-def delete_all():
-    todos.delete_many({})
-    return redirect(url_for('index'))
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)

@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, jsonify, request, render_template
+from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -11,9 +12,15 @@ key = os.environ.get("SUPABASE_KEY")
 supabase = create_client(url, key)
 
 app = Flask(__name__)
- 
-@app.route('/shipping')
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
+# @app.route('/', methods=['GET', 'POST'])
+# def home_page():
+#     example_embed='This string is from python'
+#     return render_template('shipping.html', embed=example_embed)
+ 
+@app.route('/shipping', methods=['GET', 'POST'])
 def get_all_shipping():    
     response = supabase.table('shipping').select("*").execute()
     return response.data
@@ -33,10 +40,16 @@ def get_shipping_by_status(status):
     response = supabase.table('shipping').select("*").eq('status', status).execute()
     return response.data
 
-@app.route('/shipping/<string:from_port>/<string:to_port>', methods=['POST'])
+@app.route('/shipping/<string:order_id>', methods=['POST'])
 def create_shipment(from_port, to_port):
+
     response = supabase.table('shipping').insert({"from_port": from_port, "to_port": to_port, "status": "OTW"}).execute()
-    return response
+    return jsonify(list(response))
+
+@app.route('/shipping/<string:order_id>', methods=['PUT'])
+def update_shipment(order_id):
+    response = supabase.table('shipping').update({"status": "Delivered"}).eq('order_id', order_id).execute()
+    return jsonify(list(response))
 
 
 
