@@ -5,7 +5,7 @@ load_dotenv()
 import os
 from supabase import create_client
 
-url = os.environ.get('SUPABASE_URL')
+url = os.environ.get('USERS_URL')
 key = os.environ.get('SUPABASE_KEY')
 supabase = create_client(url, key)
 
@@ -13,26 +13,41 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/create', methods=['POST', 'GET'])
-def create_user():
-    email = request.json['email']
-    username = request.json['username']
-
-    # Insert new user into Supabase
-    user_data = {'email': email, 'username': username, 'shop': ''}
-    res, error = supabase.table('users').insert(user_data).execute()
-
-    # Return JSON response
-    if error:
-        return jsonify({'error': str(error)}), 400
+@app.route('/getbyemail/<string:email>', methods=['GET', 'POST'])
+def get_by_email(email):
+    # Fetch all users from Supabase
+    res = supabase.table('User').select('*').eq('Email', email).execute()
+    # Return JSON response 
+    if res:
+        return res.data, 200
     else:
-        return jsonify(res['data'][0]), 201
+        return 'error: No users found.', 404
+    
+@app.route('/getbyname/<string:username>', methods=['GET', 'POST'])
+def get_by_name(username):
+    # Fetch all users from Supabase
+    res = supabase.table('User').select('*').eq('Username', username).execute()
+    # Return JSON response 
+    if res:
+        return res.data, 200
+    else:
+        return 'error: No users found.', 404
+    
+@app.route('/getbyshop/<string:shop>', methods=['GET', 'POST'])
+def get_by_shop(shop):
+    # Fetch all users from Supabase
+    res = supabase.table('User').select('*').eq('ShopId', shop).execute()
+    # Return JSON response 
+    if res:
+        return res.data, 200
+    else:
+        return 'error: No users found.', 404
     
     
 @app.route('/getall', methods=['GET', 'POST'])
 def get_all_users():
     # Fetch all users from Supabase
-    res = supabase.table('users').select('*').execute()
+    res = supabase.table('User').select('*').execute()
 
     # Return JSON response
     
