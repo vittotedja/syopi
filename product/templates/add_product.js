@@ -1,11 +1,11 @@
 console.log('vitto jelek')
 fetch('http://127.0.0.1:5000/')
 .then(function (response) {
-    return response.text();
-}).then(function (text) {
+    return response.json();
+}).then(function (data) {
     console.log('GET response:');
-    console.log(text); 
-    document.querySelector('#test').innerText = text;
+    console.log(data); 
+    document.querySelector('#test').innerText = data;
 });
 
 function addProduct() {
@@ -19,12 +19,10 @@ function addProduct() {
         stock: stock
     }
     console.log(data)
-    fetch('http://127.0.0.1:5000/')
-    .then(function (response) {
-        return response.text()
-    }).then(function (text) {
-        console.log('GET response:')
-        console.log(text);
-        document.querySelector('#test').innerText = text
+    fetch('http://127.0.0.1:5000/', {
+        method:'POST',
+        origin: "http://127.0.0.1:5500",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data),
     })
 }

@@ -23,7 +23,7 @@ def index():
 
     # POST request
     if request.method == 'POST':
-        data, count = supabase.table('product').insert({"id": 1, "name": "Denmark"}).execute()
+        data, count = supabase.table('product').insert({"ProductName": "ayam", "Stock": 100, "ShopId": 1}).execute()
 
 
 if __name__ == '__main__':

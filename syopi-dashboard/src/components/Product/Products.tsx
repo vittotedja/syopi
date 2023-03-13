@@ -1,5 +1,5 @@
 import React from 'react'
-import productpics from '../assets/logofornow.jpg'
+import productpics from '../../assets/logofornow.jpg'
 
 
 function Products(props) {
