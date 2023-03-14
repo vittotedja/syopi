@@ -4,8 +4,13 @@ import "./Products.css";
 
 function ProductsList() {
   const [products, setProducts] = React.useState([]);
-  function fetchData() {
-    fetch("http://127.0.0.1:5000")
+  const [productName, setProductName] = React.useState("BEBEK");
+  const [shopId, setShopId] = React.useState("100");
+  const [stock, setStock] = React.useState("1");
+
+
+  function fetchData() {  
+    fetch("http://127.0.0.1:5000/products")
     .then((response) => response.json())
     .then((data) => setProducts(data))
   }
@@ -19,8 +24,7 @@ function ProductsList() {
         ShopId: ShopId,
         Stock: Stock
     }
-    console.log(data)
-    fetch('http://127.0.0.1:5000/', {
+    fetch('http://127.0.0.1:5000/products', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"
@@ -42,9 +46,10 @@ function ProductsList() {
   return (
     <div>
       Discover Your Reccomended Products!
-      <p onClick={() => addProduct()}>add product</p>
+      <br/>
+      <button onClick={() => addProduct()}>add product</button>
       <div className="product-list">
-        {products.map((product) => {return <Products key={product.ProductId}/>})}
+        {products.map((product) => {return <Products key={product.ProductId} name = {product.ProductName}/>})}
       </div>
     </div>
   );

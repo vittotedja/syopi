@@ -7,14 +7,14 @@ from supabase import create_client
 
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
-supabase = create_client(url, key)
+supabase = create_client("https://nltrvnaxmwsbhpvuevfz.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sdHJ2bmF4bXdzYmhwdnVldmZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzg0NTU3MDgsImV4cCI6MTk5NDAzMTcwOH0.m6w9E12opNBPFO8wxYxlv0n0M1zo0KJXEWzmlHWfTmk")
 
 app = Flask(__name__)   
 
 cors = CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
  
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/products', methods=['GET', 'POST'])
 def index():
     # GET request
     if request.method == 'GET':
@@ -23,9 +23,13 @@ def index():
 
     # POST request
     if request.method == 'POST':
+<<<<<<< HEAD
         data = request.get_json()
         response = supabase.table('product').insert(data).execute()
         return response.data
+=======
+        data, count = supabase.table('product').insert({"ProductName": "bebek", "Stock": 100, "ShopId": 1}).execute()
+>>>>>>> 82db4b71dd5354a4cea943124fe86e8675fb4733
 
 
 if __name__ == '__main__':
