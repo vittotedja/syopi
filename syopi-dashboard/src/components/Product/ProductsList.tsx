@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Products from "./Products";
 import "./Products.css";
 
 function ProductsList() {
-  const [products, setProducts] = React.useState(Array())
+  const [products, setProducts] = useState(Array())
 
   function fetchData() {  
     fetch("http://127.0.0.1:5000/")
@@ -12,7 +12,7 @@ function ProductsList() {
   }
 
   function addProduct() {
-    const ProductName = 'vitto'
+    const ProductName = 'Vincent Lewi Bangsat'
     const ShopId = 1
     const Stock = 1
     const data = {
@@ -46,7 +46,7 @@ function ProductsList() {
       <br/>
       <button onClick={() => addProduct()}>add product</button>
       <div className="product-list">
-        {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName}/>})}
+        {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock}/>})}
       </div>
     </div>
   );
