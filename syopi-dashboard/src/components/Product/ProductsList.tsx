@@ -11,21 +11,19 @@ function ProductsList() {
   }
 
   function addProduct() {
-    const productName = 'ayam'
-    const shopId = 1
-    const stock = 1
+    const ProductName = 'vitto'
+    const ShopId = 1
+    const Stock = 1
     const data = {
-        productName: productName,
-        shopId: shopId,
-        stock: stock
+        ProductName: ProductName,
+        ShopId: ShopId,
+        Stock: Stock
     }
     console.log(data)
     fetch('http://127.0.0.1:5000/', {
         method:'POST',
         headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin':'*',
-          'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(data),
     })

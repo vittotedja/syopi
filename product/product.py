@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -12,7 +12,7 @@ supabase = create_client(url, key)
 app = Flask(__name__)   
 
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+# app.config['CORS_HEADERS'] = 'Content-Type'
  
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -23,7 +23,9 @@ def index():
 
     # POST request
     if request.method == 'POST':
-        data, count = supabase.table('product').insert({"ProductName": "ayam", "Stock": 100, "ShopId": 1}).execute()
+        data = request.get_json()
+        response = supabase.table('product').insert(data).execute()
+        return response.data
 
 
 if __name__ == '__main__':
