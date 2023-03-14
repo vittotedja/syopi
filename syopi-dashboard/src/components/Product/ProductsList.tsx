@@ -3,14 +3,10 @@ import Products from "./Products";
 import "./Products.css";
 
 function ProductsList() {
-  const [products, setProducts] = React.useState([]);
-  const [productName, setProductName] = React.useState("BEBEK");
-  const [shopId, setShopId] = React.useState("100");
-  const [stock, setStock] = React.useState("1");
-
+  const [products, setProducts] = React.useState(Array())
 
   function fetchData() {  
-    fetch("http://127.0.0.1:5000/products")
+    fetch("http://127.0.0.1:5000/")
     .then((response) => response.json())
     .then((data) => setProducts(data))
   }
@@ -24,7 +20,7 @@ function ProductsList() {
         ShopId: ShopId,
         Stock: Stock
     }
-    fetch('http://127.0.0.1:5000/products', {
+    fetch('http://127.0.0.1:5000/', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"
@@ -33,7 +29,8 @@ function ProductsList() {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Success:", data);
+      console.log("Success:", data)
+      setProducts((products) => [...products, data[0]])
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -45,11 +42,11 @@ function ProductsList() {
 
   return (
     <div>
-      Discover Your Reccomended Products!
+      Discover Your Recomended Products!
       <br/>
       <button onClick={() => addProduct()}>add product</button>
       <div className="product-list">
-        {products.map((product) => {return <Products key={product.ProductId} name = {product.ProductName}/>})}
+        {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName}/>})}
       </div>
     </div>
   );
