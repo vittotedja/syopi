@@ -1,10 +1,13 @@
+import React, { useEffect, useState } from "react";
 import { useEffect, useState } from "react";
 import Products from "./Products";
 import "./Products.css";
 
 function ProductsList() {
   const [products, setProducts] = useState(Array())
-  const [rating, setRating] = useState("")
+  const [ProductName, setProductName] = useState('Vitto Jelek')
+  const [ShopId, setShopId] = useState(0)
+  const [Stock, setStock] = useState(0)
 
   function fetchData() {  
     fetch("http://127.0.0.1:5000/products")
@@ -19,9 +22,6 @@ function ProductsList() {
   }
 
   function addProduct() {
-    const ProductName = 'Vincent Lewi Bangsat'
-    const ShopId = 1
-    const Stock = 1
     const data = {
         ProductName: ProductName,
         ShopId: ShopId,
