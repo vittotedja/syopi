@@ -4,7 +4,6 @@ load_dotenv()
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 import os
-from datetime import datetime, timedelta
 from supabase import create_client
 
 review_url = os.environ.get("REVIEW_URL")
