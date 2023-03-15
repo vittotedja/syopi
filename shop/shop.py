@@ -80,6 +80,7 @@ def find_by_name(name):
     shop = supabase.table("shops").select("*").ilike("name", name).execute()
 
     if shop.data:
+        print("STORE FOUND")
         return jsonify(
             {
                 "code": 200,
