@@ -5,6 +5,7 @@ import ProductsList from './components/Product/ProductsList'
 import Promotions from './components/Promotions'
 import ShopList from './components/ShopList'
 import 'tailwindcss/tailwind.css'
+import ShippingList from './components/Shipping/ShippingList'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -15,6 +16,7 @@ function App() {
       <Promotions/>
       <ProductsList/>
       <ShopList/>
+      <ShippingList/>
     </div>
   )
 }

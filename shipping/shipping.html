@@ -1,8 +1,27 @@
 <html>
 <body>
     <h1> Python Fetch Example</h1>
-    <p id='embed'>{{embed}}</p>
-    
+    <p id='embed'></p>
+    <form method="POST">
+        <label for="id">id:</label>
+        <input type="text" id="id" name="id" required><br>
+        <label for="from_port">from_port:</label>
+      <input type="text" id="from_port" name="from_port" required><br>
+      <label for="to_port">to_port:</label>
+      <input type="text" id="to_port" name="to_port" required><br>
+      <label for="courier">courier:</label>
+      <input type="text" id="courier" name="courier" required><br>
+      <label for="status">status:</label>
+      <input type="text" id="status" name="status" required><br>
+      <label for="order_id">order_id:</label>
+      <input type="text" id="order_id" name="order_id" required><br>
+      <label for="current_port">current_port:</label>
+      <input type="text" id="current_port" name="current_port" required><br>
+
+      <p onclick="addShipping()">submit</p>
+
+
+    </form>
 <body>
     <script src="shipping.js"></script>
 </html>
