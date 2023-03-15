@@ -14,7 +14,7 @@ app = Flask(__name__)
 cors = CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
  
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/products', methods=['GET', 'POST'])
 def index():
     # GET request
     if request.method == 'GET':
@@ -26,6 +26,11 @@ def index():
         data = request.get_json()
         response = supabase.table('product').insert(data).execute()
         return response.data
+
+@app.route('/products/<string:ProductId>', methods=['GET'])
+def product(ProductId):
+    response = supabase.table('product').select("*").eq('ProductId', ProductId).execute()
+    return response.data
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

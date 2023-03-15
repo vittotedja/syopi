@@ -7,9 +7,15 @@ function ProductsList() {
   const [rating, setRating] = useState("")
 
   function fetchData() {  
-    fetch("http://127.0.0.1:5000/")
+    fetch("http://127.0.0.1:5000/products")
     .then((response) => response.json())
     .then((data) => setProducts(data))
+  }
+
+  function getAvgRating(ProductId: any){
+    fetch(`http://127.0.0.1:5003/rating/${ProductId}`)
+    .then((response)  => response.json())
+    .then((data) => console.log(data))
   }
 
   function addProduct() {
@@ -38,12 +44,12 @@ function ProductsList() {
     });
 }
 
-  function updateRating() {
+  function giveRating() {
     const ProductId = "20ec035f-f87d-49e0-a7b0-ab604bf92508"
     const Rating = rating
 
     const data = {
-        ProductId: ProductId,
+        product_id: ProductId,
         review_description: "ESD SUSAH YAK GAES",
         review_rating: Rating,
         user_id: 2
@@ -54,7 +60,17 @@ function ProductsList() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
-  })}
+  })
+  .then((response) => response.json())
+  .then((data) => {
+    getAvgRating(ProductId)
+    // setProducts((products) => [...products, data[0]])
+    console.log("Success:", data)
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+}
 
   useEffect(() => {
     fetchData();
@@ -66,7 +82,7 @@ function ProductsList() {
       <br/>
       <button onClick={() => addProduct()}>add product</button>
       <input type="text" placeholder="Give Rating" onChange= {(e) => setRating(e.target.value)}/>
-      <button onClick={() => addProduct()}>Add Review</button>
+      <button onClick={() => giveRating()}>Add Review</button>
       <div className="product-list">
         {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock} AvgRating = {product.AvgRating}/>})}
       </div>
