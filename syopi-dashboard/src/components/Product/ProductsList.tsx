@@ -4,6 +4,7 @@ import "./Products.css";
 
 function ProductsList() {
   const [products, setProducts] = useState(Array())
+  const [rating, setRating] = useState("")
 
   function fetchData() {  
     fetch("http://127.0.0.1:5000/")
@@ -36,6 +37,25 @@ function ProductsList() {
       console.error("Error:", error);
     });
 }
+
+  function updateRating() {
+    const ProductId = "20ec035f-f87d-49e0-a7b0-ab604bf92508"
+    const Rating = rating
+
+    const data = {
+        ProductId: ProductId,
+        review_description: "ESD SUSAH YAK GAES",
+        review_rating: Rating,
+        user_id: 2
+    }
+    fetch(`http://127.0.0.1:5003/giverating/${ProductId}`, {
+      method:'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+  })
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -45,8 +65,10 @@ function ProductsList() {
       Discover Your Recomended Products!
       <br/>
       <button onClick={() => addProduct()}>add product</button>
+      <input type="text" placeholder="Give Rating" onChange= {(e) => setRating(e.target.value)}/>
+      <button onClick={() => addProduct()}>Add Review</button>
       <div className="product-list">
-        {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock}/>})}
+        {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock} AvgRating = {product.AvgRating}/>})}
       </div>
     </div>
   );

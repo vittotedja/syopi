@@ -4,7 +4,7 @@ import Navbar from './components/Navbar'
 import ProductsList from './components/Product/ProductsList'
 import Promotions from './components/Promotions'
 import ShopList from './components/ShopList'
-import 'tailwindcss/tailwind.css'
+
 
 function App() {
   const [count, setCount] = useState(0)
