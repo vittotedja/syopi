@@ -31,10 +31,10 @@ def index(ProductId):
     return [sum/count]
 
 @app.route('/giverating/<string:ProductId>', methods=['POST'])
-def index(ProductId):
+def give_rating(ProductId):
     data = request.get_json()
     response = review.table('review').insert(data).execute()
-    return response.data
+    return response.data    
 
 
 if __name__ == '__main__':
