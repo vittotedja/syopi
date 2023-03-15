@@ -1,9 +1,35 @@
 .product-card{
-    border: 1px solid white;
+    border: 1px solid black;
+    margin: 1em;
+    flex: 1 1 20%;
+    max-width: 20%;
+    border-radius: 10px;
+}
+
+.product-card img{
+    border-radius: 10px 10px 0 0;
+    width: 100%;
 }
 
 .product-list{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-wrap: wrap; 
+}
+
+.product-desc{
+    text-align: start;
+    padding: 10px;
+}
+
+.product-title{
+    font-weight: 600;
+}
+
+.product-price{
+    color: red;
+    font-weight: 400;
+}
+
+.product-list button{
+    width: 100%;
 }

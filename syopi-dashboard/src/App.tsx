@@ -4,7 +4,6 @@ import LandingPage from './components/LandingPage'
 import ShopPage from './components/shop/ShopPage'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
-
 export default function App() {
   return (
     <>
