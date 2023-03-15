@@ -4,7 +4,6 @@ import ProductsList from './Product/ProductsList'
 import Promotions from './Promotions'
 import ShopList from './Shop/ShopList'
 
-
 function LandingPage() {
     return (
         <>

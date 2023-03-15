@@ -30,7 +30,7 @@ def index():
 @app.route('/products/<string:ProductId>', methods=['GET'])
 def product(ProductId):
     response = supabase.table('product').select("*").eq('ProductId', ProductId).execute()
-    return response.data
+    return response.data[0]
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

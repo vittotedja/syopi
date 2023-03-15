@@ -5,6 +5,7 @@ import "./Products.css";
 function ProductsList() {
   const [products, setProducts] = useState(Array())
   const [ProductName, setProductName] = useState('Vitto Jelek')
+  const [specificProduct, setSpecificProduct] = useState({})
   const [ShopId, setShopId] = useState(0)
   const [Stock, setStock] = useState(0)
   const [rating, setRating] = useState(0)
@@ -21,13 +22,18 @@ function ProductsList() {
     .then((data) => console.log(data))
   }
 
+  function getSpecificProduct(ProductId: any){
+    fetch(`http://127.0.0.1:5000/products/${ProductId}`)
+    .then((response:any)  =>{
+    setSpecificProduct(response.json())})
+  }
   function addProduct() {
     const data = {
         ProductName: ProductName,
         ShopId: ShopId,
         Stock: Stock
     }
-    fetch('http://127.0.0.1:5000/', {
+    fetch('http://127.0.0.1:5000/products', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"
@@ -63,9 +69,16 @@ function ProductsList() {
   })
   .then((response) => response.json())
   .then((data) => {
-    getAvgRating(ProductId)
-    // setProducts((products) => [...products, data[0]])
+    getSpecificProduct(ProductId)
     console.log("Success:", data)
+  })
+  .then(() => {
+    const avgRating:any = getAvgRating(ProductId)
+    setSpecificProduct({
+      ...specificProduct,
+      AvgRating: avgRating
+    })
+    console.log(specificProduct)
   })
   .catch((error) => {
     console.error("Error:", error);
@@ -74,8 +87,9 @@ function ProductsList() {
 
   useEffect(() => {
     fetchData();
+    getAvgRating("20ec035f-f87d-49e0-a7b0-ab604bf92508")
   }, []);
-
+  console.log(specificProduct)
   return (
     <div>
       Discover Your Recomended Products!

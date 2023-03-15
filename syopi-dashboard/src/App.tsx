@@ -8,6 +8,7 @@ import ShippingList from './components/Shipping/ShippingList'
 import LandingPage from './components/LandingPage'
 import ShopPage from './components/shop/ShopPage'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import ProductPage from './components/ProductPage'
 
 export default function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/shop/:shopName' element={<ShopPage />} />
+          <Route path='/oneproduct' element={<ProductPage />} />
         </Routes>
       </BrowserRouter>
     </>

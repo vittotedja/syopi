@@ -29,8 +29,10 @@ function Shop(props: any) {
         <Card.Body>
           <Card.Title>{props.shop.name}</Card.Title>
           <Card.Text>
-            <p>{props.shop.address}</p>
-            <p>{props.shop.phone_number}</p>
+            {props.shop.address}
+          </Card.Text>
+          <Card.Text>
+            {props.shop.phone_number}
           </Card.Text>
           <Button variant="primary" onClick={fetchShop}>Go somewhere</Button>
         </Card.Body>
