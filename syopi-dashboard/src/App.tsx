@@ -1,21 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
-import Navbar from './components/Navbar'
-import ProductsList from './components/Product/ProductsList'
-import Promotions from './components/Promotions'
-import ShopList from './components/ShopList'
+import LandingPage from './components/LandingPage'
+import ShopPage from './components/shop/ShopPage'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
-function App() {
-  const [count, setCount] = useState(0)
 
+export default function App() {
   return (
-    <div className="App">
-      <Navbar/>
-      <Promotions/>
-      <ProductsList/>
-      <ShopList/>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<LandingPage />} />
+          <Route path='/shop/:shopName' element={<ShopPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
-
-export default App
