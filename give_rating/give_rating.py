@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS, cross_origin
 import os
 from supabase import create_client
@@ -14,10 +14,10 @@ product_url = os.environ.get("PRODUCT_URL")
 product_key = os.environ.get("PRODUCT_KEY")
 product = create_client(product_url, product_key)
 
-app = Flask(__name__)
-cors = CORS(app)
+give_rating_bp = Blueprint('give_rating', __name__)
+cors = CORS(give_rating_bp)
 
-@app.route('/rating/<string:ProductId>', methods=['GET'])
+@give_rating_bp.route('/rating/<string:ProductId>', methods=['GET'])
 def index(ProductId):
     res = review.table('review').select("review_rating").eq("product_id", ProductId).execute()
     rating_list = res.data
@@ -29,12 +29,8 @@ def index(ProductId):
     product.table('product').update({"AvgRating": sum/count}).eq("ProductId", ProductId).execute()
     return [sum/count]
 
-@app.route('/giverating/<string:ProductId>', methods=['POST'])
+@give_rating_bp.route('/giverating/<string:ProductId>', methods=['POST'])
 def give_rating(ProductId):
     data = request.get_json()
     response = review.table('review').insert(data).execute()
     return response.data    
-
-
-if __name__ == '__main__':
-    app.run(port=5003, debug=True)

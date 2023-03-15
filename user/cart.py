@@ -1,4 +1,4 @@
-from flask import request,jsonify, Flask
+from flask import request,jsonify, Flask, Blueprint
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 load_dotenv()
@@ -9,11 +9,10 @@ url = os.environ.get('USERS_URL')
 key = os.environ.get('SUPABASE_KEY')
 supabase = create_client(url, key)
 
-app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+cart_bp = Blueprint('cart', __name__)
+cors = CORS(cart_bp)
 
-@app.route('/getcart/<string:userid>/<string:productid>', methods=['GET', 'POST'])
+@cart_bp.route('/getcart/<string:userid>/<string:productid>', methods=['GET', 'POST'])
 def get_cart(userid, productid):
     # Fetch all users from Supabase
     res = supabase.table('Cart').select('*').eq('UserId', userid).eq('ProductId', productid).execute()
@@ -23,7 +22,7 @@ def get_cart(userid, productid):
     else:
         return 'error: No users found.', 404
 
-@app.route('/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
+@cart_bp.route('/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def signup(userid, productid, quantity):
     res = supabase.table('Cart').insert({
         "UserId": userid,
@@ -32,6 +31,3 @@ def signup(userid, productid, quantity):
         }).execute()
     
     return res.data, 200
-
-if __name__ == '__main__':
-    app.run(port=5300, debug=True)

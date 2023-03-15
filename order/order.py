@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 load_dotenv()
  
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify, Blueprint
+# from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 import os
 from datetime import datetime, timedelta
@@ -14,19 +14,18 @@ key = os.environ.get("SUPABASE_KEY")
 supabase = create_client("https://ecjtnlpxgmzoqfezbork.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjanRubHB4Z216b3FmZXpib3JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzg3MDI0NjcsImV4cCI6MTk5NDI3ODQ2N30.W2igW2hMKNEjUlWPehmCWeGc-CDWvuGJQ9o8M9SRAoA")
 
 
-app = Flask(__name__)   
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+order_bp = Blueprint('order', __name__)   
+cors = CORS(order_bp)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/order'
 #app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
  
-@app.route('/order', methods=['GET', 'POST'])
+@order_bp.route('/order', methods=['GET', 'POST'])
 def getall_order():
     order = supabase.table("order").select("*").execute()
     return order.data
 
-@app.route("/order/<string:ProductId>")
+@order_bp.route("/order/<string:ProductId>")
 def find_by_productId(ProductId):
     order = supabase.table("order").select("*").eq("ProductId", ProductId).execute()
     
@@ -44,7 +43,7 @@ def find_by_productId(ProductId):
         }
     ), 404
 
-@app.route("/order/<string:ProductId>", methods=['POST'])
+@order_bp.route("/order/<string:ProductId>", methods=['POST'])
 def create_order(ProductId):
     if (supabase.table("order").query.filter_by(ProductId=ProductId).first()):
         return jsonify(
@@ -105,4 +104,4 @@ DateTime = datetime.utcnow() - timedelta(hours=0)
 #print(data)
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    order_bp.run(port=5000, debug=True)

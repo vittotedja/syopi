@@ -7,7 +7,7 @@ function ShopList() {
 
   async function fetchShops() {
     try {
-      const response = await fetch("http://127.0.0.1:5001/shop");
+      const response = await fetch("http://127.0.0.1:5000/shop");
       const data = await response.json();
       setShopList(data);
     } catch (error) {
