@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useEffect, useState } from "react";
 import Products from "./Products";
 import "./Products.css";
 
@@ -8,6 +7,7 @@ function ProductsList() {
   const [ProductName, setProductName] = useState('Vitto Jelek')
   const [ShopId, setShopId] = useState(0)
   const [Stock, setStock] = useState(0)
+  const [rating, setRating] = useState(0)
 
   function fetchData() {  
     fetch("http://127.0.0.1:5000/products")
@@ -81,7 +81,7 @@ function ProductsList() {
       Discover Your Recomended Products!
       <br/>
       <button onClick={() => addProduct()}>add product</button>
-      <input type="text" placeholder="Give Rating" onChange= {(e) => setRating(e.target.value)}/>
+      <input type="text" placeholder="Give Rating" onChange= {(e: any) => setRating(e.target.value)}/>
       <button onClick={() => giveRating()}>Add Review</button>
       <div className="product-list">
         {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock} AvgRating = {product.AvgRating}/>})}
