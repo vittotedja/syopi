@@ -7,8 +7,8 @@ import os
 from datetime import datetime, timedelta
 from supabase import create_client
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+url = os.environ.get("REVIEW_URL")
+key = os.environ.get("REVIEW_KEY")
 supabase = create_client(url, key)
 
 review_bp = Blueprint('review', __name__)

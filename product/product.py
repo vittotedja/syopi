@@ -5,8 +5,8 @@ load_dotenv()
 import os
 from supabase import create_client
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+url = os.environ.get("PRODUCT_URL")
+key = os.environ.get("PRODUCT_KEY")
 supabase = create_client(url, key)
 
 product_bp = Blueprint('product', __name__)
@@ -14,7 +14,7 @@ product_bp = Blueprint('product', __name__)
 cors = CORS(product_bp)
 # app.config['CORS_HEADERS'] = 'Content-Type'
  
-@product_bp.route('/products', methods=['GET', 'POST'])
+@product_bp.route('/product', methods=['GET', 'POST'])
 def index():
     # GET request
     if request.method == 'GET':
@@ -27,7 +27,7 @@ def index():
         response = supabase.table('product').insert(data).execute()
         return response.data
 
-@product_bp.route('/products/<string:ProductId>', methods=['GET'])
+@product_bp.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
     response = supabase.table('product').select("*").eq('ProductId', ProductId).execute()
     return response.data[0]

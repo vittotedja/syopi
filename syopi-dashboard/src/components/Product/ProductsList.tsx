@@ -11,7 +11,7 @@ function ProductsList() {
   const [rating, setRating] = useState(0)
 
   function fetchData() {  
-    fetch("http://127.0.0.1:5000/products")
+    fetch("http://127.0.0.1:5000/product")
     .then((response) => response.json())
     .then((data) => setProducts(data))
   }
@@ -23,7 +23,7 @@ function ProductsList() {
   }
 
   function getSpecificProduct(ProductId: any){
-    fetch(`http://127.0.0.1:5000/products/${ProductId}`)
+    fetch(`http://127.0.0.1:5000/product/${ProductId}`)
     .then((response:any)  =>{
     setSpecificProduct(response.json())})
   }
@@ -33,7 +33,7 @@ function ProductsList() {
         ShopId: ShopId,
         Stock: Stock
     }
-    fetch('http://127.0.0.1:5000/products', {
+    fetch('http://127.0.0.1:5000/product', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"

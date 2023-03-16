@@ -9,8 +9,8 @@ from supabase import create_client
 from dotenv import load_dotenv
 load_dotenv()
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+url = os.environ.get("SHOP_URL")
+key = os.environ.get("SHOP_KEY")
 supabase = create_client(url, key)
 
 
@@ -44,7 +44,7 @@ def json(self):
     return {"id": self.id, "name": self.name, "address": self.address, "phone_number": self.phone_number, "active": self.active}
 
 
-@shop_bp.route("/shop")
+@shop_bp.route("/shop/")
 def get_all():
     shoplist = supabase.table("shops").select("*").execute()
     return shoplist.data

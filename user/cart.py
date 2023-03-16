@@ -5,8 +5,8 @@ load_dotenv()
 import os
 from supabase import create_client
 
-url = os.environ.get('USERS_URL')
-key = os.environ.get('SUPABASE_KEY')
+url = os.environ.get('USER_URL')
+key = os.environ.get('USER_KEY')
 supabase = create_client(url, key)
 
 cart_bp = Blueprint('cart', __name__)
