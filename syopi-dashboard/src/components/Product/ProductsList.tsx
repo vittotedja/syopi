@@ -11,29 +11,31 @@ function ProductsList() {
   const [rating, setRating] = useState(0)
 
   function fetchData() {  
-    fetch("http://127.0.0.1:5000/products")
+    fetch("http://127.0.0.1:5000/product")
     .then((response) => response.json())
     .then((data) => setProducts(data))
   }
 
   function getAvgRating(ProductId: any){
-    fetch(`http://127.0.0.1:5003/rating/${ProductId}`)
+    fetch(`http://127.0.0.1:5000/rating/${ProductId}`)
     .then((response)  => response.json())
     .then((data) => console.log(data))
   }
 
   function getSpecificProduct(ProductId: any){
-    fetch(`http://127.0.0.1:5000/products/${ProductId}`)
+    fetch(`http://127.0.0.1:5000/product/${ProductId}`)
     .then((response:any)  =>{
     setSpecificProduct(response.json())})
   }
+
+
   function addProduct() {
     const data = {
         ProductName: ProductName,
         ShopId: ShopId,
         Stock: Stock
     }
-    fetch('http://127.0.0.1:5000/products', {
+    fetch('http://127.0.0.1:5000/product', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"
@@ -60,24 +62,26 @@ function ProductsList() {
         review_rating: Rating,
         user_id: 2
     }
-    fetch(`http://127.0.0.1:5003/giverating/${ProductId}`, {
+    fetch(`http://127.0.0.1:5000/giverating/${ProductId}`, {
       method:'POST',
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
   })
-  .then((response) => response.json())
-  .then((data) => {
+  .then((response) => {
+    response.json()
     getSpecificProduct(ProductId)
-    console.log("Success:", data)
   })
-  .then(() => {
+  .then((data) => {
     const avgRating:any = getAvgRating(ProductId)
+    // console.log("Success:", data)
     setSpecificProduct({
       ...specificProduct,
       AvgRating: avgRating
     })
+  })
+  .then(() => {
     console.log(specificProduct)
   })
   .catch((error) => {
@@ -85,11 +89,11 @@ function ProductsList() {
   });
 }
 
+
   useEffect(() => {
     fetchData();
-    getAvgRating("20ec035f-f87d-49e0-a7b0-ab604bf92508")
   }, []);
-  console.log(specificProduct)
+
   return (
     <div>
       Discover Your Recomended Products!

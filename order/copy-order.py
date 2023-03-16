@@ -7,8 +7,8 @@ import os
 from supabase import create_client
 
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+url = os.environ.get("ORDER_URL")
+key = os.environ.get("ORDER_KEY")
 supabase = create_client(url, key)
 
 app = Flask(__name__)

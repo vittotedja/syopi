@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify, render_template, redirect, url_for, Blueprint
+# from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from sqlalchemy import func
+# from sqlalchemy import func
 import Levenshtein
 import os
 import json
@@ -9,28 +9,28 @@ from supabase import create_client
 from dotenv import load_dotenv
 load_dotenv()
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+url = os.environ.get("SHOP_URL")
+key = os.environ.get("SHOP_KEY")
 supabase = create_client(url, key)
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/shop_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+shop_bp = Blueprint('shop', __name__)
+# shop_bp.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/shop_db'
+# shop_bp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# db = SQLAlchemy(shop_bp)
 
-CORS(app)
+CORS(shop_bp)
 
 
 # class Shop(db.Model):
-__tablename__ = 'shops'
+# __tablename__ = 'shops'
 
-id = db.Column(db.Integer, primary_key=True)
-name = db.Column(db.String(255), nullable=False)
-address = db.Column(db.String(255), nullable=False)
-phone_number = db.Column(db.String(20), nullable=False)
-active = db.Column(db.String(20), nullable=False)
+# id = db.Column(db.Integer, primary_key=True)
+# name = db.Column(db.String(255), nullable=False)
+# address = db.Column(db.String(255), nullable=False)
+# phone_number = db.Column(db.String(20), nullable=False)
+# active = db.Column(db.String(20), nullable=False)
 
 
 def __init__(self, name, address, phone_number, active):
@@ -44,13 +44,13 @@ def json(self):
     return {"id": self.id, "name": self.name, "address": self.address, "phone_number": self.phone_number, "active": self.active}
 
 
-@app.route("/shop")
+@shop_bp.route("/shop/")
 def get_all():
     shoplist = supabase.table("shops").select("*").execute()
     return shoplist.data
 
 
-@app.route("/shop/search/<string:search_term>")
+@shop_bp.route("/shop/search/<string:search_term>")
 def search_by_name(search_term, limit=10):
     shops = supabase.table("shops").select(
         "*").ilike("name", f"%{search_term}%").execute()
@@ -75,7 +75,7 @@ def search_by_name(search_term, limit=10):
     return jsonify({'results': results})
 
 
-@app.route("/shop/<string:name>")
+@shop_bp.route("/shop/<string:name>")
 def find_by_name(name):
     shop = supabase.table("shops").select("*").ilike("name", name).execute()
 
@@ -95,7 +95,7 @@ def find_by_name(name):
     ), 404
 
 
-@app.route("/shop/add_shop", methods=["GET", 'POST'])
+@shop_bp.route("/shop/add_shop", methods=["GET", 'POST'])
 def add_shop():
     if request.method == 'GET':
         return render_template('add_shop.html')
@@ -144,7 +144,7 @@ def add_shop():
                 }), 500
 
 
-@app.route("/shop/update_shop/<string:name>", methods=["GET", "POST", 'PUT'])
+@shop_bp.route("/shop/update_shop/<string:name>", methods=["GET", "POST", 'PUT'])
 def update_shop(name):
     if request.method == 'GET':
         shop = supabase.table("shops").select("*").ilike("name", name).execute()
@@ -171,7 +171,3 @@ def update_shop(name):
             print("Deactivating the store")
             data = supabase.table("shops").update({"active": "Inactive"}).eq("name", form_name).execute()
             return redirect(url_for('find_by_name', name=form_name))
-
-
-if __name__ == '__main__':
-    app.run(port=5001, debug=True)

@@ -3,7 +3,7 @@
 
 <head>
     <script type="text/javascript">
-        var testorder = "82626372";
+        var testorder = "12345678";
         var url = "http://127.0.0.1:5000/order/" + testorder;
         </script>
         <title>Test</title> 
@@ -11,17 +11,61 @@
     <body>
         
         <h1>My Website</h1>
-        <script>
-            document.write('<a href="' + loc + '">Google</a>');
-        </script>
 
+
+
+        <script>
+        function addProduct() {
+            const ProductName = 'Vincent Lewi Bangsat'
+            const ShopId = 1
+            const Stock = 1
+            const data = {
+                ProductName: ProductName,
+                ShopId: ShopId,
+                Stock: Stock
+            }
+            fetch('http://127.0.0.1:5000/order/12345678', {
+                method:'POST',
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data)
+      setProducts((products) => [...products, data[0]])
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+</script>
         <form action= "url">
             <input type="button" id='script' name="getall" value="Test" onclick="getall_order()">
         </form>
         
         <button> <script>
-            document.write('<a href="' + url + '">Test</a>');
-        </script>
+            fetch('<a href="' + url + '">Test</a>', {
+        method:'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    });
+        </script>aaa
+        </button>
+
+        <button> <script>
+            fetch('<a href="' + "http://127.0.0.1:5000/order/12345678" + '">Test</a>', {
+        method:'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+    });
+        </script>aaa
         </button>
 
     </body>

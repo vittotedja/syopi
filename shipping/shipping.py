@@ -1,16 +1,12 @@
-#!/usr/bin/env python3
-# The above shebang (#!) operator tells Unix-like environments
-# to run this file as a python3 script
-
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
 
-app = Flask(__name__)
-CORS(app)
+shipping_bp = Blueprint('shipping', __name__)
+CORS(shipping_bp)
 
 
-@app.route("/shipping", methods=['POST'])
+@shipping_bp.route("/shipping", methods=['POST'])
 def receiveOrder():
     # Check if the order contains valid JSON
     order = None
@@ -51,10 +47,3 @@ def processOrder(order):
         },
         'message': message
     }
-
-
-# execute this program only if it is run as a script (not by 'import')
-if __name__ == "__main__":
-    print("This is flask " + os.path.basename(__file__) +
-          ": shipping for orders ...")
-    app.run(host='0.0.0.0', port=5002, debug=True)
