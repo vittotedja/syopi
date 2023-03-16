@@ -17,7 +17,7 @@ function ProductsList() {
   }
 
   function getAvgRating(ProductId: any){
-    fetch(`http://127.0.0.1:5003/rating/${ProductId}`)
+    fetch(`http://127.0.0.1:5000/rating/${ProductId}`)
     .then((response)  => response.json())
     .then((data) => console.log(data))
   }
@@ -62,7 +62,7 @@ function ProductsList() {
         review_rating: Rating,
         user_id: 2
     }
-    fetch(`http://127.0.0.1:5003/giverating/${ProductId}`, {
+    fetch(`http://127.0.0.1:5000/giverating/${ProductId}`, {
       method:'POST',
       headers: {
         "Content-Type": "application/json"
