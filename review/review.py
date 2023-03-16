@@ -2,13 +2,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from flask import Flask, request, jsonify, Blueprint
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import os
-from datetime import datetime, timedelta
 from supabase import create_client
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+url = os.environ.get("REVIEW_URL")
+key = os.environ.get("REVIEW_KEY")
 supabase = create_client(url, key)
 
 review_bp = Blueprint('review', __name__)
@@ -29,4 +28,4 @@ def index():
 def get_review(ProductId):
     if request.method == 'GET':
         response = supabase.table('review').select("*").eq("product_id", ProductId).execute()
-        return (response.data)
+        return response.data
