@@ -27,6 +27,8 @@ function ProductsList() {
     .then((response:any)  =>{
     setSpecificProduct(response.json())})
   }
+
+
   function addProduct() {
     const data = {
         ProductName: ProductName,
@@ -67,17 +69,19 @@ function ProductsList() {
       },
       body: JSON.stringify(data)
   })
-  .then((response) => response.json())
-  .then((data) => {
+  .then((response) => {
+    response.json()
     getSpecificProduct(ProductId)
-    console.log("Success:", data)
   })
-  .then(() => {
+  .then((data) => {
     const avgRating:any = getAvgRating(ProductId)
+    // console.log("Success:", data)
     setSpecificProduct({
       ...specificProduct,
       AvgRating: avgRating
     })
+  })
+  .then(() => {
     console.log(specificProduct)
   })
   .catch((error) => {
@@ -85,11 +89,11 @@ function ProductsList() {
   });
 }
 
+
   useEffect(() => {
     fetchData();
-    getAvgRating("20ec035f-f87d-49e0-a7b0-ab604bf92508")
   }, []);
-  console.log(specificProduct)
+
   return (
     <div>
       Discover Your Recomended Products!
