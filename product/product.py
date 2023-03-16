@@ -12,7 +12,7 @@ supabase = create_client(url, key)
 app = Flask(__name__)   
 
 cors = CORS(app)
-# app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_HEADERS'] = 'Content-Type'
  
 @app.route('/products', methods=['GET', 'POST'])
 def index():
