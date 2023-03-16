@@ -1,0 +1,25 @@
+#root{
+    margin: 0;
+    width: 100vw;
+}
+
+
+.container{
+    width: 100%;
+    margin: auto;
+}
+
+.row{
+    display: flex;
+}
+
+.col{
+    width: 50%;
+}
+
+.productName {
+    font-size: 1.5em;
+    font-weight: 500;
+    font-family: inherit;
+    color: #213547;
+}
