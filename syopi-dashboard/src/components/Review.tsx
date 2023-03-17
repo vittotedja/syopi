@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Review() {
+function Review(props:any) {
   const [rating, setRating] = useState(0);
-  const [ProductId, setProductId] = useState("");
+  const ProductId = props.ProductId;
   const [specificProduct, setSpecificProduct] = useState({});
 
   let navigate = useNavigate()
@@ -64,15 +64,9 @@ function Review() {
       <br/>
       <input
         type="text"
-        placeholder="Input Product ID"
-        onChange={(e: any) => setProductId(e.target.value)}
-      />
-      <br/>
-      <input
-        type="text"
         placeholder="Give Rating"
         onChange={(e: any) => setRating(e.target.value)}
-      />
+      />  
       <br/>
       <button onClick={() => giveRating()}>Add Review</button>
     </div>
