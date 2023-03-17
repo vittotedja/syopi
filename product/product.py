@@ -31,3 +31,8 @@ def index():
 def product(ProductId):
     response = supabase.table('product').select("*").eq('ProductId', ProductId).execute()
     return response.data[0]
+
+@product_bp.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])
+def update_rating(ProductId, avgRating):
+    response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
+    return response.data

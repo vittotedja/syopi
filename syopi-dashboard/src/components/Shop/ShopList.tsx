@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Shop from './Shop'
-import './Shop'
+import './Shop.css'
 
 function ShopList() {
   const [shopList, setShopList] = useState([]);
@@ -22,7 +22,7 @@ function ShopList() {
   return (
     <>
       <div>Nyari Toko Disini</div>
-      <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+      <div className="shop-list">
         {shopList.map((shop, index) => (
           <Shop shop={shop} key={index} />
         ))}

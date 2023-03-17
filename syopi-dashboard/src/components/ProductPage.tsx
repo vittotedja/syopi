@@ -1,7 +1,7 @@
-import React from 'react'
 import productpics from '../assets/logofornow.jpg'
 import './ProductPage.css'
 import {Container, Col, Row, Carousel, Button} from 'react-bootstrap'
+import Review from './Review'
 
 function ProductPage() {
   return (
@@ -15,6 +15,9 @@ function ProductPage() {
           <Col>
             <p className='product-title'>Product Name</p>
           </Col>
+        </Row>
+        <Row>
+          <Review/>
         </Row>
       </Container>
     </div>

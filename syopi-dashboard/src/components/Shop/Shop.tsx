@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card"
 import Button from 'react-bootstrap/Button'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import './Shop.css'
 
 function Shop(props: any) {
   const navigate = useNavigate()

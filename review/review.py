@@ -29,3 +29,9 @@ def get_review(ProductId):
     if request.method == 'GET':
         response = supabase.table('review').select("*").eq("product_id", ProductId).execute()
         return response.data
+    
+@review_bp.route('/getreviewrating/<string:ProductId>', methods=['GET'])
+def get_review_rating(ProductId):
+    if request.method == 'GET':
+        response = supabase.table('review').select("review_rating").eq("product_id", ProductId).execute()
+        return response.data
