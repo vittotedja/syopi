@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Add New Order</title>
+  </head>
+  <body>
+    <h1>Add New Order</h1>
+    <form action="{{url_for('add_order')}}" method="POST">
+      <label for="OrderId">OrderId:</label>
+      <input type="text" id="OrderId" name="OrderId" id="OrderId" required><br>
+      
+      <label for="ProductId">ProductId:</label>
+      <input type="text" id="ProductId" name="ProductId" id="ProductId" required><br>
+
+      <label for="ShopId">ShopId:</label>
+      <input type="text" id="ShopId" name="ShopId" id="ShopId" required><br>
+
+      <label for="UserId">UserId:</label>
+      <input type="text" id="UserId" name="UserId" id="UserId" required><br>
+
+      <label for="Price">Price:</label>
+      <input type="text" id="Price" name="Price" id="Price" required><br>
+
+      <label for="Quantity">Quantity:</label>
+      <input type="text" id="Quantity" name="Quantity" id="Quantity" required><br>
+
+      <label for="DateTime">Date Time:</label>
+      <input type="datetime-local" id="DateTime" name="DateTime" id="DateTime" required><br>
+
+
+      <input type="radio" id="Unpaid" name="OrderStatus" value="Unpaid">
+      <label for="Unpaid">Unpaid</label><br>
+      <input type="radio" id="Paid" name="OrderStatus" value="Paid">
+      <label for="Paid">Paid</label><br>
+      <input type="radio" id="In Delivery" name="OrderStatus" value="In Delivery">
+      <label for="In Delivery">In Delivery</label><br>
+      <input type="radio" id="Successful" name="OrderStatus" value="Successful">
+      <label for="Successful">Successful</label><br>
+      <input type="radio" id="Cancelled" name="OrderStatus" value="Cancelled">
+      <label for="Cancelled">Cancelled</label>
+
+
+      <label for="ShippingId">ShippingId:</label>
+      <input type="text" id="ShippingId" name="ShippingId" id="ShippingId" required><br>
+
+      <input type="submit" value="Submit">
+    </form>
+  </body><script src="{{ url_for(filename='add_order.js') }}"></script>
+  
+</html>
+

@@ -57,6 +57,19 @@
         </script>aaa
         </button>
 
+
+        <button> <script>
+          fetch('<a href="' + url + '">Test</a>', {
+      method:'PUT',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data),
+  });
+      </script>aaa
+      </button>
+
+
         <button> <script>
             fetch('<a href="' + "http://127.0.0.1:5000/order/12345678" + '">Test</a>', {
         method:'POST',
