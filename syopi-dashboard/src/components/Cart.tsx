@@ -23,4 +23,4 @@ function CartList() {
   )
 }
 
-export default CartList()
+export default CartList

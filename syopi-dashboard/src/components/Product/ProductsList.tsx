@@ -14,8 +14,6 @@ function ProductsList() {
     .then((data) => setProducts(data))
   }
 
-
-
   function addProduct() {
     const data = {
         ProductName: ProductName,
@@ -50,7 +48,7 @@ function ProductsList() {
       <br/>
       <button onClick={() => addProduct()}>add product</button>
       <div className="product-list">
-        {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock} AvgRating = {product.AvgRating} Price = {product.Price}/>})}
+        {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock} AvgRating = {product.AvgRating} Price = {product.Price} id = {product.ProductId}/>})}
       </div>
     </div>
   );

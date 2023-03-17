@@ -1,5 +1,5 @@
 import React from 'react'
-import shoppics from '../../assets/logofornow.jpg'
+import shoppics from '../../assets/logo.png'
 import Card from "react-bootstrap/Card"
 import Button from 'react-bootstrap/Button'
 import { useState, useEffect } from 'react'
@@ -21,7 +21,6 @@ function Shop(props: any) {
     //   console.log(error);
     // }
   }
-
   return (
 
     <div className='shop-card mx-3'>
@@ -35,7 +34,7 @@ function Shop(props: any) {
           <Card.Text>
             {props.shop.phone_number}
           </Card.Text>
-          <Button variant="primary" onClick={fetchShop}>Go somewhere</Button>
+          <button onClick={fetchShop}>Go somewhere</button>
         </Card.Body>
       </Card>
     </div>

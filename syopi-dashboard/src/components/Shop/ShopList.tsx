@@ -18,7 +18,6 @@ function ShopList() {
   useEffect(() => {
     fetchShops()
   }, []);
-
   return (
     <>
       <div>Nyari Toko Disini</div>
