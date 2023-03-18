@@ -29,32 +29,42 @@ function ProductPage() {
     <>
     <Navbar/> 
     <div>
-      <Container>
-        <Row>
-          <Col>
-            <img src={productpics} width={'500px'}/> 
+      <div className='container'>
+        <div className='directory'>
+          <a href='/'>Home</a> > <a href='/shop'>Electronics</a> > <a href='/shop/1'>Laptop</a> > <a href='/product/1'>Product Name</a>
+        </div>
+        <div className='row'>
+          <div className='col-6 '>
+            <img src={productpics}/> 
             {/* Should have been a carousel but idk why it doesnt work */}
-          </Col>
-          <Col>
-            <p className='product-title'>{data.ProductName}</p>
-            <div className='rating-row'>
-              <p className='rating'>{data.AvgRating}</p>
-              <div className='star-cover flex'>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
+            <br/>
+            <div className='row'>
+              <div className='col-3'>
+                <img src={productpics}/>
               </div>
-                <div className="cover" style={{width: `${100 - percentageFilled}`}}></div>
+              <div className='col-3'>
+                <img src={productpics}/>
+              </div>
+              <div className='col-3'>
+                <img src={productpics}/>
+              </div>
+              <div className='col-3'>
+                <img src={productpics}/>
+              </div>
             </div>
-            <p className='short-desc'>{data.Description}</p>
-          </Col>
-        </Row>
-        <Row>
+          </div>
+          <div className='col-6 productDetail'>
+            <p className='productName'>hello apa kabar semuanya ini laptop terbaru{data.ProductName}</p>
+            <div className='rating-row'>
+              <p>Terjual 50 | <AiFillStar className='star'/> 5 | Review 40+</p>
+            </div>
+            <p className='productDesc'>apa kabar sodara sekalian marilah kita beridiri dan bergoyang untuk kesenangan hati kita sendiri{data.Description}</p>
+          </div>
+        </div>
+        <div className='row'>
           <Review ProductId = {productId}/>
-        </Row>
-      </Container>
+        </div>
+      </div>
     </div>
     </>
   )
