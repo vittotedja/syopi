@@ -33,8 +33,8 @@ def index(ProductId):
     x = requests.get(f'http://127.0.0.1:5000/product/{ProductId}/{avgRating}')
     return x.json()[0]
 
-@give_rating_bp.route('/giverating/<string:ProductId>', methods=['POST'])
-def give_rating(ProductId):
-    data = request.get_json()
-    response = review.table('review').insert(data).execute()
-    return response.data    
+# @give_rating_bp.route('/giverating/<string:ProductId>', methods=['POST'])
+# def give_rating(ProductId):
+#     data = request.get_json()
+#     response = review.table('review').insert(data).execute()
+#     return response.data    

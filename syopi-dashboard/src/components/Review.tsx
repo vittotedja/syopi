@@ -27,11 +27,11 @@ function Review(props:any) {
   function giveRating() {
     const data = {
         product_id: ProductId,
-        review_description: "BANGSAT",
+        review_description: "ehehhehh",
         review_rating: rating,
         user_id: 2
     }
-    fetch(`http://127.0.0.1:5000/giverating/${ProductId}`, {
+    fetch(`http://127.0.0.1:5000/giverating`, {
       method:'POST',
       headers: {
         "Content-Type": "application/json"

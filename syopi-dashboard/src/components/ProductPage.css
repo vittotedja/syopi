@@ -5,7 +5,7 @@
 
 .container{
     width: 100%;
-    margin: auto;
+    margin: 2em auto;
 }
 
 .row{
@@ -21,4 +21,19 @@
     font-weight: 500;
     font-family: inherit;
     color: #213547;
+}
+
+.rating-row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cover{
+    background-color: black;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
 }
