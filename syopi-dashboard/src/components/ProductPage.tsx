@@ -1,11 +1,12 @@
 import productpics from '../assets/logofornow.jpg'
 import './ProductPage.css'
-import React, { useEffect, useState } from 'react'
-import {Container, Col, Row, Carousel, Button} from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import {Container, Col, Row} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import Review from './Review'
 import Navbar from './Navbar'
 import { AiFillStar } from "react-icons/ai";
+import StarRating from './ReviewNew'
 
 function ProductPage() {
   let { productId } = useParams()
@@ -63,8 +64,9 @@ function ProductPage() {
         </div>
         <div className='row'>
           <Review ProductId = {productId}/>
-        </div>
-      </div>
+          <StarRating ProductId = {productId}/>
+        </Row>
+      </Container>
     </div>
     </>
   )

@@ -9,7 +9,7 @@ function ProductsList() {
   const [Stock, setStock] = useState(0)
 
   function fetchData() {  
-    fetch("http://127.0.0.1:5000/product")
+    fetch("http://127.0.0.1:5000/recommender")
     .then((response) => response.json())
     .then((data) => setProducts(data))
   }
