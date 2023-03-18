@@ -11,11 +11,33 @@ import StarRating from './ReviewNew'
 function ProductPage() {
   let { productId } = useParams()
   const [data, setData] = useState(Object)
+  const [quantity, setQuantity] = useState(1)
 
   function fetchData() {  
     fetch(`http://127.0.0.1:5000/product/${productId}`)
     .then((response) => response.json())
     .then((data) => setData(data))
+  }
+
+  function addToCart() {
+    const sentData = {
+      ProductId: productId,
+      Quantity: 2
+    }
+    fetch(`http://127.0.0.1:5000/tambahcart/${productId}/${quantity}`, {
+      method:'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(sentData)
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data)
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    })
   }
 
   useEffect(() => {
@@ -32,7 +54,7 @@ function ProductPage() {
     <div>
       <div className='container'>
         <div className='directory'>
-          <a href='/'>Home</a> > <a href='/shop'>Electronics</a> > <a href='/shop/1'>Laptop</a> > <a href='/product/1'>Product Name</a>
+          <a href='/'>Home</a> &#62; <a href='/shop'>{data.Category}</a> &#62; <a href={`/product/${productId}`}>{data.ProductName}</a>
         </div>
         <div className='row'>
           <div className='col-6 '>
@@ -55,20 +77,22 @@ function ProductPage() {
             </div>
           </div>
           <div className='col-6 productDetail'>
-            <p className='productName'>hello apa kabar semuanya ini laptop terbaru{data.ProductName}</p>
+            <p className='productName'>{data.ProductName}</p>
             <div className='rating-row'>
               <p>Terjual 50 | <AiFillStar className='star'/> 5 | Review 40+</p>
             </div>
-            <p className='productDesc'>apa kabar sodara sekalian marilah kita beridiri dan bergoyang untuk kesenangan hati kita sendiri{data.Description}</p>
+            <p className='productDesc'>{data.Description}</p>
           </div>
         </div>
+        <hr/>
         <div className='row'>
           <Review ProductId = {productId}/>
           <StarRating ProductId = {productId}/>
-        </Row>
-      </Container>
+          <button onClick={() => addToCart()}>Add to Cart</button>
+        </div>
     </div>
-    </>
+  </div>
+  </>
   )
 }
 

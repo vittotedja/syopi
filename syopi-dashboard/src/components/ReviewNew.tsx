@@ -143,7 +143,7 @@ const StarRating = (props:any) => {
               i={i} 
               isHoveringWrapper={isHovering >= i} 
               isClicked={isClicked >= i}    
-            />
+            />  
           </motion.div>
         ))}
       </div>

@@ -1,6 +1,6 @@
-import React from 'react'
 
-function Cart(props: any) {
+
+function User(props: any) {
   return (
     <div className='cart-item'>
         <p className='Email'>{props.Email}</p>
@@ -12,4 +12,4 @@ function Cart(props: any) {
   )
 }
 
-export default Cart
+export default User

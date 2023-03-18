@@ -8,7 +8,7 @@ function Navbar() {
   let navigate = useNavigate()
   return (
     <div className='navbar flex'>
-        <img src={logo} alt="Logo" width={"60px"}/>
+        <img src={logo} alt="Logo" width={"60px"} onClick={() => navigate('/')} style={{cursor: 'pointer'}}/>
           <HiSearch className = "icon"/>
           <input type="text" placeholder="Search" style = {{backgroundColor: '#FFD3B6'}}/>
           <HiBell className="icon notif"/>
