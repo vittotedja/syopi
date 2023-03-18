@@ -1,11 +1,12 @@
 import productpics from '../assets/logofornow.jpg'
 import './ProductPage.css'
-import React, { useEffect, useState } from 'react'
-import {Container, Col, Row, Carousel, Button} from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import {Container, Col, Row} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import Review from './Review'
 import Navbar from './Navbar'
 import { AiFillStar } from "react-icons/ai";
+import StarRating from './ReviewNew'
 
 function ProductPage() {
   let { productId } = useParams()
@@ -40,19 +41,19 @@ function ProductPage() {
             <div className='rating-row'>
               <p className='rating'>{data.AvgRating}</p>
               <div className='star-cover flex'>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
-                <AiFillStar style = {{color:'gold',}}/>
+                <AiFillStar style = {{color:'gold'}}/>
+                <AiFillStar style = {{color:'gold'}}/>
+                <AiFillStar style = {{color:'gold'}}/>
+                <AiFillStar style = {{color:'gold'}}/>
+                <AiFillStar style = {{color:'gold'}}/>
               </div>
-                <div className="cover" style={{width: `${100 - percentageFilled}`}}></div>
             </div>
             <p className='short-desc'>{data.Description}</p>
           </Col>
         </Row>
         <Row>
           <Review ProductId = {productId}/>
+          <StarRating ProductId = {productId}/>
         </Row>
       </Container>
     </div>
