@@ -98,7 +98,7 @@ def get_cart(userid, productid):
         return 'error: No users found.', 404
 
 @user_bp.route('/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
-def signup(userid, productid, quantity):
+def addtocart(userid, productid, quantity):
     res = supabase.table('Cart').insert({
         "UserId": userid,
         "ProductId": productid,
