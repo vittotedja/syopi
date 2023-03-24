@@ -33,3 +33,7 @@
 .product-list button{
     width: 100%;
 }
+
+.product-card button{
+    border-radius: 0 0 10px 10px;
+}

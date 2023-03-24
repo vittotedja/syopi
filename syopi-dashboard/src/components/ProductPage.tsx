@@ -22,7 +22,7 @@ function ProductPage() {
   function addToCart() {
     const sentData = {
       ProductId: productId,
-      Quantity: 2
+      Quantity: quantity
     }
     fetch(`http://127.0.0.1:5000/tambahcart/${productId}/${quantity}`, {
       method:'POST',
@@ -47,6 +47,11 @@ function ProductPage() {
   const percentageFilled = Math.round((data.AvgRating / 5) * 100)
   console.log(percentageFilled)
 
+
+  function kurangin(){
+    if (quantity > 1)
+    setQuantity(quantity-1)
+  }
 
   return (
     <>
@@ -88,7 +93,14 @@ function ProductPage() {
         <div className='row'>
           <Review ProductId = {productId}/>
           <StarRating ProductId = {productId}/>
-          <button onClick={() => addToCart()}>Add to Cart</button>
+          <div>
+          <div className='flex' style={{height: '60px', margin: '5px'}}>
+            <button onClick={() => kurangin()}>-</button>
+            {quantity}
+            <button onClick={() => setQuantity(quantity+1)}>+</button>
+          </div>
+            <button onClick={() => addToCart()}>Add to Cart</button>
+          </div>
         </div>
     </div>
   </div>
