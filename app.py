@@ -7,7 +7,7 @@ from shop.shop import shop_bp
 from give_rating.give_rating import give_rating_bp
 from recommender.recommender import recommender_bp
 from order.order import order_bp
-from user.cart import cart_bp
+from cart.cart import cart_bp
 from user.user import user_bp
 
 app = Flask(__name__)   
