@@ -23,9 +23,9 @@ function ShopPage(props: any) {
   return (
 
     <div>
-      <h1>Welcome to {props.name}</h1>
-      <h5>Address: {props.address}</h5>
-      <h5>Phone: {props.phone_number}</h5>
+      <h1>Welcome to {shop.name}</h1>
+      <h5>Address: {shop.address}</h5>
+      <h5>Phone: {shop.phone_number}</h5>
     </div>
   )
 }
