@@ -56,8 +56,9 @@
 .rating-row{
     display: flex;
     align-items: left;
-    justify-content: left;
-    text-align: left;
+    width: 40%;
+    justify-content: space-around;
+    /* text-align: left; */
 }
 
 .cover{
@@ -67,4 +68,14 @@
     right: 0;
     bottom: 0;
     z-index: 1;
+}
+
+.rating-star{
+    align-items: center;
+}
+
+.productPrice{
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
 }

@@ -16,7 +16,7 @@ function ProductPage() {
   function fetchData() {  
     fetch(`http://127.0.0.1:5000/product/${productId}`)
     .then((response) => response.json())
-    .then((data) => setData(data))
+    .then((data) => setData(data[0]))
   }
 
   function addToCart() {
@@ -83,15 +83,22 @@ function ProductPage() {
           </div>
           <div className='col-6 productDetail'>
             <p className='productName'>{data.ProductName}</p>
-            <div className='rating-row'>
-              <p>Terjual 50 | <AiFillStar className='star'/> 5 | Review 40+</p>
+            <div className='rating-row flex'>
+              <p>Terjual 50</p> 
+              <p>|</p> 
+              <div className='flex align-middle justify-center rating-star'>
+                5 <AiFillStar className='star'/>
+              </div>
+              <p>|</p>
+              <p>Review 40+</p>
             </div>
             <p className='productDesc'>{data.Description}</p>
+            <p className='productPrice'>$ {data.Price}</p>
           </div>
         </div>
         <hr/>
         <div className='row'>
-          <Review ProductId = {productId}/>
+          {/* <Review ProductId = {productId}/> */}
           <StarRating ProductId = {productId}/>
           <div>
           <div className='flex' style={{height: '60px', margin: '5px'}}>

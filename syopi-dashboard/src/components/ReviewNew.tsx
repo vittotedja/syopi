@@ -84,7 +84,6 @@ const StarRating = (props:any) => {
     })
   }
 
-  
   function giveRating() {
     const data = {
         product_id: props.ProductId,
@@ -120,14 +119,6 @@ const StarRating = (props:any) => {
 }
 
 
-
-
-
-
-
-
-
-  
   return (
     <>
     <div className="star-rating">
