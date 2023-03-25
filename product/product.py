@@ -36,3 +36,10 @@ def product(ProductId):
 def update_rating(ProductId, avgRating):
     response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
     return response.data
+
+@product_bp.route('/product/getmultipleproducts', methods=['POST'])
+def get_multiple_products():
+    data = request.get_json()
+    print(data["data"])
+    response = supabase.table('product').select("*").in_("ProductId", data["data"]).execute()
+    return response.data

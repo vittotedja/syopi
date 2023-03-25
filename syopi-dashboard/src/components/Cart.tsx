@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import CartItem from './CartItem'
 
 function Cart() {
   const [data, setData] = useState(Array)
@@ -18,7 +19,13 @@ function Cart() {
   return (
     <div>
       Your Cart
-      {data.map((item:any) => {return <div key= {item.ProductId}>{item.ProductName}</div>})}
+      {data.map((item:any) => { return (
+      <CartItem
+        key= {item.ProductId}
+        productId = {item.ProductId}
+        name = {item.ProductName}
+        price = {item.Price}
+      />)})}
     </div>
   )
 }
