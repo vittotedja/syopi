@@ -22,27 +22,13 @@ cors = CORS(order_bp)
 #app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
  
-@order_bp.route('/order', methods=['GET'])
+@order_bp.route('/order/getall_order', methods=['GET'])
 def getall_order():
     order = supabase.table("order").select("*").execute()
     return order.data
 
 
-@order_bp.route('/', methods=['GET', 'POST'])
-def index():
-    # GET request
-    if request.method == 'GET':
-        response = supabase.table('order').select("*").execute()
-        return response.data
-
-    # POST request
-    if request.method == 'POST':
-        data = request.get_json()
-        response = supabase.table('order').insert(data).execute()
-        return response.data
-    
-
-@order_bp.route("/order/<string:OrderId>", methods=['GET'])
+@order_bp.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
 def find_by_orderid(OrderId):
     order = supabase.table("order").select("*").eq("OrderId", OrderId).execute()
     
@@ -61,185 +47,15 @@ def find_by_orderid(OrderId):
     ), 404
 
 
-"""
-@order_bp.route("/order/search/<string:search_term>")
-def find_by_orderid(search_term, limit=10):
-    orders = supabase.table("order").select(
-        "*").ilike("OrderId", f"%{search_term}%").execute()
-    if not orders:
-        return jsonify(
-            {
-                'message': 'No orders found.'
-            }), 404
-    for order in orders.data:
-        print(order)
-    exact_match = [
-        order for order in orders.data if order["OrderId"].lower() == search_term.lower()]
-    similar_orders = [order for order in orders.data if order not in exact_match]
-    similar_orders = sorted(similar_orders, key=lambda p: Levenshtein.distance(
-        p["OrderId"].lower(), search_term.lower()))
-
-    sorted_orders = exact_match + similar_orders
-
-    results = [{'id': order["id"], 'name': order["name"], 'address': order["address"],
-                'phone_number': order"phone_number"], "active": order["active"]} for order in sorted_orders]
-
-    return jsonify({'results': results})
-"""
-"""
-@order_bp.route("/order/<string:orderid>", methods=['POST'])
-def create_order():
-    orderid = 12345678
-    productid = 21345678
-    shopid = 12345678
-    userid = 12345678
-    price = 12345678
-    quantity = 12345678
-    dateTime = datetime.utcnow()
-    orderstatus = "Unpaid"
-    shippingid = 12345678
-    order = supabase.table("order").insert({"OrderId":orderid, "ProductId": productid, "ShopId": shopid, "UserId": userid, "Price": price, "Quantity": quantity,"DateTime": dateTime, "OrderStatus": orderstatus, "ShippingId":shippingid}).execute()
-    return order.data
-"""
-    
-"""
-    if (supabase.table("order").query.filter_by(OrderId=OrderId).first()):
-        return jsonify(
-            {
-                "code": 400,
-                "data": {
-                    "OrderId": OrderId
-                },
-                "message": "Order already exists."
-            }
-        ), 400
-"""
-    
-"""    return jsonify([
-        {
-            "code": 201,
-            "data": order.json()
-        }
-    ), 201 
-"""
-
-"""
-@order_bp.route('/order/create_order', methods=['GET', 'POST'])
-def create_order():
-    if request.method == 'POST':
-        data = request.get_json()
-        response = supabase.table('order').insert(data).execute()
-        return response.data
-    
-"""    
 
 @order_bp.route('/order/create_order', methods=['GET', 'POST'])
 def create_order():
-    data = {"OrderId": "aaaaaaa", "ShopId": "bbbbbbb", "ProductId": "ccccccc"}
+    data = {"OrderId": "Testing", "ShopId": "bbbbbbb", "ProductId": "ccccccc"}
     response = supabase.table('order').insert(data).execute()
     return response.data
 
 
 
-"""
-@order_bp.route("/order/add_order", methods=["GET", 'POST'])
-def add_order():
-    if request.method == 'GET':
-        return render_template('add_order.html')
-    else:
-        payload = request.form  # get JSON payload
-        form_orderid = payload["OrderId"]
-        form_productid = payload["ProductId"]
-        form_shopid = payload["ShopId"]
-        form_userid = payload["UserId"]
-        form_price = payload["Price"]
-        form_quantity = payload["Quantity"]
-        form_datetime = payload["DateTime"]
-        form_orderstatus = payload["OrderStatus"]
-        form_shippingid = payload["ShippingId"]
-        
-        order = supabase.table("order").select(
-            "*").eq("OrderId", form_orderid).execute()
-        if (order.data):
-            return jsonify(
-                {
-                    "code": 400,
-                    "data": {
-                        "OrderId": form_orderid
-                    },
-                    "message": "Store already exists."
-                }
-            ), 400
-        else:
-            data = supabase.table("order").insert({
-                "OrderId": form_orderid,
-                "ProductId": form_productid,
-                "ShopId": form_shopid,
-                "UserId": form_userid,
-                "Price": form_price,
-                "Quantity": form_quantity,
-                "DateTime": form_datetime,
-                "OrderStatus": form_orderstatus,
-                "ShippingId": form_shippingid
-                
-                }).execute()
-            print(data)
-            if data:
-                # return jsonify({
-                #     'code': 200,
-                data = {
-                        "OrderId": form_orderid,
-                "ProductId": form_productid,
-                "ShopId": form_shopid,
-                "UserId": form_userid,
-                "Price": form_price,
-                "Quantity": form_quantity,
-                "DateTime": form_datetime,
-                "OrderStatus": form_orderstatus,
-                "ShippingId": form_shippingid
-                    
-                }
-                #     'message': 'Insertion succesfull.'
-                # }), 200
-                return render_template("order.html", data=data)
-            else:
-                  return jsonify({
-                    'code': 500,
-                    'data': None,
-                    'message': 'Error inserting order into database.'
-                }), 500
-
-
-#    data = request.get_json()
-#    order = supabase.table("order")(ProductId, **data)
-
-    
-
-#    try:
-#        order.session.add(order)
-#        order.session.commit()
-
- 
-#    except:
-#        return jsonify(
-#            {
-#                "code": 500,
-#                "data": {
-#                    "productId": ProductId
-#                },
-#                "message": "An error occurred creating the order."
-#            }
-#        ), 500
-
-#    return jsonify(
-#        {
-#            "code": 201,
-#            "data": order.json()
-#        }
-#    ), 201
-
-
-"""
 
 @order_bp.route("/order/delete/<string:OrderId>")
 def delete_order(OrderId):
