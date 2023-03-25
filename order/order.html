@@ -14,92 +14,25 @@
 
 
 
-        <script>
-        function addProduct() {
-            const ProductName = 'Vincent Lewi Bangsat'
-            const ShopId = 1
-            const Stock = 1
-            const data = {
-                ProductName: ProductName,
-                ShopId: ShopId,
-                Stock: Stock
-            }
-            fetch('http://127.0.0.1:5000/order/12345678', {
-                method:'POST',
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data)
-      setProducts((products) => [...products, data[0]])
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
-
-</script>
-        <form action= "url">
-            <input type="button" id='script' name="getall" value="Test" onclick="getall_order()">
-        </form>
         
-        <button> <script>
-            fetch('<a href="' + url + '">Test</a>', {
-        method:'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-    });
-        </script>aaa
-        </button>
-
-
-        <button> <script>
-          fetch('<a href="' + url + '">Test</a>', {
-      method:'PUT',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data),
-  });
-      </script>aaa
-      </button>
-
-      <button> <script>
-        fetch('<a href="' + "http://127.0.0.1:5000/order/create_order" + '">Test</a>', {
-    method:'POST',
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data),
-});
-    </script>POST
-    </button>
-
-
-        <button> <script>
-            fetch('http://127.0.0.1:5000/order/create_order', {
-  Method: 'POST',
-  Headers: {
-    Accept: 'application.json',
-    'Content-Type': 'application/json'
-  },
-  Body: body,
-  Cache: 'default'
-})
-        </script>the button
-        </button>
-
     
 
         <script>
     
-            const uri = 'http://127.0.0.1:5000/order/create_order';
-            const initDetails = {
+            const uriGetAllOrder = 'http://127.0.0.1:5000/order/getall_order';
+            const SearchOrderId = "Testing"
+            const uriFindByOrderId = 'http://127.0.0.1:5000/order/find_by_orderid/' + SearchOrderId;
+            const uriCreate = 'http://127.0.0.1:5000/order/create_order';
+            const DeleteOrderId = "Testing"
+            const uriDelete = 'http://127.0.0.1:5000/order/delete/' + DeleteOrderId;
+            const initDetailsGet = {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                mode: "cors"
+            }
+            const initDetailsPost = {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json; charset=utf-8"
@@ -107,9 +40,9 @@
                 mode: "cors"
             }
     
-            function GetData() {
+            function GetDataGetAllOrder() {
     
-                fetch( uri, initDetails )
+                fetch( uriGetAllOrder, initDetailsGet )
                     .then( response =>
                     {
                         if ( response.status !== 200 )
@@ -132,8 +65,93 @@
                         console.log( 'Fetch Error :-S', err );
                     } );
             }
+
+
+
+            function GetDataFindByOrderId() {
+    
+    fetch( uriFindByOrderId, initDetailsGet )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
+
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
+}
+
+
+function GetDataCreate() {
+    
+    fetch( uriCreate, initDetailsPost )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
+
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
+}
+
+function GetDataDelete() {
+    
+    fetch( uriDelete, initDetailsGet )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
+
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
+}
+
         </script>
-            <button id='getData' onclick="GetData()">OI, PRESS HERE TO UPDATE THE DATABASE, NOW NOW NOW</button>
+            <button id='getDataGetAllOrder' onclick="GetDataGetAllOrder()">Get All Order</button>
+            <button id='getDataFindByOrderId' onclick="GetDataFindByOrderId()">Find By Order Id</button>
+            <button id='getDataCreate' onclick="GetDataCreate()">Create new order</button>
+            <button id='getDataDelete' onclick="GetDataDelete()">Delete Order</button>
     
    
     
