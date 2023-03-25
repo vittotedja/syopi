@@ -1,7 +1,7 @@
 import productpics from '../assets/logofornow.jpg'
 import './ProductPage.css'
 import { useEffect, useState } from 'react'
-import {Container, Col, Row} from 'react-bootstrap'
+import {Container, Col, Row, Button} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import Review from './Review'
 import Navbar from './Navbar'
@@ -62,35 +62,47 @@ function ProductPage() {
           <a href='/'>Home</a> &#62; <a href='/shop'>{data.Category}</a> &#62; <a href={`/product/${productId}`}>{data.ProductName}</a>
         </div>
         <div className='row'>
-          <div className='col-6 '>
-            <img src={productpics}/> 
+          <div className='col-6 productimg'>
+            <img src={productpics} width='60%' style={{display: 'initial'}}/> 
             {/* Should have been a carousel but idk why it doesnt work */}
-            <br/>
             <div className='row'>
-              <div className='col-3'>
-                <img src={productpics}/>
+              <div className='col-4'>
+                <img src={productpics} width='60%' style={{display: 'initial'}}/>
               </div>
-              <div className='col-3'>
-                <img src={productpics}/>
+              <div className='col-4'>
+                <img src={productpics} width='60%' style={{display: 'initial'}}/>
               </div>
-              <div className='col-3'>
-                <img src={productpics}/>
+              <div className='col-4'>
+                <img src={productpics} width='60%' style={{display: 'initial'}}/>
               </div>
-              <div className='col-3'>
-                <img src={productpics}/>
+              <div className='col-4'>
+                <img src={productpics} width='60%' style={{display: 'initial'}}/>
               </div>
             </div>
           </div>
           <div className='col-6 productDetail'>
             <p className='productName'>{data.ProductName}</p>
-            <div className='rating-row flex'>
-              <p>Terjual 50</p> 
-              <p>|</p> 
-              <div className='flex align-middle justify-center rating-star'>
-                5 <AiFillStar className='star'/>
+            <div className='rating-row'>
+              <div className='col-3'>
+                Sold 50+
               </div>
-              <p>|</p>
-              <p>Review 40+</p>
+              <div className='col-2 rating'>
+              <AiFillStar style={{color: "gold"}}/> 5 
+              </div>
+              <div className='col-3'>
+              <a href='#review'>Review 40+</a>
+              </div>
+            </div>
+            <div className='row shop'>
+              <div className='col-6'>
+                Shop name bimzalabim
+              </div>
+              <div className='col-3 rating'>
+                <AiFillStar style={{color: "gold"}}/> 5
+              </div>
+              <div className='col-3'>
+                <Button variant="Primary" className=''>+ Follow</Button>
+              </div>
             </div>
             <p className='productDesc'>{data.Description}</p>
             <p className='productPrice'>$ {data.Price}</p>

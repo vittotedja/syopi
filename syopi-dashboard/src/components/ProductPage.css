@@ -15,7 +15,7 @@
 
 .row{
     display: flex;
-    padding-top: 20px;
+    padding-top: 20px
 }
 
 .col-1 {width: 8.33%;}
@@ -31,6 +31,12 @@
 .col-11 {width: 91.66%;}
 .col-12 {width: 100%;}
 
+.productimg{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
 .productDetail{
     padding-left: 20px;
 }
@@ -40,6 +46,7 @@
     font-weight: bold;
     text-align: left;
     color: #333333;
+    line-height: 1.25em;
 }
 
 .productDesc{
@@ -48,17 +55,27 @@
     color: #212427;
 }
 
-.star{
-    color: gold;
-    margin: 0;
+.rating{
+    display: flex;
+    align-items: center;
+}
+
+.follow{
+    background-color: #FF8B94;
+}
+
+.shop{
+    border: #5E0C12 1px solid;
+    padding: 10px;
 }
 
 .rating-row{
     display: flex;
     align-items: left;
-    width: 40%;
-    justify-content: space-around;
-    /* text-align: left; */
+    justify-content: left;
+    text-align: left;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .cover{
