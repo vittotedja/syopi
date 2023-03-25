@@ -4,18 +4,7 @@ load_dotenv()
 from flask import Flask, request, jsonify, Blueprint
 import requests
 from flask_cors import CORS, cross_origin
-import os
 from supabase import create_client
-
-review_url = os.environ.get("REVIEW_URL")
-review_key = os.environ.get("REVIEW_KEY")
-review = create_client(review_url, review_key)
-
-product_url = os.environ.get("PRODUCT_URL")
-product_key = os.environ.get("PRODUCT_KEY")
-product = create_client(product_url, product_key)
-
-
 
 give_rating_bp = Blueprint('give_rating', __name__)
 cors = CORS(give_rating_bp)

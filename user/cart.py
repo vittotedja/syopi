@@ -32,11 +32,16 @@ def signup(userid, productid, quantity):
     
     return res.data, 200
 
+@cart_bp.route('/keranjang/<string:userid>', methods=['POST', 'GET'])
+def keranjang(userid):
+    res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
+    return res.data, 200
 
 @cart_bp.route('/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def tambahcart(productid, quantity):
     response = supabase.table('Cart').select('*').eq('ProductId', productid).execute()
-    if len(response.data) == 0:
+    cart = supabase.table('Cart').select('*').eq('UserId', "1").eq('ProductId', productid).execute()
+    if len(cart.data) == 0:
         supabase.table('Cart').insert({
         "ProductId": productid,
         "Quantity": quantity
@@ -44,9 +49,5 @@ def tambahcart(productid, quantity):
     else:
         supabase.table('Cart').update({
         "Quantity": int(response.data[0]['Quantity']) + int(quantity)
-        }).eq('ProductId', productid).execute()
+        }).eq('UserId', "1").eq('ProductId', productid).execute()
     return response.data
-@cart_bp.route('/keranjang/<string:userid>', methods=['POST', 'GET'])
-def keranjang(userid):
-    res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
-    return res.data, 200

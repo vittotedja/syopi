@@ -16,7 +16,7 @@ function ProductPage() {
   function fetchData() {  
     fetch(`http://127.0.0.1:5000/product/${productId}`)
     .then((response) => response.json())
-    .then((data) => setData(data))
+    .then((data) => setData(data[0]))
   }
 
   function addToCart() {
@@ -105,13 +105,13 @@ function ProductPage() {
               </div>
             </div>
             <p className='productDesc'>{data.Description}</p>
+            <p className='productPrice'>$ {data.Price}</p>
           </div>
         </div>
         <hr/>
         <div className='row'>
-          <a id='review'>
-          <Review ProductId = {productId}/>
-          <StarRating ProductId = {productId}/></a>
+          {/* <Review ProductId = {productId}/> */}
+          <StarRating ProductId = {productId}/>
           <div>
           <div className='flex' style={{height: '60px', margin: '5px'}}>
             <button onClick={() => kurangin()}>-</button>

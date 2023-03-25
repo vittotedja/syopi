@@ -9,7 +9,7 @@ function ShopList() {
     try {
       const response = await fetch("http://127.0.0.1:5000/shop");
       const data = await response.json();
-      setShopList(data);
+      setShopList(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -17,6 +17,7 @@ function ShopList() {
 
   useEffect(() => {
     fetchShops()
+    console.log(shopList)
   }, []);
   return (
     <>
