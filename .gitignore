@@ -1,4 +1,5 @@
 dataset.csv
+output.csv
 shop\__pycache__\shop.cpython-310.pyc
 shipping\__pycache__\shipping.cpython-310.pyc
 review\__pycache__\review.cpython-310.pyc

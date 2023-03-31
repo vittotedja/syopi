@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import './ReviewNew.css';
+import './Review.css';
 
 const starVariants = {
   initial: {
@@ -16,7 +16,7 @@ const starVariants = {
       stiffness: 175
     }
   }),
-  exit: i => ({
+  exit: (i: any) => ({
     scale: 0,
     transition: {
       duration: .25,
@@ -117,21 +117,20 @@ const StarRating = (props:any) => {
     console.error("Error:", error);
   });
 }
-
-
+  
   return (
     <>
-    <div className="star-rating">
+    <div className="star-rating" onMouseLeave={() => setIsHovering(0)}>
       <div className="stars-container">
-        {[0, 1, 2, 3, 4].map((i) => (
+        {[1, 2, 3, 4, 5].map((i) => (
           <motion.div 
             className="star-wrapper"
             onMouseOver={() => setIsHovering(i)}
-            onClick={() => {setIsClicked(i); console.log(i+1)}}
+            onClick={() => {i!=isClicked ? setIsClicked(i) : setIsClicked(0)}}
             key={i}
           >
             <Star 
-              i={i} 
+              i={i}   
               isHoveringWrapper={isHovering >= i} 
               isClicked={isClicked >= i}    
             />  

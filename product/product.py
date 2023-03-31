@@ -13,6 +13,8 @@ product_bp = Blueprint('product', __name__)
 
 cors = CORS(product_bp)
 # app.config['CORS_HEADERS'] = 'Content-Type'
+
+product_names = supabase.table('product').select('ProductName').execute()
  
 @product_bp.route('/product', methods=['GET', 'POST'])
 def index():
@@ -26,6 +28,11 @@ def index():
         data = request.get_json()
         response = supabase.table('product').insert(data).execute()
         return response.data
+    
+@product_bp.route('/product/search', methods=['GET'])
+def search():
+    data = supabase.table('product').select("*").execute()
+    return data.data
 
 @product_bp.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
