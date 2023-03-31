@@ -44,10 +44,6 @@ function ProductPage() {
     fetchData();
   },[])
 
-  const percentageFilled = Math.round((data.AvgRating / 5) * 100)
-  console.log(percentageFilled)
-
-
   function kurangin(){
     if (quantity > 1)
     setQuantity(quantity-1)
