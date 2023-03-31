@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from './client';
+import { supabase } from './Client';
 
 import { useAuth } from './Context.jsx'
 

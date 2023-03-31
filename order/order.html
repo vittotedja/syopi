@@ -4,7 +4,7 @@
 <head>
     <script type="text/javascript">
         var testorder = "12345678";
-        var url = "http://127.0.0.1:5000/order/" + testorder;
+        var url = "http://127.0.0.1:5000/order/create_order";
         </script>
         <title>Test</title> 
     <meta charset=utf-8> </head>
@@ -14,71 +14,217 @@
 
 
 
+        
+    
+
         <script>
-        function addProduct() {
-            const ProductName = 'Vincent Lewi Bangsat'
-            const ShopId = 1
-            const Stock = 1
-            const data = {
-                ProductName: ProductName,
-                ShopId: ShopId,
-                Stock: Stock
-            }
-            fetch('http://127.0.0.1:5000/order/12345678', {
-                method:'POST',
+    
+            const uriGetAllOrder = 'http://127.0.0.1:5000/order/getall_order';
+            const SearchOrderId = "Testing";
+            const uriFindByOrderId = 'http://127.0.0.1:5000/order/find_by_orderid/' + SearchOrderId;
+            const uriCreate = 'http://127.0.0.1:5000/order/create_order';
+            const OrderIdUpdate = "Testing";
+            const uriUpdate = 'http://127.0.0.1:5000/order/update/' + OrderIdUpdate;
+            const uriCancelled = 'http://127.0.0.1:5000/order/cancelled/' + OrderIdUpdate;
+            const DeleteOrderId = "Testing";
+            const uriDelete = 'http://127.0.0.1:5000/order/delete/' + DeleteOrderId;
+            const initDetailsGet = {
+                method: 'GET',
                 headers: {
-                  "Content-Type": "application/json"
+                    "Content-Type": "application/json; charset=utf-8"
                 },
-                body: JSON.stringify(data),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data)
-      setProducts((products) => [...products, data[0]])
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+                mode: "cors"
+            }
+            const initDetailsPost = {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                mode: "cors"
+            }
+
+            const initDetailsPut = {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                mode: "cors"
+            }
+    
+            function GetDataGetAllOrder() {
+    
+                fetch( uriGetAllOrder, initDetailsGet )
+                    .then( response =>
+                    {
+                        if ( response.status !== 200 )
+                        {
+                            console.log( 'Looks like there was a problem. Status Code: ' +
+                                response.status );
+                            return;
+                        }
+    
+                        console.log( response.headers.get( "Content-Type" ) );
+                        return response.json();
+                    }
+                    )
+                    .then( myJson =>
+                    {
+                        console.log( JSON.stringify( myJson ) );
+                    } )
+                    .catch( err =>
+                    {
+                        console.log( 'Fetch Error :-S', err );
+                    } );
+            }
+
+
+
+            function GetDataFindByOrderId() {
+    
+    fetch( uriFindByOrderId, initDetailsGet )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
+
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
 }
 
-</script>
-        <form action= "url">
-            <input type="button" id='script' name="getall" value="Test" onclick="getall_order()">
-        </form>
-        
-        <button> <script>
-            fetch('<a href="' + url + '">Test</a>', {
-        method:'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-    });
-        </script>aaa
-        </button>
+
+function GetDataCreate() {
+    
+    fetch( uriCreate, initDetailsPost )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
+
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
+}
+
+function GetDataUpdate() {
+    
+    fetch( uriUpdate, initDetailsPut )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
+
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
+}
+
+function GetDataCancelled() {
+    
+    fetch( uriCancelled, initDetailsPut )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
+
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
+}
 
 
-        <button> <script>
-          fetch('<a href="' + url + '">Test</a>', {
-      method:'PUT',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data),
-  });
-      </script>aaa
-      </button>
 
 
-        <button> <script>
-            fetch('<a href="' + "http://127.0.0.1:5000/order/12345678" + '">Test</a>', {
-        method:'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-    });
-        </script>aaa
-        </button>
+function GetDataDelete() {
+    
+    fetch( uriDelete, initDetailsGet )
+        .then( response =>
+        {
+            if ( response.status !== 200 )
+            {
+                console.log( 'Looks like there was a problem. Status Code: ' +
+                    response.status );
+                return;
+            }
 
-    </body>
+            console.log( response.headers.get( "Content-Type" ) );
+            return response.json();
+        }
+        )
+        .then( myJson =>
+        {
+            console.log( JSON.stringify( myJson ) );
+        } )
+        .catch( err =>
+        {
+            console.log( 'Fetch Error :-S', err );
+        } );
+}
+
+        </script>
+            <button id='getDataGetAllOrder' onclick="GetDataGetAllOrder()">Get All Order</button>
+            <button id='getDataFindByOrderId' onclick="GetDataFindByOrderId()">Find By Order Id</button>
+            <button id='getDataCreate' onclick="GetDataCreate()">Create new order</button>
+            <button id='getDataUpdate' onclick="GetDataUpdate()">Update Order Status</button>
+            <button id='GetDataCancelled' onclick="GetDataCancelled()">Cancel Order Status</button>
+            <button id='getDataDelete' onclick="GetDataDelete()">Delete Order</button>
+    
+   
+    
+   
+          </body>  
+   
+
+    </html>
