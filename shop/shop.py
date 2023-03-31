@@ -199,3 +199,15 @@ def deactivate_shop(name): #form to be rendered in app.jsx
                 "message": "Store not found",
                 "data": None
             }), 404
+        
+@shop_bp.route('/shop/getmultipleshops', methods=['POST'])
+def get_multiple_shops():
+    data = request.get_json()
+    print(data["data"])
+    response = supabase.table('shops').select("*").in_("id", data["data"]).execute()
+    return jsonify({
+                "code": 200,
+                "message": "Stores found",
+                "data": response.data
+            })
+    
