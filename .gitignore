@@ -8,3 +8,12 @@ product\__pycache__\product.cpython-310.pyc
 order\__pycache__\order.cpython-310.pyc
 give_rating\__pycache__\give_rating.cpython-310.pyc
 *.pyc
+user/__pycache__/cart.cpython-310.pyc
+user/__pycache__/user.cpython-310.pyc
+shop/__pycache__/shop.cpython-310.pyc
+give_rating/__pycache__/give_rating.cpython-310.pyc
+order/__pycache__/order.cpython-310.pyc
+product/__pycache__/product.cpython-310.pyc
+recommender/__pycache__/recommender.cpython-310.pyc
+review/__pycache__/review.cpython-310.pyc
+shipping/__pycache__/shipping.cpython-310.pyc

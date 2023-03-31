@@ -44,7 +44,7 @@ function SearchBar(props: any) {
 
   let [keyword, setKeyword] = useState({productId: 0, productName: ''})
   return (
-    <div className='search-bar'>
+    <div className='search-bar flex'>
       <AsyncSelect
         cacheOptions
         loadOptions={loadOptions}
