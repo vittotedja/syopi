@@ -1,4 +1,4 @@
-import productpics from '../assets/logofornow.jpg'
+import productpics from '../../assets/logofornow.jpg'
 import './ProductPage.css'
 import { useEffect, useState } from 'react'
 import {Container, Col, Row, Button} from 'react-bootstrap'

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import productpics from "../assets/logofornow.jpg";
+import productpics from "../../assets/logofornow.jpg";
 
 function CartItem(props: any) {
   console.log(props.productId);
