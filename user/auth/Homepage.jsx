@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from './Context.jsx'
 
-const Homepage = ({token}) => {
+const Homepage = () => {
   let navigate = useNavigate()
+  const { login, user } = useAuth()
+
+  useEffect(()=>{
+    console.log = user
+  }, [])
   
-  function handleLogout(){
-    sessionStorage.removeItem('token')
-    navigate('/')
-  }
+  // function handleLogout(){
+  //   sessionStorage.removeItem('token')
+  //   navigate('/')
+  // }
 
   return (
     <div>
-      <h3>Welcome back, {token.user.user_metadata.full_name}</h3>
+      <h3>Welcome back,</h3>
       <button onClick={handleLogout}>Logout</button>
 
     </div>

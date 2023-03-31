@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate} from 'react-router-dom';
 import { supabase } from './client';
 
+import { useAuth } from './Context.jsx'
+
 const Login = ({setToken}) => {
+  const emailRef = useRef()
+  const passwordRef = useRef()
   let navigate = useNavigate()
+  const { login, user } = useAuth()
 
   const [formData,setFormData] = useState({
         email:'',password:''
@@ -11,39 +16,26 @@ const Login = ({setToken}) => {
 
   console.log(formData)
 
-  function handleChange(event){
-    setFormData((prevFormData)=>{
-      return{
-        ...prevFormData,
-        [event.target.name]:event.target.value
-      }
+  // function handleChange(event){
+  //   setFormData((prevFormData)=>{
+  //     return{
+  //       ...prevFormData,
+  //       [event.target.name]:event.target.value
+  //     }
 
-    })
+  //   })
 
-  }
+  // }
 
   async function handleSubmit(e){
     e.preventDefault()
     //console.log(data)
+    await login
+    await login(emailRef.current.value, passwordRef.current.value)
+    //setUser(user)
+    console.log(user)
+    navigate("/homepage")
 
-    try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: formData.email,
-            password: formData.password,
-          })
-
-      if (error) throw error
-      console.log(data)
-      setToken(data)
-      navigate('/homepage')
-
-
-    //   alert('Check your email for verification link')
-    
-      
-    } catch (error) {
-      alert(error)
-    }
   }
 
 
@@ -54,17 +46,19 @@ const Login = ({setToken}) => {
       <form onSubmit={handleSubmit}>
         
 
-        <input 
+        <input
+          ref={emailRef} 
           placeholder='Email'
           name='email'
-          onChange={handleChange}
+          //onChange={handleChange}
         />
 
         <input 
           placeholder='Password'
+          ref = {passwordRef}
           name='password'
           type="password"
-          onChange={handleChange}
+          //onChange={handleChange}
         />
 
         <button type='submit'>
