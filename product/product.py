@@ -3,6 +3,8 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 load_dotenv()
 import os
+import pandas as pd
+import string
 from supabase import create_client
 
 url = os.environ.get("PRODUCT_URL")
@@ -14,7 +16,7 @@ product_bp = Blueprint('product', __name__)
 cors = CORS(product_bp)
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
-product_names = supabase.table('product').select('ProductName').execute()
+product_names = pd.DataFrame(supabase.table('product').select('ProductId, ProductName').execute().data)
  
 @product_bp.route('/product', methods=['GET', 'POST'])
 def index():
@@ -29,10 +31,10 @@ def index():
         response = supabase.table('product').insert(data).execute()
         return response.data
     
-@product_bp.route('/product/search', methods=['GET'])
-def search():
-    data = supabase.table('product').select("*").execute()
-    return data.data
+@product_bp.route('/product/search/<string:keyword>', methods=['GET'])
+def search(keyword):
+    df_search = product_names[product_names.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
+    return df_search.to_json(orient='records')
 
 @product_bp.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
