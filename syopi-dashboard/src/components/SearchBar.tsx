@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import AsyncSelect from 'react-select/async';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 // import './SearchBar.css';
 
 function SearchBar(props: any) {
+  let navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get('q') || '';
 
   const searchMovies = async (inputValue: string) => {
     if (inputValue) {
@@ -49,7 +53,7 @@ function SearchBar(props: any) {
         onChange={(selectedOption: Object) => setKeyword({productId: selectedOption.value, productName: selectedOption.label})}
         styles={colourStyles}
       />
-      <button className='search-button'>
+      <button className='search-button' onClick={() => navigate(`/search?q=${keyword.productName}`)}>
         Search
       </button>
     </div>

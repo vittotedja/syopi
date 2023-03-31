@@ -10,6 +10,7 @@ import Cart from './components/Cart/Cart'
 import SignUp from './components/Auth/SignUp'
 import Login from './components/Auth/Login'
 import Homepage from './components/Auth/Homepage'
+import SearchPage from './SearchPage'
 
 
 
@@ -34,6 +35,7 @@ export default function App() {
           <Route path='/product' element={<ProductPage />} />
           <Route path= '/:productId' element={<ProductPage />} />
           <Route path='/review' element={<Review />} />
+          <Route path='/search' element={<SearchPage />} />
           <Route path='/user' element={<User/>} />
           <Route path='/cart' element={<Cart/>} />
 
