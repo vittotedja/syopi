@@ -5,6 +5,7 @@ load_dotenv()
 import os
 import pandas as pd
 import string
+from Levenshtein import distance
 from supabase import create_client
 
 url = os.environ.get("PRODUCT_URL")
@@ -16,7 +17,7 @@ product_bp = Blueprint('product', __name__)
 cors = CORS(product_bp)
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
-product_names = pd.DataFrame(supabase.table('product').select('ProductId, ProductName').execute().data)
+df_search = pd.DataFrame(supabase.table('product').select('ProductId, ProductName').execute().data)
  
 @product_bp.route('/product', methods=['GET', 'POST'])
 def index():
@@ -33,8 +34,9 @@ def index():
     
 @product_bp.route('/product/search/<string:keyword>', methods=['GET'])
 def search(keyword):
-    df_search = product_names[product_names.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
-    return df_search.to_json(orient='records')
+    print(df_search.sort_values(by=['ProductName'], key=lambda x: distance(df_search["ProductName"], keyword.lower())))
+    result = df_search[df_search.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
+    return result.to_json(orient='records')
 
 @product_bp.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
