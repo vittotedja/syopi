@@ -10,6 +10,7 @@ from order.order import order_bp
 from user.cart import cart_bp
 from user.user import user_bp
 from get_product_cart.get_product_cart import get_product_cart_bp
+from payment.stripe import stripe_bp
 
 app = Flask(__name__)   
 cors = CORS(app)
@@ -24,6 +25,7 @@ app.register_blueprint(order_bp)
 app.register_blueprint(cart_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(get_product_cart_bp)
+app.register_blueprint(stripe_bp)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

@@ -16,5 +16,20 @@ def get_cart(userid):
     cart_list = requests.get(f'http://127.0.0.1:5000/keranjang/1')
     for order in cart_list.json():
         productIdDict['data'].append(order['ProductId'])
+    # print(productIdDict)
     x = requests.post(f'http://127.0.0.1:5000/product/getmultipleproducts', json=productIdDict)
-    return x.json()
+    shopIdDict = {"data": []}
+    # print(x.json())
+    for product in x.json():
+        print(product)
+        shopIdDict["data"].append(product["ShopId"])
+    # print("PRINTING SHOP ID DICT")
+    # print(shopIdDict)
+    y = requests.post(f'http://127.0.0.1:5000/shop/getmultipleshops', json=shopIdDict)
+    shop_list = y.json()["data"]
+    product_list = x.json()
+    final_list = [prod.update(shop) or prod for prod, shop in zip(shop_list, product_list)]
+    # print(final_list)
+    return jsonify({
+        "data": final_list
+    })

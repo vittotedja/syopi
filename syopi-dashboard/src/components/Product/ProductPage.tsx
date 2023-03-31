@@ -1,12 +1,12 @@
-import productpics from '../assets/logofornow.jpg'
+import productpics from '../../assets/logofornow.jpg'
 import './ProductPage.css'
 import { useEffect, useState } from 'react'
 import {Container, Col, Row, Button} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import Review from './Review'
-import Navbar from './Navbar'
+import Review from '../Review/Review'
+import Navbar from '../Navbar'
 import { AiFillStar } from "react-icons/ai";
-import StarRating from './ReviewNew'
+import StarRating from '../Review/Review'
 
 function ProductPage() {
   let { productId } = useParams()
@@ -43,10 +43,6 @@ function ProductPage() {
   useEffect(() => {
     fetchData();
   },[])
-
-  const percentageFilled = Math.round((data.AvgRating / 5) * 100)
-  console.log(percentageFilled)
-
 
   function kurangin(){
     if (quantity > 1)
