@@ -38,10 +38,7 @@ function SearchBar(props: any) {
     },
   };
 
-  let [rating, setRating] = useState(0) 
-  let [movie, setMovie] = useState({movieId: 0, title: ''})
-  let selectedMovie = {movieId: movie.movieId, title: movie.title, userRating: rating}
-
+  let [keyword, setKeyword] = useState({productId: 0, productName: ''})
   return (
     <div className='search-bar'>
       <AsyncSelect
@@ -49,18 +46,10 @@ function SearchBar(props: any) {
         loadOptions={loadOptions}
         defaultOptions
         placeholder='Search for a movie...'
-        onChange={(selectedOption: Object) => {setMovie({movieId: selectedOption.value, title: selectedOption.label}), setRating(0)}}
+        onChange={(selectedOption: Object) => setKeyword({productId: selectedOption.value, productName: selectedOption.label})}
         styles={colourStyles}
       />
-      <button 
-        disabled={!rating||!movie.movieId}
-        className='search-button' 
-        onClick={() => props.setSelectedMovies(
-          props.selectedMovies.find((movie: Object) => JSON.stringify(movie.title) === JSON.stringify(selectedMovie.title))
-          ? props.selectedMovies.filter((movie: Object) => JSON.stringify(movie.title) != JSON.stringify(selectedMovie.title))
-          : [...props.selectedMovies, selectedMovie], console.log(selectedMovie)
-        )}
-      >
+      <button className='search-button'>
         Search
       </button>
     </div>
