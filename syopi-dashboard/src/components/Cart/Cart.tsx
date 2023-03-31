@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import CartItem from './CartItem'
+import Stripe from '../Payment/Stripe'
 
 function Cart() {
   const [data, setData] = useState(Array)
@@ -33,6 +34,7 @@ function Cart() {
       <div>
         <button>Checkout</button>
       </div>
+      <Stripe/>
     </div>
   )
 }
