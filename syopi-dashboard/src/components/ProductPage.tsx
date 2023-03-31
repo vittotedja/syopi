@@ -93,34 +93,86 @@ function ProductPage() {
               <a href='#review'>Review 40+</a>
               </div>
             </div>
-            <div className='row shop'>
-              <div className='col-6'>
-                Shop name bimzalabim
+            <div className='row productPrice'>
+            <p style={{backgroundColor:'#F2EDE4'}}>$ {data.Price}</p>
+            </div>
+            
+            <div className='row'>
+            <p style={{fontWeight:'bold'}}>Colour</p>
+            </div>
+            <div className='row'>
+              <div className='col-3'>
+                <Button variant='Primary'>Black</Button>
               </div>
-              <div className='col-3 rating'>
-                <AiFillStar style={{color: "gold"}}/> 5
+              <div className='col-3'>
+                <Button variant='Primary'>Black</Button>
+              </div>
+              <div className='col-3'>
+                <Button variant='Primary'>Black</Button>
+              </div>
+              <div className='col-3'>
+                <Button variant='Primary'>Black</Button>
+              </div>
+            </div>
+            <div className='row'></div>
+            <div className='row shop'>
+              <div className='col-5'>
+              <Button variant="Primary" className='shopbutton'  style={{display:'flex'}}>
+                <div className='col-2'>
+                  <img src={productpics} width='30px' className='shopimg'/>
+                  </div>
+                  <div className='col-10'>Shop namemu</div>
+                  </Button>
+              </div>
+              <div className='col-4 rating'>
+                <AiFillStar style={{color: "gold"}}/> 5 (19 reviews)
               </div>
               <div className='col-3'>
                 <Button variant="Primary" className=''>+ Follow</Button>
               </div>
             </div>
-            <p className='productDesc'>{data.Description}</p>
-            <p className='productPrice'>$ {data.Price}</p>
+            
           </div>
-        </div>
+          </div>
+          
+        <br/>
         <hr/>
+        <div className='row'>
+        <p className='productDesc'>{data.Description}</p>
+        </div>
         <div className='row'>
           {/* <Review ProductId = {productId}/> */}
           <StarRating ProductId = {productId}/>
-          <div>
-          <div className='flex' style={{height: '60px', margin: '5px'}}>
-            <button onClick={() => kurangin()}>-</button>
-            {quantity}
-            <button onClick={() => setQuantity(quantity+1)}>+</button>
+          
+        </div>
+    </div>
+    <div className='row addtocart'>
+      <div className='container'>
+        <div className='row' style={{margin:'0'}}>
+          <div className='col-1 productcart'>
+            <img src={productpics} width='50px' className='imgcart'/>
           </div>
-            <button onClick={() => addToCart()}>Add to Cart</button>
+          <div className='col-5 productcart'>
+            <p className='namecart'>Laptop paling bener dan canggih</p>
+          </div>
+          <div className='col-2 productcart' style={{display:'flex'}}>
+            <Button onClick={() => kurangin()}>-</Button>
+            <p className='quantity'>{quantity}</p>
+            <Button onClick={() => setQuantity(quantity+1)}>+</Button>
+          </div>
+          <div className='col-2 productcart'>
+            <p className='totalprice'>Total Price:</p>
+            <p className='totalprice'>${data.Price*quantity}</p>
+          </div>
+          <div className='col-2 productcart'>
+            <Button onClick={() => addToCart()}>Add To Cart</Button>
           </div>
         </div>
+        </div>
+        
+            
+          
+            
     </div>
   </div>
   </>
