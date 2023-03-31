@@ -88,7 +88,7 @@ const StarRating = (props:any) => {
     const data = {
         product_id: props.ProductId,
         review_description: "ehehhehh",
-        review_rating: isClicked+1,
+        review_rating: isClicked,
         user_id: 2
     }
     fetch(`http://127.0.0.1:5000/giverating`, {
@@ -137,7 +137,7 @@ const StarRating = (props:any) => {
           </motion.div>
         ))}
       </div>
-    <button onClick={() => giveRating()}>Add Review</button>
+    <button disabled = {isClicked < 1} onClick={() => giveRating()}>Add Review</button>
     </div>
     </>
   )
