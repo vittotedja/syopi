@@ -144,15 +144,33 @@ def get_shop(user_id):
     else:
         return 'error: No users found.', 404
     
-@user_bp.route('/openshop', methods=['PUT', 'GET'])
-def openshop(id, shop_id):
+@user_bp.route('/openshop', methods=['PUT'])
+def openshop():
+    print('Received request for openshop')
+    id = '88ec6a39-9223-4342-ae3c-ce02c462c847'
+    shop_id = 3
+    shop_name = 'coba'
     if request.method == 'PUT':
         res = supabase.table('ShopManaged').select('*').eq('id', id).execute()
-        if res.data.shop_id is null:
-
+        print(res)
+        if res.data[0]['shop_id'] is None:
+            supabase.table('ShopManaged').update({
+                                                  'shop_id': shop_id, 
+                                                  'shop_role': 'owner', 
+                                                  'shop_name': shop_name
+                                                  }).eq('id', id).execute()
+            return jsonify({
+                "code": 202,
+                "message": "yay",
+                "data": None
+            }), 202
             
+        else:
+            return jsonify({
+                    "code": 404,
+                    "message": "User can only open 1 shop",
+                    "data": None
+                }), 404
 
-
-);
 
     
