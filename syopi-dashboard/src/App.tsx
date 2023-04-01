@@ -12,7 +12,7 @@ import Login from "./components/auth/Login.jsx";
 import Homepage from "./components/auth/Homepage.jsx";
 import PrivateRoute from "./components/auth/Priv.jsx";
 import "./App.css";
-import SearchPage from "./SearchPage";
+import SearchPage from "./components/Search/Search";
 import Seller from "./components/Seller";
 
 export default function App() {
