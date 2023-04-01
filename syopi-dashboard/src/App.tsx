@@ -24,9 +24,11 @@ export default function App() {
         <Route path="/product" element={<ProductPage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/review" element={<Review />} />
-        <Route element={<PrivateRoute />}>
-          <Route path="/user" element={<User />} />
+        <Route element={<PrivateRoute role='seller'/>}>
           <Route path="/seller" element={<Seller />} />
+        </Route>
+        <Route element={<PrivateRoute allaccess='true'/>}>
+          <Route path="/user" element={<User />} />
           <Route path="/cart" element={<Cart />} />
           <Route path={"/homepage"} element={<Homepage />} />
         </Route>
@@ -34,13 +36,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/" element={<LandingPage />} />
-        <Route path="/shop/:shopName" element={<ShopPage />} />
-        <Route path="/product" element={<ProductPage />} />
-        <Route path="/:productId" element={<ProductPage />} />
-        <Route path="/review" element={<Review />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/cart" element={<Cart />} />
       </Routes>
     </>
   );

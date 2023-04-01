@@ -9,7 +9,7 @@ const SignUp = () => {
     fullName: "",
     email: "",
     password: "",
-    wallet: "",
+    accType: "",
   });
 
   console.log(formData);
@@ -33,14 +33,14 @@ const SignUp = () => {
         options: {
           data: {
             full_name: formData.fullName,
-            wallet: 0,
+            acc_type: formData.accType
           },
         },
       });
 
       console.log(data);
       if (error) {
-        if (error.code === "auth/email-already-in-use") {
+        if (error.code == "auth/email-already-in-use") {
           alert(
             "An account with this email already exists. Please sign in instead."
           );
@@ -49,7 +49,7 @@ const SignUp = () => {
         }
       } else {
         const { user, error: syncerror } = await supabase
-          .from("ShopManaged")
+          .from("UserPublic")
           .insert({ id: data.user.id });
         console.log(data.user.id);
         if (syncerror) {
@@ -69,6 +69,12 @@ const SignUp = () => {
         <input placeholder="Fullname" name="fullName" onChange={handleChange} />
 
         <input placeholder="Email" name="email" onChange={handleChange} />
+
+        <select name="accType"  value={formData.accType} onChange={handleChange}>
+          <option value="customer">Customer</option>
+          <option value="seller">Seller</option>
+          <option value="courier">Courier</option>
+        </select>            
 
         <input
           placeholder="Password"
