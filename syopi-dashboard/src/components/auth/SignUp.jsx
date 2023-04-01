@@ -9,6 +9,7 @@ const SignUp = () => {
     fullName: "",
     email: "",
     password: "",
+    wallet: "",
   });
 
   console.log(formData);
@@ -32,6 +33,7 @@ const SignUp = () => {
         options: {
           data: {
             full_name: formData.fullName,
+            wallet: 0,
           },
         },
       });
@@ -47,12 +49,8 @@ const SignUp = () => {
         }
       } else {
         const { user, error: syncerror } = await supabase
-          .from("UserPublic")
-          .insert({ 
-            id: data.user.id,
-            email: data.user.email
-
-          });
+          .from("ShopManaged")
+          .insert({ id: data.user.id });
         console.log(data.user.id);
         if (syncerror) {
           console.log(syncerror);
