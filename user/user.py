@@ -128,7 +128,7 @@ def keranjang(userid):
 
 @user_bp.route('/get_owner_and_admin', methods=['GET'])
 def get_owner_and_admin():
-    res = supabase.table('ShopManaged').select('*').execute()
+    res = supabase.table('UserPublic').select('*').execute()
     # Return JSON response
     if res:
         return res.data, 200
@@ -137,7 +137,7 @@ def get_owner_and_admin():
     
 @user_bp.route('/get_shop/<string:user_id>', methods=['GET'])
 def get_shop(user_id):
-    res = supabase.table('ShopManaged').select('*').eq('id', user_id).execute()
+    res = supabase.table('UserPublic').select('*').eq('id', user_id).execute()
     # Return JSON response
     if res:
         return res.data, 200
@@ -147,30 +147,76 @@ def get_shop(user_id):
 @user_bp.route('/openshop', methods=['PUT'])
 def openshop():
     print('Received request for openshop')
-    id = '88ec6a39-9223-4342-ae3c-ce02c462c847'
-    shop_id = 3
-    shop_name = 'coba'
-    if request.method == 'PUT':
-        res = supabase.table('ShopManaged').select('*').eq('id', id).execute()
-        print(res)
-        if res.data[0]['shop_id'] is None:
-            supabase.table('ShopManaged').update({
-                                                  'shop_id': shop_id, 
-                                                  'shop_role': 'owner', 
-                                                  'shop_name': shop_name
-                                                  }).eq('id', id).execute()
-            return jsonify({
-                "code": 202,
-                "message": "yay",
-                "data": None
-            }), 202
-            
-        else:
-            return jsonify({
-                    "code": 404,
-                    "message": "User can only open 1 shop",
+    id = supabase.auth.get_user().id
+    print(id)
+    shopid = '1111111'
+    shopname = 'coba'
+    checkname = supabase.table('UserPublic').select('*').eq('shopname', shopname).execute()
+    if (shopname):
+        return jsonify({
+                        "code": 404,
+                        "message": "Shop Name already taken",
+                        "data": None
+                    }), 404
+    else:
+        if request.method == 'PUT':
+            res = supabase.table('UserPublic').select('*').eq('id', id).execute()
+            print(res)
+            if res.data[0]['shopid'] is None:
+                supabase.table('UserPublic').update({
+                                                    'shopid': shopid, 
+                                                    'shoprole': 'owner', 
+                                                    'shopname': shopname
+                                                    }).eq('id', id).execute()
+                return jsonify({
+                    "code": 202,
+                    "message": "yay",
                     "data": None
-                }), 404
+                }), 202
+                
+            else:
+                return jsonify({
+                        "code": 404,
+                        "message": "User can only open 1 shop",
+                        "data": None
+                    }), 404        
 
 
-    
+@user_bp.route('/assignadmin/<string:adminemail>', methods=['PUT', 'GET'])
+def assignadmin(adminemail):
+    print('Received request for assign admin')
+    owner_id = supabase.auth.get_user().id
+    get_owner = supabase.table('UserPublic').select('*').eq('id', owner_id).execute()
+    shopid = '1111111'
+    shopname = 'coba'
+    if get_owner[0]['role'] == 'owner' and get_owner[0]['shopname'] == shopname:
+        if request.method == 'PUT':
+            admin_email = adminemail #replace with form input
+            get_admin = supabase.table('UserPublic').select('*').eq('email', admin_email).execute()
+            print(get_admin)
+            if len(get_admin.data) > 0 and get_admin.data[0]['shopid'] is None:
+                supabase.table('UserPublic').update({
+                                                    'shopid': shopid, 
+                                                    'shoprole': 'owner', 
+                                                    'shopname': shopname
+                                                    }).eq('email', admin_email).execute()
+                return jsonify({
+                    "code": 202,
+                    "message": "yay",
+                    "data": None
+                }), 202
+                
+            else:
+                return jsonify({
+                        "code": 404,
+                        "message": "User can only be admin for 1 shop",
+                        "data": None
+                    }), 404
+        else:
+             return jsonify({
+                        "code": 404,
+                        "message": "Only shop owners for the selected shop can assign admin roles for the shop",
+                        "data": None
+                    }), 404
+
+   
