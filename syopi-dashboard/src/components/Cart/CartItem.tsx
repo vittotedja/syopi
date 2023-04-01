@@ -34,6 +34,9 @@ function CartItem(props: any) {
           }}
         />
       </div>
+      <div>
+        TOTAL: $ {props.price * data.Quantity}
+      </div>
     </div>
   );
 }

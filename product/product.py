@@ -22,7 +22,7 @@ df_search = pd.DataFrame(supabase.table('product').select('ProductId, ProductNam
 def index():
     # GET request
     if request.method == 'GET':
-        response = supabase.table('product').select("*").execute()
+        response = supabase.table('product').select("*").limit(30).execute()
         return response.data
 
     # POST request
@@ -49,6 +49,6 @@ def update_rating(ProductId, avgRating):
 @product_bp.route('/product/getmultipleproducts', methods=['POST'])
 def get_multiple_products():
     data = request.get_json()
-    print(data["data"])
+    # print(data["data"])
     response = supabase.table('product').select("*").in_("ProductId", data["data"]).execute()
     return response.data

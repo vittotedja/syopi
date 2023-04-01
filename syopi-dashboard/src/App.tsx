@@ -14,6 +14,7 @@ import PrivateRoute from "./components/auth/Priv.jsx";
 import { AuthProvider } from "./components/auth/Context.jsx";
 import "./App.css";
 import SearchPage from "./SearchPage";
+import Seller from "./components/Seller";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/review" element={<Review />} />
         <Route element={<PrivateRoute />}>
           <Route path="/user" element={<User />} />
+          <Route path="/seller" element={<Seller />} />
           <Route path="/cart" element={<Cart />} />
           <Route path={"/homepage"} element={<Homepage />} />
         </Route>
