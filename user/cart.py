@@ -51,3 +51,9 @@ def tambahcart(productid, quantity):
         "Quantity": int(response.data[0]['Quantity']) + int(quantity)
         }).eq('UserId', "1").eq('ProductId', productid).execute()
     return response.data
+
+@cart_bp.route('/updatequantity', methods=['POST'])
+def updatequantity():
+    data = request.get_json()
+    res = supabase.table('Cart').update({'Quantity': data["Quantity"]}).eq('UserId', "1").eq('ProductId', data["ProductId"]).execute()
+    return res.data, 200

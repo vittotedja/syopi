@@ -15,6 +15,8 @@ import { AuthProvider } from "./components/auth/Context.jsx";
 import "./App.css";
 import SearchPage from "./SearchPage";
 import Seller from "./components/Seller";
+import Success from "./components/Success";
+import Confirmation from "./components/Payment/Confirmation";
 
 export default function App() {
   return (
@@ -28,7 +30,9 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/user" element={<User />} />
           <Route path="/seller" element={<Seller />} />
+          <Route path="/success" element={<Success />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/confirmation" element={<Confirmation />} />
           <Route path={"/homepage"} element={<Homepage />} />
         </Route>
         <Route path={"/signup"} element={<SignUp />} />
