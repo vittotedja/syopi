@@ -15,7 +15,7 @@
 
 .row{
     display: flex;
-    padding-top: 20px
+    margin-top: 20px;
 }
 
 .col-1 {width: 8.33%;}
@@ -42,7 +42,7 @@
 }
 
 .productName{
-    font-size: 30px;
+    font-size: 35px;
     font-weight: bold;
     text-align: left;
     color: #333333;
@@ -50,9 +50,29 @@
 }
 
 .productDesc{
-    font-size: 20px;
+    font-size: 16px;
     text-align: left;
     color: #212427;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.productPrice{
+    font-size: 30px;
+    font-weight: bold;
+    color: #333333;
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    height: 100px;
+    display:grid;
+    align-items: center;
+    background-color: #F2EDE4;
+}
+
+.productvariant{
+    border: 3px red solid;
 }
 
 .rating{
@@ -67,6 +87,22 @@
 .shop{
     border: #5E0C12 1px solid;
     padding: 10px;
+}
+
+.shopimg{
+    border-radius: 50%;
+    width: 100%;
+}
+
+@media (max-width:1127px) {
+    .shopimg {
+      display: none;
+    }
+  }
+
+.shopbutton{
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .rating-row{
@@ -91,8 +127,46 @@
     align-items: center;
 }
 
-.productPrice{
-    font-size: 24px;
-    font-weight: bold;
-    color: #333333;
+.productcart{
+    padding-right: 10px;
+    padding-left: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0;
+    align-items: center;
+    justify-content: left;
+    display: grid;
+}
+
+.imgcart{
+    margin-right: 20px;
+}
+
+.namecart{
+    font-size: 18px;
+}
+
+.quantity{
+    font-size:18px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display:grid;
+    align-items:center;
+}
+
+.buttonquantity{
+    height:30px;
+}
+
+.addtocart{
+    position: sticky;
+    width: 100vw;
+    bottom: 0px;
+    background-color: #FFD3B6;
+    padding-top:0;
+}
+
+.totalprice{
+    text-align: left;
+    font-size: 16px;
 }
