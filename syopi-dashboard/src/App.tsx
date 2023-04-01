@@ -11,7 +11,6 @@ import SignUp from "./components/auth/SignUp.jsx";
 import Login from "./components/auth/Login.jsx";
 import Homepage from "./components/auth/Homepage.jsx";
 import PrivateRoute from "./components/auth/Priv.jsx";
-import { AuthProvider } from "./components/auth/Context.jsx";
 import "./App.css";
 import SearchPage from "./SearchPage";
 

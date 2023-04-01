@@ -43,39 +43,39 @@ def get_by_shop(shop):
         return 'error: No users found.', 404
     
     
-@user_bp.route('/getall', methods=['GET', 'POST'])
-def get_all_users():
-    # Fetch all users from Supabase
-    res = supabase.table('User').select('*').execute()
-    # Return JSON response
-    if res:
-        return res.data, 200
-    else:
-        return 'error: No users found.', 404
+# @user_bp.route('/getall', methods=['GET', 'POST'])
+# def get_all_users():
+#     # Fetch all users from Supabase
+#     res = supabase.table('User').select('*').execute()
+#     # Return JSON response
+#     if res:
+#         return res.data, 200
+#     else:
+#         return 'error: No users found.', 404
 
 
-@user_bp.route('/signup/<string:Email>/<string:Password>/<string:Username>', methods=['POST', 'GET'])
-def signup(Email, Password, Username):
-    if get_by_email(Email):
-        return jsonify(
-                {
-                    "code": 400,
-                    "data": {
-                        "Email": Email
-                    },
-                    "message": "Email already used."
-                }
-            ), 400
+# @user_bp.route('/signup/<string:Email>/<string:Password>/<string:Username>', methods=['POST', 'GET'])
+# def signup(Email, Password, Username):
+#     if get_by_email(Email):
+#         return jsonify(
+#                 {
+#                     "code": 400,
+#                     "data": {
+#                         "Email": Email
+#                     },
+#                     "message": "Email already used."
+#                 }
+#             ), 400
     
-    else:   
-        res = supabase.table('User').insert({
-            "UserId": '4',
-            "Email": Email,
-            "Password": Password,
-            "Username": Username,
-        }).execute()
+#     else:   
+#         res = supabase.table('User').insert({
+#             "UserId": '4',
+#             "Email": Email,
+#             "Password": Password,
+#             "Username": Username,
+#         }).execute()
 
-        return res.data, 200
+#         return res.data, 200
 
 @user_bp.route('/setshop/<string:userid>/<string:shopid>', methods=['POST', 'PUT'])
 def setshop(userid, shopid):
@@ -125,3 +125,34 @@ def keranjang(userid):
         "message": "Cart Returned",
         "data": res.data
     }), 200
+
+@user_bp.route('/get_owner_and_admin', methods=['GET'])
+def get_owner_and_admin():
+    res = supabase.table('ShopManaged').select('*').execute()
+    # Return JSON response
+    if res:
+        return res.data, 200
+    else:
+        return 'error: No users found.', 404
+    
+@user_bp.route('/get_shop/<string:user_id>', methods=['GET'])
+def get_shop(user_id):
+    res = supabase.table('ShopManaged').select('*').eq('id', user_id).execute()
+    # Return JSON response
+    if res:
+        return res.data, 200
+    else:
+        return 'error: No users found.', 404
+    
+@user_bp.route('/openshop', methods=['PUT', 'GET'])
+def openshop(id, shop_id):
+    if request.method == 'PUT':
+        res = supabase.table('ShopManaged').select('*').eq('id', id).execute()
+        if res.data.shop_id is null:
+
+            
+
+
+);
+
+    
