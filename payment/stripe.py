@@ -23,7 +23,7 @@ def calculate_order_amount(items):
 
 
 @stripe_bp.route('/create-payment-intent', methods=['POST'])
-def create_payment():
+def create_payment():   
     try:
         data = json.loads(request.data)
         # Create a PaymentIntent with the order amount and currency
@@ -33,9 +33,16 @@ def create_payment():
             automatic_payment_methods={
                 'enabled': True,
             },
+            metadata= data['items'],
         )
         return jsonify({
             'clientSecret': intent['client_secret']
         })
     except Exception as e:
         return jsonify(error=str(e)), 403
+    
+
+@stripe_bp.route('/retrieve-payment-intent/<string:clientID>', methods=['GET'])
+def retrieve_payment(clientID):
+    data = stripe.PaymentIntent.retrieve(clientID)
+    return data

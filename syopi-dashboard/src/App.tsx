@@ -12,8 +12,10 @@ import Login from "./components/auth/Login.jsx";
 import Homepage from "./components/auth/Homepage.jsx";
 import PrivateRoute from "./components/auth/Priv.jsx";
 import "./App.css";
-import SearchPage from "./SearchPage";
+import SearchPage from "./components/Search/Search";
 import Seller from "./components/Seller";
+import Success from "./components/Success";
+import Confirmation from "./components/Payment/Confirmation";
 
 export default function App() {
   return (
@@ -29,7 +31,9 @@ export default function App() {
         </Route>
         <Route element={<PrivateRoute allaccess='true'/>}>
           <Route path="/user" element={<User />} />
+          <Route path="/success" element={<Success />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/confirmation" element={<Confirmation />} />
           <Route path={"/homepage"} element={<Homepage />} />
         </Route>
         <Route path={"/signup"} element={<SignUp />} />

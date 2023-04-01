@@ -1,42 +1,69 @@
-import { useEffect, useState } from 'react'
-import CartItem from './CartItem'
-import Stripe from '../Payment/Stripe'
+import { useEffect, useState } from "react";
+import CartItem from "./CartItem";
+import Stripe from "../Payment/Stripe";
+import { useNavigate } from "react-router";
 
 function Cart() {
-  const [data, setData] = useState(Array)
-  const [product, setProduct] = useState(Array)
-  const [chosenProduct, setChosenProduct] = useState(Array)
+  let navigate = useNavigate();
+  const [data, setData] = useState(Array);
+  // const [product, setProduct] = useState(Array)
+  const [string, setString] = useState("/confirmation?data=");
+  const [chosenProduct, setChosenProduct] = useState(Array);
 
-  function fetchData() {  
+  function fetchData() {
     fetch(`http://127.0.0.1:5000/getcartsproduct/1`)
-    .then((response) => response.json())
-    .then((data) => setData(data.data))
+      .then((response) => response.json())
+      .then((data) => setData(data.data));
   }
 
+  function splitArray() {
+    chosenProduct.map((item: any) => {
+      // setString(string + item.ProductId + "," + item.Quantity + ";");
+      setString(`${string}${item.ProductId},${item.Quantity};`)
+      console.log(item)
+    })
+  }
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    console.log(chosenProduct)
+  }, [chosenProduct]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(string)
+  }, [string]);
 
   return (
     <div>
       Your Cart
-      {data.map((item:any) => { return (
-      <CartItem
-        key= {item.ProductId}
-        productId = {item.ProductId}
-        name = {item.ProductName}
-        price = {item.Price}
-        setChosenProduct = {setChosenProduct}
-        chosenProduct = {chosenProduct}
-      />)})}
-
+      {data.map((item: any) => {
+        return (
+          <CartItem
+            key={item.ProductId}
+            productId={item.ProductId}
+            name={item.ProductName}
+            price={item.Price}
+            setChosenProduct={setChosenProduct}
+            chosenProduct={chosenProduct}
+          />
+        );
+      })}
       <div>
-        <button>Checkout</button>
+        <button 
+          onClick={() => {
+            splitArray();
+            navigate(`/confirmation?data=${JSON.stringify(chosenProduct)}`)
+          }}
+        >
+          Checkout
+        </button>
       </div>
-      <Stripe/>
+      {/* <Stripe/> */}
     </div>
-  )
+  );
 }
 
-export default Cart
+export default Cart;
