@@ -58,9 +58,10 @@ def delete_order(OrderId):
 
 # Seller accepts order
 @order_bp.route("/order/accept", methods=['POST'])
-def accept_order():
+def update_order_status():
     order_id = request.get_json()['OrderId']
-    order = supabase.table("order").update({"OrderId":order_id, "OrderStatus": "Accepted"}).eq("OrderId", order_id).execute()
+    order_status = request.get_json()['OrderStatus']
+    order = supabase.table("order").update({"OrderId":order_id, "OrderStatus": order_status}).eq("OrderId", order_id).execute()
     return order.data
 
 # Courier accepts order delivery
@@ -70,10 +71,10 @@ def deliver_order(OrderId):
     return order.data
 
 # User confirms order delivery
-@order_bp.route("/order/delivered/<string:orderid>")
-def update_order_status(orderid):
-    order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": 'Delivered'}).eq("OrderId", orderid).execute().data
-    return order
+# @order_bp.route("/order/delivered/<string:orderid>")
+# def update_order_status(orderid):
+#     order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": 'Delivered'}).eq("OrderId", orderid).execute().data
+#     return order
 
 @order_bp.route("/order/cancelled/<string:orderid>", methods=['GET', 'POST', 'PUT'])
 def cancel_order(orderid):
