@@ -4,9 +4,11 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 from supabase import create_client
+import { useAuth } from "./Context";
 
 url = os.environ.get('USER_URL')
 key = os.environ.get('USER_KEY')
+# get_jwt = os.environ.get('USer_JWT')
 supabase = create_client(url, key)
 
 user_bp = Blueprint('user', __name__)
@@ -147,17 +149,19 @@ def get_shop(user_id):
 @user_bp.route('/openshop', methods=['PUT'])
 def openshop():
     print('Received request for openshop')
-    id = '53cb62d4-f102-4a2d-a76e-f347f73e9a14'
-    shop_id = 3
-    shop_name = 'coba'
+    # print(supabase.auth.get_user())
+    uid = '8ac63700-6693-4cba-90ed-dd722a593593'
+    # print(id)
+    shopid = 3
+    shopname = 'coba'
     if request.method == 'PUT':
-        res = supabase.table('UserPublic').select('*').eq('id', id).execute()
+        res = supabase.table('UserPublic').select('*').eq('id', uid).execute()
         print(res)
-        if res.data and res.data[0]['shop_id'] is None:
+        if res.data[0]['shopid'] is None:
             supabase.table('UserPublic').update({
-                                                  'shop_id': shop_id, 
-                                                  'shop_role': 'owner', 
-                                                  'shop_name': shop_name
+                                                  'shopid': shopid, 
+                                                  'shoprole': 'owner', 
+                                                  'shopname': shopname
                                                   }).eq('id', id).execute()
             return jsonify({
                 "code": 202,
@@ -175,7 +179,35 @@ def openshop():
 @user_bp.route('/createshop', methods=['PUT', 'GET'])
 def createshop():
     print('semoga jalan ya Tuhan')
-    res = supabase.table('UserPublic').select('*').eq()
+    res = supabase.table('UserPublic').select('*').execute()
+    session = supabase.auth.get_session()
+    print(session)
+    return jsonify({
+                    "code": 202,
+                    "message": session,
+                    "data": session
+                }), 202
 
     
+@user_bp.route('/get_user_id', methods=['GET'])
+def get_user_id():
+    head = request.headers
+    print('head: ', head)
+    auth_header = request.headers.get('Authorization')
+    print('auth_header: ',auth_header)
+    if auth_header is not None:
+        auth_token = auth_header.replace('Bearer ', '')
+        print(auth_token)
+        # auth_token = request.headers.get('Authorization').replace('Bearer ', '')
+        # user = supabase.auth.get_user(auth_token)
+        return auth_header
+    else:
+        return jsonify({
+                    "code": 404,
+                    "message": "WTF",
+                    "data": None
+                }), 404
+    
+@user_bp.route('/cobalagi', methods=['GET'])
+def get_id():
     

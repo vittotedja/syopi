@@ -10,7 +10,10 @@ const SignUp = () => {
     email: "",
     password: "",
     accType: "",
+    address: ""
   });
+
+  const { user, session } = useAuth();
 
   console.log(formData);
 
@@ -25,20 +28,34 @@ const SignUp = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Get JWT token from local storage and create headers object
+      const jwt = localStorage.getItem("jwt");
+      const header = {
+        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      };
+
+      const { user, session, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
           data: {
             full_name: formData.fullName,
-            acc_type: formData.accType
+            acc_type: formData.accType,
+            address: formData.address
           },
         },
+      }, { 
+        headers : {
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+        } 
       });
 
-      console.log(data);
+      console.log(user);
+      console.log(session);
+
       if (error) {
         if (error.code == "auth/email-already-in-use") {
           alert(
@@ -48,18 +65,28 @@ const SignUp = () => {
           throw error;
         }
       } else {
-        const { user, error: syncerror } = await supabase
-          .from("UserPublic")
-          .insert({ id: data.user.id });
-        console.log(data.user.id);
-        if (syncerror) {
-          console.log(syncerror);
-          throw syncerror;
+        // User created successfully, sign in user and get JWT token
+        const { session, error } = await supabase.auth.signIn({
+          email: formData.email,
+          password: formData.password,
+        });
+
+        console.log(session);
+
+        if (error) {
+          throw error;
         }
+
+        alert("Registration successful!");
+
+        // JWT token can be accessed from the session object and stored in local storage
+        localStorage.setItem("jwt", session.access_token);
+
+        // Redirect user to dashboard or home page
+        window.location.href = "/";
       }
-      alert("Check your email for verification link");
     } catch (error) {
-      alert(error);
+      alert(error.message);
     }
   }
 
@@ -70,11 +97,13 @@ const SignUp = () => {
 
         <input placeholder="Email" name="email" onChange={handleChange} />
 
-        <select name="accType"  value={formData.accType} onChange={handleChange}>
+        <input placeholder="Email" name="email" onChange={handleChange} />
+        
+        <select name="accType" value={formData.accType} onChange={handleChange}>
           <option value="customer">Customer</option>
           <option value="seller">Seller</option>
           <option value="courier">Courier</option>
-        </select>            
+        </select>
 
         <input
           placeholder="Password"

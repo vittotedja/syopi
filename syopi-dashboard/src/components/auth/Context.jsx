@@ -15,11 +15,24 @@ export function AuthProvider({ children }) {
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
-            password: password,
+            password: password, 
+          }, { 
+            headers : {
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+            }
           })
           // .then(() => {
           //   setUser(data.user)
           // })
+          // supabase.auth.session().then(({ access_token }) => {
+          //   supabase.auth.setAuth(access_token)
+          })
+          
+          localStorage.setItem('user', JSON.stringify(data.user));
+          console.log(user.)
+          setUser(data.user);
+          localStorage.setItem('jwt', data.access_token);
+
       } catch(e){
         console.log(e)
       }
@@ -74,7 +87,8 @@ export function AuthProvider({ children }) {
       signOut: () => supabase.auth.signOut(),
       user,
       login,
-      logout
+      logout,
+      
     }
   
     return (
@@ -86,4 +100,3 @@ export function AuthProvider({ children }) {
   }
 
 
-  
