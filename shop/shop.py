@@ -7,18 +7,18 @@ import os
 import json
 from supabase import create_client
 from dotenv import load_dotenv
+
 load_dotenv()
 
-url = os.environ.get("SHOP_URL")
-key = os.environ.get("SHOP_KEY")
-supabase = create_client(url, key)
+supabase_url = os.getenv('SHOP_URL')
+supabase_key = os.getenv('SHOP_KEY')
+supabase = create_client(supabase_url, supabase_key)
 
+app = Flask(__name__)
 
-shop_bp = Blueprint('shop', __name__)
+CORS(app)
 
-CORS(shop_bp)
-
-@shop_bp.route("/shop/")
+@app.route("/shop/")
 def get_all():
     shoplist = supabase.table("shops").select("*").execute()
     return jsonify({
@@ -28,7 +28,7 @@ def get_all():
     })
 
 
-@shop_bp.route("/shop/search/<string:search_term>")
+@app.route("/shop/search/<string:search_term>")
 def search_by_name(search_term, limit=10):
     #search where its similar to search term and shop is active
     shops = supabase.table("shops").select("*").ilike("name", f"%{search_term}%").eq("active", "Active").execute()
@@ -57,7 +57,7 @@ def search_by_name(search_term, limit=10):
         })
 
 
-@shop_bp.route("/shop/<string:name>")
+@app.route("/shop/<string:name>")
 def find_by_name(name):
     #get shop with name (Case insensitive)
     shop = supabase.table("shops").select("*").ilike("name", name).execute()
@@ -79,7 +79,7 @@ def find_by_name(name):
         ), 404
 
 
-@shop_bp.route("/shop/add_shop", methods=['POST'])
+@app.route("/shop/add_shop", methods=['POST'])
 def add_shop(): #form to be rendered in app.jsx
     if request.method == 'POST':
         form_name = request.form["name"]
@@ -124,7 +124,7 @@ def add_shop(): #form to be rendered in app.jsx
                 }), 500
 
 
-@shop_bp.route("/shop/update_shop/<string:name>", methods=["GET", "POST", 'PUT'])
+@app.route("/shop/update_shop/<string:name>", methods=["GET", "POST", 'PUT'])
 def update_shop(name): #form to be rendered in app.jsx
     if request.method == 'GET':
         #get shop with name (Case insensitive)
@@ -171,7 +171,7 @@ def update_shop(name): #form to be rendered in app.jsx
                     "message": "Shop not found."
                 }), 404
     
-@shop_bp.route("/shop/deactivate/<string:name>", methods=["GET"])
+@app.route("/shop/deactivate/<string:name>", methods=["GET"])
 def deactivate_shop(name): #form to be rendered in app.jsx
     if request.method == 'GET':
         #get shop with name (Case insensitive)
@@ -200,7 +200,7 @@ def deactivate_shop(name): #form to be rendered in app.jsx
                 "data": None
             }), 404
         
-@shop_bp.route('/shop/getmultipleshops', methods=['POST'])
+@app.route('/shop/getmultipleshops', methods=['POST'])
 def get_multiple_shops():
     data = request.get_json()
     print(data["data"])
@@ -210,4 +210,6 @@ def get_multiple_shops():
                 "message": "Stores found",
                 "data": response.data
             })
-    
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5005, debug=True)

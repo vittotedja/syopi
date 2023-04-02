@@ -1,0 +1,210 @@
+version: "3.8"
+
+volumes:
+  rabbitmq_data:
+
+services:
+ 
+  ###################################
+  # Order: The Order microservice
+  ###################################
+  order:
+    build:
+      context: ./order
+      dockerfile: Dockerfile
+    image: jrenaldi/order:syopi
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5001:5001"
+ 
+  #######################################################
+  # Product: The Product microservice
+  #######################################################
+  product:
+    build:
+      context: ./product
+      dockerfile: Dockerfile
+    image: jrenaldi/product:syopi
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5002:5002"
+  
+  #######################################################
+  # Review: The Review microservice
+  #######################################################
+  review:
+    build:
+      context: ./review
+      dockerfile: Dockerfile
+    image: jrenaldi/review:syopi
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5003:5003"
+
+  #######################################################
+  # Shipping: The Shipping microservice
+  #######################################################
+  shipping:
+    build:
+      context: ./shipping
+      dockerfile: Dockerfile
+    image: jrenaldi/shipping:syopi
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5004:5004"
+
+  #######################################################
+  # Shop: The Shop microservice
+  #######################################################
+  shop:
+    build:
+      context: ./shop
+      dockerfile: Dockerfile
+    image: jrenaldi/shop:syopi
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5005:5005"
+
+  #######################################################
+  # User: The User microservice
+  #######################################################
+  user:
+    build:
+      context: ./user
+      dockerfile: Dockerfile
+    image: jrenaldi/user:syopi
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5006:5006"
+
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: syopi-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
+      
+  #################################################
+  # Order Log: The Order Log microservice
+  #################################################
+  order_log:
+    build:
+      context: ./order_log
+      dockerfile: Dockerfile
+    image: jrenaldi/order_log:syopi
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+  ###################################
+  # Error: The Error microservice
+  ###################################
+  error:
+    build:
+      context: ./error
+      dockerfile: Dockerfile
+    image: jrenaldi/error:syopi
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+  ###############################################
+  # Browse: The Browse complex microservice
+  ###############################################
+  browse:
+    build:
+      context: ./browse
+      dockerfile: Dockerfile
+    image: jrenaldi/browse:syopi
+    restart: always
+    depends_on:
+      - recommender
+    environment:
+      recommender_URL: http://recommender:5010/recommender
+      PYTHONUNBUFFERED: 1 
+    ports:
+      - "5007:5007"
+
+  ###############################################
+  # Get Product Cart: The Get Product Cart complex microservice
+  ###############################################
+  get_product_cart:
+    build:
+      context: ./get_product_cart
+      dockerfile: Dockerfile
+    image: jrenaldi/get_product_cart:syopi
+    restart: always
+    depends_on:
+      - user
+      - product
+      - shop
+    environment:
+      user_URL: http://user:5006/user
+      product_URL: http://product:5002/product
+      shop_URL: http://shop:5005/shop
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5008:5008"
+
+  ###############################################
+  # Give Rating: Give Rating complex microservice
+  ###############################################
+  give_rating:
+    build:
+      context: ./give_rating
+      dockerfile: Dockerfile
+    image: jrenaldi/give_rating:syopi
+    restart: always
+    depends_on:
+      - review
+      - product
+    environment:
+      review_URL: http://review:5003/user
+      product_URL: http://product:5002/product
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5009:5009"
+
+
+  ##################################
+  # Recommender: The Recommender microservice
+  ##################################
+  recommender:
+    build:
+      context: ./recommender
+      dockerfile: Dockerfile
+    image: jrenaldi/recommender:syopi
+    restart: always
+    depends_on:
+      - product
+    environment:
+      product_URL: http://product:5002/product
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5010:5010"

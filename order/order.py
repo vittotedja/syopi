@@ -8,27 +8,30 @@ import os
 from datetime import datetime, timedelta
 from supabase import create_client
 
+supabase_url = os.getenv('ORDER_URL')
+supabase_key = os.getenv('ORDER_KEY')
+supabase = create_client(supabase_url, supabase_key)
+
+app = Flask(__name__)
+
+CORS(app)
+
 app = Flask(__name__, template_folder='order')
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
-supabase = create_client("https://ecjtnlpxgmzoqfezbork.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjanRubHB4Z216b3FmZXpib3JrIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzg3MDI0NjcsImV4cCI6MTk5NDI3ODQ2N30.W2igW2hMKNEjUlWPehmCWeGc-CDWvuGJQ9o8M9SRAoA")
+url = os.environ.get("ORDER_URL")
+key = os.environ.get("ORDER_KEY")
+supabase = create_client(url, key)
+app = Flask(__name__)
 
-
-order_bp = Blueprint('order', __name__)    
-cors = CORS(order_bp)
-#app.config['CORS_HEADERS'] = 'Content-Type'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/order'
-#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+CORS(app)
  
-@order_bp.route('/order/getall_order', methods=['GET'])
+@app.route('/order/getall_order', methods=['GET'])
 def getall_order():
     order = supabase.table("order").select("*").execute()
     return order.data
 
 
-@order_bp.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
+@app.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
 def find_by_orderid(OrderId):
     order = supabase.table("order").select("*").eq("OrderId", OrderId).execute()
     
@@ -48,7 +51,7 @@ def find_by_orderid(OrderId):
 
 
 
-@order_bp.route('/order/create_order', methods=['GET', 'POST'])
+@app.route('/order/create_order', methods=['GET', 'POST'])
 def create_order():
     data = {"OrderId": "Testing", "ShopId": "bbbbbbb", "ProductId": "ccccccc"}
     response = supabase.table('order').insert(data).execute()
@@ -57,7 +60,7 @@ def create_order():
 
 
 
-@order_bp.route("/order/delete/<string:OrderId>")
+@app.route("/order/delete/<string:OrderId>")
 def delete_order(OrderId):
     order = data = supabase.table("order").delete().eq("OrderId", OrderId).execute()
 
@@ -71,7 +74,7 @@ def delete_order(OrderId):
 
 """
 
-@order_bp.route("/order/<string:OrderId>", methods=['PUT'])
+@app.route("/order/<string:OrderId>", methods=['PUT'])
 def update_order(orderid, productid, shopid, userid, price, quantity, datetime, orderstatus, shippingid):
     order = supabase.table("order").update({"OrderId":orderid, "ProductId": productid, "ShopId": shopid, "UserId": userid, "Price": price, "Quantity": quantity,"DateTime": datetime, "OrderStatus": orderstatus, "ShippingId":shippingid}).eq("OrderId", orderid).execute()
 #    if (supabase.table("order").query.filter_by(OrderId=orderid).first()):
@@ -93,7 +96,7 @@ def update_order(orderid, productid, shopid, userid, price, quantity, datetime, 
             )
     """
 
-@order_bp.route("/order/update/<string:orderid>", methods=['GET', 'POST', 'PUT'])
+@app.route("/order/update/<string:orderid>", methods=['GET', 'POST', 'PUT'])
 def update_order(orderid):
     checkstatus = supabase.table("order").select("OrderStatus").eq("OrderId", orderid).execute()
     
@@ -155,7 +158,7 @@ def update_order(orderid):
 
 
 
-@order_bp.route("/order/cancelled/<string:orderid>", methods=['GET', 'POST', 'PUT'])
+@app.route("/order/cancelled/<string:orderid>", methods=['GET', 'POST', 'PUT'])
 def update_order_to_cancelled(orderid):
     checkstatus = supabase.table("order").select("OrderStatus").eq("OrderId", orderid).execute()
     newstatus= "Cancelled"
@@ -180,7 +183,7 @@ def update_order_to_cancelled(orderid):
     ), 404
 
 """
-@order_bp.route("/order/<string:OrderId>", methods=['PUT'])
+@app.route("/order/<string:OrderId>", methods=['PUT'])
 def update_order_to_paid(orderid):
     newstatus= "Paid"
     order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": newstatus}).eq("OrderId", orderid).execute()
@@ -232,5 +235,6 @@ def update_order_to_cancelled(orderid):
 
 #print(data)
 
+
 if __name__ == '__main__':
-    order_bp.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)

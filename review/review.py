@@ -10,10 +10,11 @@ url = os.environ.get("REVIEW_URL")
 key = os.environ.get("REVIEW_KEY")
 supabase = create_client(url, key)
 
-review_bp = Blueprint('review', __name__)
-cors = CORS(review_bp)
 
-@review_bp.route('/review', methods=['GET', 'POST'])
+app = Flask(__name__)
+cors = CORS(app)
+
+@app.route('/review', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
         response = supabase.table('review').select("*").execute()
@@ -24,20 +25,23 @@ def index():
         response = supabase.table('review').insert(data).execute()
         return response.data
 
-@review_bp.route('/review/<string:ProductId>', methods=['GET'])
+@app.route('/review/<string:ProductId>', methods=['GET'])
 def get_review(ProductId):
     if request.method == 'GET':
         response = supabase.table('review').select("*").eq("product_id", ProductId).execute()
         return response.data
     
-@review_bp.route('/getreviewrating/<string:ProductId>', methods=['GET'])
+@app.route('/review//getreviewrating/<string:ProductId>', methods=['GET'])
 def get_review_rating(ProductId):
     if request.method == 'GET':
         response = supabase.table('review').select("review_rating").eq("product_id", ProductId).execute()
         return response.data
     
-@review_bp.route('/giverating', methods=['POST'])
+@app.route('/review/giverating', methods=['POST'])
 def give_rating():
     data = request.get_json()
     response = supabase.table('review').insert(data).execute()
     return response.data   
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5003, debug=True)

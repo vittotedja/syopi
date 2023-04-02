@@ -11,14 +11,14 @@ url = os.environ.get("PRODUCT_URL")
 key = os.environ.get("PRODUCT_KEY")
 supabase = create_client(url, key)
 
-product_bp = Blueprint('product', __name__)
+app = Flask(__name__)
 
-cors = CORS(product_bp)
-# app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app)
+
 
 df_search = pd.DataFrame(supabase.table('product').select('ProductId, ProductName').execute().data).sort_values(by='ProductName', key=lambda x: x.str.len())
  
-@product_bp.route('/product', methods=['GET', 'POST'])
+@app.route('/product', methods=['GET', 'POST'])
 def index():
     # GET request
     if request.method == 'GET':
@@ -31,24 +31,27 @@ def index():
         response = supabase.table('product').insert(data).execute()
         return response.data
     
-@product_bp.route('/product/search/<string:keyword>', methods=['GET'])
+@app.route('/product/search/<string:keyword>', methods=['GET'])
 def search(keyword):
     result = df_search[df_search.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
     return result.to_json(orient='records')
 
-@product_bp.route('/product/<string:ProductId>', methods=['GET'])
+@app.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
     response = supabase.table('product').select("*").eq('ProductId', ProductId).execute()
     return response.data
 
-@product_bp.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])
+@app.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])
 def update_rating(ProductId, avgRating):
     response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
     return response.data
 
-@product_bp.route('/product/getmultipleproducts', methods=['POST'])
+@app.route('/product/getmultipleproducts', methods=['POST'])
 def get_multiple_products():
     data = request.get_json()
     print(data["data"])
     response = supabase.table('product').select("*").in_("ProductId", data["data"]).execute()
     return response.data
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5002, debug=True)

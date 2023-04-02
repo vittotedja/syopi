@@ -2,11 +2,12 @@ import os
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
 
-shipping_bp = Blueprint('shipping', __name__)
-CORS(shipping_bp)
+
+app = Flask(__name__)
+CORS(app)
 
 
-@shipping_bp.route("/shipping", methods=['POST'])
+@app.route("/shipping", methods=['POST'])
 def receiveOrder():
     # Check if the order contains valid JSON
     order = None
@@ -47,3 +48,7 @@ def processOrder(order):
         },
         'message': message
     }
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5004, debug=True)
+
