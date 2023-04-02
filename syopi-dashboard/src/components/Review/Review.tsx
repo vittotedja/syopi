@@ -91,7 +91,7 @@ const StarRating = (props:any) => {
         review_rating: isClicked,
         user_id: 2
     }
-    fetch(`http://127.0.0.1:5000/giverating`, {
+    fetch(`http://127.0.0.1:5000/review/giverating`, {
       method:'POST',
       headers: {
         "Content-Type": "application/json"

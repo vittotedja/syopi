@@ -32,10 +32,37 @@ function CartItem(props: any) {
   }
   
   const updateChosenQtyProduct = (newQty:number) => {
-    let el = props.chosenProduct.map((item:any)=> {if(item.ProductId == props.ProductId){item.Quantity = newQty} return {ProductId: item.ProductId, Quantity: newQty}
-    })
-    props.setChosenProduct(el)
+    if (props.productId in props.chosenProduct){
+      props.setChosenProduct({...props.chosenProduct, [props.productId] : newQty})
+    }
   }
+
+  const handleCheckboxChange = (event:any) => {
+    const checked = event.target.checked
+    if (checked){
+      props.setChosenProduct((prevState:Object) => ({ ...prevState, [props.productId]: qty}))
+    } else{
+      const { [props.productId]: _, ...rest } = props.chosenProduct
+      props.setChosenProduct(rest)
+
+    }
+  }
+
+
+//   const handleCheckbox = () => {
+//     if (props.productId in props.chosenProduct){
+//       let id = props.productId
+//       // delete props.chosenProduct[props.productId]
+//       // props.setChosenProduct(props.chosenProduct)
+//       props.setChosenProduct(current => {
+//         const {id, ...rest} = current
+//         return rest
+//       })
+//     }
+//     else{
+//       props.setChosenProduct({...props.chosenProduct, [props.productId] : qty})
+//   }
+// }
 
   useEffect(() => {
     fetchData();
@@ -62,12 +89,8 @@ function CartItem(props: any) {
       <div>
         <input
           type="checkbox"
-          onClick={() => {props.setChosenProduct(
-            props.chosenProduct.find((item: any) => item.ProductId === props.productId) ?
-            (props.chosenProduct.filter((item: any) => item.ProductId !== props.productId)) :
-          [...props.chosenProduct, { ProductId: props.productId, Quantity: qty }]
-          );
-          }}
+          onChange = {handleCheckboxChange}
+          // onClick={() => {handleCheckboxChange}}
         />
       </div>
       <div>

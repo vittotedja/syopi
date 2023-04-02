@@ -8,8 +8,8 @@ function Products(props: any) {
   let navigate = useNavigate()
   let id = props.id
   return (
-    <div className='product-card' onClick={()=> navigate(`/${id}`)} style={{cursor: 'pointer'}}>
-        <img src = {props.imageUrl} alt="products pic"/>
+    <div className='product-card' onClick={()=> navigate(`/product/${id}`)} style={{cursor: 'pointer'}}>
+        <img src = {productpics} alt="products pic"/>
         <div className='product-desc'>
           <p className='product-title'>{props.ProductName.substring(0,20)}...</p>
           <p className='short-desc'>Stock Left: {props.stock}</p>

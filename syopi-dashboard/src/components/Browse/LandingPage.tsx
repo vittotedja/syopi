@@ -10,7 +10,7 @@ function LandingPage() {
             <Navbar />
             <Promotions />
             <ProductsList />
-            <ShopList />
+            {/* <ShopList /> */}
         </>
     )
 }

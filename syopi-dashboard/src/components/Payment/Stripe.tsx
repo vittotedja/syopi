@@ -11,7 +11,10 @@ const stripePromise = loadStripe("pk_test_51MrgP0BJIMpkY9J2Oqe8HePsEzUwCsmzOjWQJ
 
 export default function Stripe(props:any) {
   const [clientSecret, setClientSecret] = useState("");
+  console.log(JSON.stringify({ items: props.data }));
+  // console.log(JSON.stringify({ items: [{ id: "xl-tshirt", qty: 1 }] }))
 
+  // console.log(props.data)
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     fetch("http://127.0.0.1:5000/create-payment-intent", {
