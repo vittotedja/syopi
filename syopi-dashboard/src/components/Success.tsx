@@ -4,23 +4,10 @@ import { useEffect, useState } from "react";
 export default function Success(){
     let navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams();
-    const [stripeData, setStripeData] = useState(Object);
+    // const [stripeData, setStripeData] = useState(Object);
     const searchTerm = searchParams.get("payment_intent") || "";
 
-    const fetchProductDetails = (productId:string) => {
-        fetch(`http://localhost:5000/products/${productId}`)
-        .then((response) => response.json())
-        .then((data) => {
-            // fetch(`http://localhost:5000/shop/${data.ShopId}`)
-            // .then((response) => response.json())
-            // .then((shopData) => {
-            //     return {...data, shopName: shopData.name}
-            // })
-            return data
-        })
-    }
-
-    function addOrder(data:Object) {
+    async function addOrder(data:Object) {
         fetch('http://127.0.0.1:5000/order/create_order', {
             method:'POST',
             headers: {
@@ -35,7 +22,6 @@ export default function Success(){
         });
     }
 
-
     function getStripeData() {
         fetch(`http://localhost:5000/retrieve-payment-intent/${searchTerm}`)
         .then((response) => response.json())
@@ -45,11 +31,15 @@ export default function Success(){
                 const product = async () => {
                     const response = await fetch(`http://localhost:5000/product/${item}`)
                     const productData = await response.json()
+                    const usedData = productData[0]
+                    console.log(usedData)
+                    const shopId = usedData.ShopId
+                    const price = usedData.Price
                     addOrder({OrderId: searchTerm,
                             ProductId: item,
-                            ShopId: productData.ShopId,
+                            ShopId: shopId,
                             Quantity: orderedItems[item],
-                            Price: (productData.price * orderedItems[item]).toFixed(2),
+                            Price: (price * orderedItems[item]).toFixed(2),
                             UserId: "1"})
                 }
                 product()
@@ -60,27 +50,13 @@ export default function Success(){
     useEffect(() => {
         getStripeData()
     }, [])
-
-    // useEffect(() => {
-    //     console.log(stripeData)
-    //     const orderedItems = stripeData.metadata    
-    //     for (let item in orderedItems) {
-    //         const product = fetchProductDetails(item)
-    //         addOrder({OrderId: searchTerm,
-    //                 ProductId: item,
-    //                 ShopId: product.ShopId,
-    //                 Quantity: orderedItems[item],
-    //                 Price: (product.price * orderedItems[item]).toFixed(2),
-    //                 UserId: "1"})
-    //     }
-    // }, [stripeData])
     
     return(
     <>
     Your Payment is Successful
-    Recommended Products for You
-    {searchTerm}
-
+    <br/>
+    Your Order Id is: {searchTerm}
+    <br/>
     <button onClick={() => navigate('/')}>Back to Home</button>
     </>)
 }

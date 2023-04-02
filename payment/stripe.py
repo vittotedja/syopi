@@ -19,7 +19,7 @@ def calculate_order_amount(items):
         res = requests.get(f'http://localhost:5000/product/{productId}')
         res = res.json()
         data = res[0]
-        total += round(data['Price'] * items[productId],2)*100
+        total += int(round(data['Price'] * items[productId],2)*100)
     # Replace this constant with a calculation of the order's amount
     # Calculate the order total on the server to prevent
     # people from directly manipulating the amount on the client
@@ -40,7 +40,7 @@ def create_payment():
             #     'enabled': True,
             # },
             metadata= data['items'],
-            payment_method_types=['card', 'paynow', 'grabpay'],
+            payment_method_types=['card'],
         )
         return jsonify({
             'clientSecret': intent['client_secret']
