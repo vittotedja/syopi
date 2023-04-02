@@ -128,7 +128,7 @@ def keranjang(userid):
 
 @user_bp.route('/get_owner_and_admin', methods=['GET'])
 def get_owner_and_admin():
-    res = supabase.table('ShopManaged').select('*').execute()
+    res = supabase.table('UserPublic').select('*').execute()
     # Return JSON response
     if res:
         return res.data, 200
@@ -137,7 +137,7 @@ def get_owner_and_admin():
     
 @user_bp.route('/get_shop/<string:user_id>', methods=['GET'])
 def get_shop(user_id):
-    res = supabase.table('ShopManaged').select('*').eq('id', user_id).execute()
+    res = supabase.table('UserPublic').select('*').eq('id', user_id).execute()
     # Return JSON response
     if res:
         return res.data, 200
@@ -147,14 +147,14 @@ def get_shop(user_id):
 @user_bp.route('/openshop', methods=['PUT'])
 def openshop():
     print('Received request for openshop')
-    id = '88ec6a39-9223-4342-ae3c-ce02c462c847'
+    id = '53cb62d4-f102-4a2d-a76e-f347f73e9a14'
     shop_id = 3
     shop_name = 'coba'
     if request.method == 'PUT':
-        res = supabase.table('ShopManaged').select('*').eq('id', id).execute()
+        res = supabase.table('UserPublic').select('*').eq('id', id).execute()
         print(res)
-        if res.data[0]['shop_id'] is None:
-            supabase.table('ShopManaged').update({
+        if res.data and res.data[0]['shop_id'] is None:
+            supabase.table('UserPublic').update({
                                                   'shop_id': shop_id, 
                                                   'shop_role': 'owner', 
                                                   'shop_name': shop_name
@@ -172,5 +172,10 @@ def openshop():
                     "data": None
                 }), 404
 
+@user_bp.route('/createshop', methods=['PUT', 'GET'])
+def createshop():
+    print('semoga jalan ya Tuhan')
+    res = supabase.table('UserPublic').select('*').eq()
 
+    
     

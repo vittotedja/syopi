@@ -11,7 +11,7 @@ export default function CheckoutForm() {
   const elements = useElements();
 
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

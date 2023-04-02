@@ -12,9 +12,13 @@ import Login from "./components/auth/Login.jsx";
 import Homepage from "./components/auth/Homepage.jsx";
 import PrivateRoute from "./components/auth/Priv.jsx";
 import "./App.css";
-import SearchPage from "./SearchPage";
+
 import Seller from "./components/Seller/Seller";
 import AddProduct from "./components/Seller/AddProduct";
+import SearchPage from "./components/Search/Search";
+
+import Success from "./components/Success";
+import Confirmation from "./components/Payment/Confirmation";
 
 export default function App() {
   return (
@@ -25,24 +29,21 @@ export default function App() {
         <Route path="/product" element={<ProductPage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/review" element={<Review />} />
-        <Route path="/seller" element={<Seller />}/>
-        <Route path="/seller/addproduct" element={<AddProduct />} />
-        <Route element={<PrivateRoute />}>
+        <Route element={<PrivateRoute role='seller'/>}>
+          <Route path="/seller" element={<Seller />} />
+        </Route>
+        <Route element={<PrivateRoute allaccess='true'/>}>
           <Route path="/user" element={<User />} />
+          <Route path="/success" element={<Success />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/confirmation" element={<Confirmation />} />
           <Route path={"/homepage"} element={<Homepage />} />
         </Route>
         <Route path={"/signup"} element={<SignUp />} />
         <Route path="/login" element={<Login />} />
 
         <Route path="/" element={<LandingPage />} />
-        <Route path="/shop/:shopName" element={<ShopPage />} />
-        <Route path="/product" element={<ProductPage />} />
-        <Route path="/:productId" element={<ProductPage />} />
-        <Route path="/review" element={<Review />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/cart" element={<Cart />} />
       </Routes>
     </>
   );

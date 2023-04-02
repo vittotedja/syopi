@@ -11,7 +11,7 @@ cors = CORS(give_rating_bp)
 
 @give_rating_bp.route('/rating/<string:ProductId>', methods=['GET'])
 def index(ProductId):
-    res = requests.get(f'http://127.0.0.1:5000/getreviewrating/{ProductId}')
+    res = requests.get(f'http://127.0.0.1:5000/review/getreviewrating/{ProductId}')
     rating_list = res.json()
     sum  = 0
     count = 0
