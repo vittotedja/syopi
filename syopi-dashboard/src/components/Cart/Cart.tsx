@@ -7,21 +7,13 @@ function Cart() {
   let navigate = useNavigate();
   const [data, setData] = useState(Array);
   // const [product, setProduct] = useState(Array)
-  const [string, setString] = useState("/confirmation?data=");
-  const [chosenProduct, setChosenProduct] = useState(Array);
+  // const [string, setString] = useState("/confirmation?data=");
+  const [chosenProduct, setChosenProduct] = useState(Object);
 
   function fetchData() {
     fetch(`http://127.0.0.1:5000/getcartsproduct/1`)
       .then((response) => response.json())
       .then((data) => setData(data.data));
-  }
-
-  function splitArray() {
-    chosenProduct.map((item: any) => {
-      // setString(string + item.ProductId + "," + item.Quantity + ";");
-      setString(`${string}${item.ProductId},${item.Quantity};`)
-      console.log(item)
-    })
   }
 
   useEffect(() => {
@@ -31,11 +23,7 @@ function Cart() {
   useEffect(() => {
     fetchData();
   }, []);
-
-  useEffect(() => {
-    console.log(string)
-  }, [string]);
-
+  
   return (
     <div>
       Your Cart
@@ -54,13 +42,13 @@ function Cart() {
       <div>
         <button 
           onClick={() => {
-            splitArray();
             navigate(`/confirmation?data=${JSON.stringify(chosenProduct)}`)
           }}
         >
           Checkout
         </button>
       </div>
+      {JSON.stringify(chosenProduct)}
       {/* <Stripe/> */}
     </div>
   );
