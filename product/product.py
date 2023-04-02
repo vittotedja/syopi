@@ -47,7 +47,7 @@ def search():
 
 @product_bp.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
-    response = supabase.table('product').select("*").eq('ProductId', ProductId).execute()
+    response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
     return response.data
 
 @product_bp.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])
