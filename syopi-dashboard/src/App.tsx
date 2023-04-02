@@ -12,8 +12,11 @@ import Login from "./components/auth/Login.jsx";
 import Homepage from "./components/auth/Homepage.jsx";
 import PrivateRoute from "./components/auth/Priv.jsx";
 import "./App.css";
+
+import Seller from "./components/Seller/Seller";
+import AddProduct from "./components/Seller/AddProduct";
 import SearchPage from "./components/Search/Search";
-import Seller from "./components/Seller";
+
 import Success from "./components/Success";
 import Confirmation from "./components/Payment/Confirmation";
 
