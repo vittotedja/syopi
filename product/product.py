@@ -22,7 +22,7 @@ df_search = pd.DataFrame(supabase.table('product').select('ProductId, ProductNam
 def index():
     # GET request
     if request.method == 'GET':
-        response = supabase.table('product').select("*").limit(30).limit(10).execute()
+        response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
         return response.data
 
     # POST request
@@ -42,12 +42,12 @@ def search_bar(keyword):
 def search():
     keyword = request.args.get('keyword')
     page = int(request.args.get('page', 1))
-    response = supabase.table('product').select('*', count='exact').neq('Stock', 0).like('ProductName', f'%{keyword}%').order('AvgRating').range((page - 1)*10, page*10).execute()
+    response = supabase.table('product').select('*, ImageUrls(ImageUrl)', count='exact').neq('Stock', 0).like('ProductName', f'%{keyword}%').order('AvgRating').range((page - 1)*10, page*10).execute()
     return response.json()
 
 @product_bp.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
-    response = supabase.table('product').select("*").eq('ProductId', ProductId).execute()
+    response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
     return response.data
 
 @product_bp.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])

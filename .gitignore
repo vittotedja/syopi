@@ -17,3 +17,4 @@ product/__pycache__/product.cpython-310.pyc
 recommender/__pycache__/recommender.cpython-310.pyc
 review/__pycache__/review.cpython-310.pyc
 shipping/__pycache__/shipping.cpython-310.pyc
+*.csv

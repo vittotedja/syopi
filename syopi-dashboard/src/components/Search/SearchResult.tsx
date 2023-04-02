@@ -20,7 +20,17 @@ export default function SearchResult(props: any) {
 
   return (
   <div className="product-list">
-    {products.map((product) => {return <Products key={product.ProductId} ProductName={product.ProductName} stock = {product.Stock} AvgRating = {product.AvgRating} Price = {product.Price} id = {product.ProductId}/>})}
+    {products.map((product) => {
+      return <Products 
+        key={product.ProductId} 
+        ProductName={product.ProductName} 
+        stock={product.Stock} 
+        AvgRating={product.AvgRating} 
+        Price={product.Price} 
+        id={product.ProductId}
+        imageUrl={product.ImageUrls[0].ImageUrl}
+      />
+    })}
   </div>
   )
 }

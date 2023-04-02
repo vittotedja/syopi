@@ -7,9 +7,6 @@ function Confirmation() {
   const data = searchParams.get('data') || [];
   const result = JSON.parse(data)
 
-  function fetchData(){
-
-  }
   return (
     <>
     <div>Confirmation</div>
