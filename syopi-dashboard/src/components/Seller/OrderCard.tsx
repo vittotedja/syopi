@@ -12,6 +12,18 @@ export default function OrderCard(props: any) {
       .then((data) => setProductData(data[0]));
   }
 
+  const acceptOrder = (orderId: string) => {
+    const data = { OrderId: orderId };
+    fetch("http://127.0.0.1:5000/order/accept",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+  }
+
   useEffect(() => {
     getProductData();
   }, []);
@@ -42,7 +54,7 @@ export default function OrderCard(props: any) {
       </div>
       <div className="row footer">
         <div>{props.OrderStatus}</div>
-        <button> Accept Order </button>
+        <button onClick={() => acceptOrder(props.OrderId)}> Accept Order </button>
       </div>
     </div>
   );
