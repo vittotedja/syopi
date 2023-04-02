@@ -1,0 +1,121 @@
+#root{
+    margin: 0;
+    width: 100vw;
+}
+
+.seller-container{
+    width: 95vw;
+    margin: auto;
+}
+
+.directory{
+    padding-top: 10px;
+    text-align: left;
+}
+
+.row{
+    display: flex;
+    margin-top: 20px;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+.seller-info{
+    position:-webkit-sticky;
+    position: sticky;
+    top: 20px;
+    padding: 20px;
+    background-color: pink;
+}
+
+.seller-img{
+    border-radius: 50%;
+    width: 100px;
+}
+
+.seller-desc{
+    font-size: 16px;
+    color: grey;
+    text-align: right;
+    font-weight: bold;
+}
+
+.seller-grid{
+    display: grid;
+    align-items: center;
+}
+
+.seller-name{
+    font-weight: bold;
+    font-size: 30px;
+    
+}
+
+.seller-page{
+    font-size: 20px;
+}
+
+.seller-menu{
+    position: -webkit-sticky;
+    position:sticky;
+    top: 50px;
+}
+
+.seller-page-title{
+    font-weight: bold;
+    font-size: 30px;
+    text-align: left;
+}
+
+.add-product-btn{
+    text-align: right;
+}
+
+.seller-productimg{
+    width: 100px;
+    padding: 10px;
+    display: initial;
+}
+
+.seller-productinfo{
+    display: flex;
+}
+
+.seller-productname{
+    font-weight: bold;
+    font-size:16px;
+    padding: 10px;
+}
+
+.seller-form{
+    width: 90vw;
+}
+
+.seller-form input, textarea{
+    width: 100%;
+    margin: 5px;
+    padding: 5px;
+    border: 2px solid lightgrey;
+    border-radius: 5px;
+}
+
+.seller-form input:text{
+    height: 40px;
+}
+
+.seller-form p{
+    font-weight: bold;
+    text-align: left;
+}
+

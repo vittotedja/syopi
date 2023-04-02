@@ -16,8 +16,9 @@ function Products(props: any) {
           <p className='short-desc'>Stock Left: {props.stock}</p>
           <p className='product-price'>$ {props.Price}</p>
           <p className='rating'>{Math.round(props.AvgRating *100)/100} STAR</p>
+          <button>Add To Cart</button>
         </div>
-        <button>Add To Cart</button>
+        
         
     </div>
   )

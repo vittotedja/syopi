@@ -13,7 +13,8 @@ import Homepage from "./components/auth/Homepage.jsx";
 import PrivateRoute from "./components/auth/Priv.jsx";
 import "./App.css";
 import SearchPage from "./SearchPage";
-import Seller from "./components/Seller";
+import Seller from "./components/Seller/Seller";
+import AddProduct from "./components/Seller/AddProduct";
 
 export default function App() {
   return (
@@ -24,9 +25,10 @@ export default function App() {
         <Route path="/product" element={<ProductPage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/review" element={<Review />} />
+        <Route path="/seller" element={<Seller />}/>
+        <Route path="/seller/addproduct" element={<AddProduct />} />
         <Route element={<PrivateRoute />}>
           <Route path="/user" element={<User />} />
-          <Route path="/seller" element={<Seller />} />
           <Route path="/cart" element={<Cart />} />
           <Route path={"/homepage"} element={<Homepage />} />
         </Route>
