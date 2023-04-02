@@ -16,23 +16,34 @@ export function AuthProvider({ children }) {
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password, 
-          }, { 
-            headers : {
-            'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-            }
-          })
+          });
           // .then(() => {
           //   setUser(data.user)
           // })
           // supabase.auth.session().then(({ access_token }) => {
           //   supabase.auth.setAuth(access_token)
-          })
+          
           
           localStorage.setItem('user', JSON.stringify(data.user));
-          console.log(user.)
           setUser(data.user);
-          localStorage.setItem('jwt', data.access_token);
-
+          console.log(data.user.id)
+          // localStorage.setItem('jwt', data.access_token);
+          const { insertdata, error: insertError } = await supabase
+            .from("TempUser")
+            .insert({
+              id: data.user.id,
+              email: data.user.email,
+            });
+  
+          console.log("Insert data:", insertdata);
+          console.log("Insert error:", insertError);
+  
+          if (insertError) {
+            throw insertError;
+          }
+          else {
+            console.log('inserted:', insertdata)
+          }
       } catch(e){
         console.log(e)
       }
@@ -43,6 +54,11 @@ export function AuthProvider({ children }) {
       const { error } = await supabase.auth.signOut();
       if (!error) {
         setUser(null);
+        const {removedata, removerror} = await supabase
+          .from('TempUser')
+          .delete()
+          .eq('id', user.id)
+        
         localStorage.removeItem('user');
       }
     } catch(e){

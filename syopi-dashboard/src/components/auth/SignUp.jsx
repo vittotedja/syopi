@@ -29,15 +29,7 @@ const SignUp = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      // Get JWT token from local storage and create headers object
-      const jwt = localStorage.getItem("jwt");
-      const header = {
-        Authorization: `Bearer ${jwt}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      };
-
-      const { user, session, error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -47,48 +39,69 @@ const SignUp = () => {
             address: formData.address
           },
         },
-      }, { 
-        headers : {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
-        } 
       });
-
-      console.log(user);
-      console.log(session);
-
+  
+      console.log("User created:", data);
+      console.log("Id:", data.user.id)
+      console.log("Error:", error);
+  
       if (error) {
-        if (error.code == "auth/email-already-in-use") {
-          alert(
-            "An account with this email already exists. Please sign in instead."
-          );
-        } else {
-          throw error;
-        }
+        // if (error.code == "auth/email-already-in-use") {
+        //   alert(
+        //     "An account with this email already exists. Please sign in instead."
+        //   );
+        // } else {
+        //   throw error;
+        // }
+        console.log(error)
       } else {
-        // User created successfully, sign in user and get JWT token
-        const { session, error } = await supabase.auth.signIn({
-          email: formData.email,
-          password: formData.password,
-        });
-
-        console.log(session);
-
-        if (error) {
-          throw error;
+        const { insertdata, error: insertError } = await supabase
+          .from("UserPublic")
+          .insert({
+            id: data.user.id,
+            email: formData.email,
+            acc_type: formData.accType,
+            address: formData.address,
+            full_name: formData.fullName
+          });
+  
+        console.log("Insert data:", insertdata);
+        console.log("Insert error:", insertError);
+  
+        if (insertError) {
+          throw insertError;
+        }
+        else {
+          console.log('inserted:', insertdata)
         }
 
-        alert("Registration successful!");
-
-        // JWT token can be accessed from the session object and stored in local storage
-        localStorage.setItem("jwt", session.access_token);
-
-        // Redirect user to dashboard or home page
-        window.location.href = "/";
-      }
+        const { login } = useAuth();
+        const {uselogin, error: loginerror} = await login(formData.email, formData.password)
+        console.log('login:', uselogin)
+        console.log('loginerror:', loginerror)
+    }
+        // const { user, error } = await supabase.auth.signInWithPassword({
+        //   email: formData.email,
+        //   password: formData.password,
+        // });
+  
+        // console.log("User:", user);
+        // console.log("Error:", error);
+  
+        // if (error) {
+        //   throw error;
+        // }
+  
+      alert("Registration successful!");
+   
+    
+      window.location.href = "/";
+      
     } catch (error) {
       alert(error.message);
     }
   }
+  
 
   return (
     <div>
@@ -97,8 +110,8 @@ const SignUp = () => {
 
         <input placeholder="Email" name="email" onChange={handleChange} />
 
-        <input placeholder="Email" name="email" onChange={handleChange} />
-        
+        <input placeholder="address" name="address" onChange={handleChange} />
+
         <select name="accType" value={formData.accType} onChange={handleChange}>
           <option value="customer">Customer</option>
           <option value="seller">Seller</option>

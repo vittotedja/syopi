@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 from supabase import create_client
-import { useAuth } from "./Context";
 
 url = os.environ.get('USER_URL')
 key = os.environ.get('USER_KEY')
@@ -45,39 +44,6 @@ def get_by_shop(shop):
         return 'error: No users found.', 404
     
     
-# @user_bp.route('/getall', methods=['GET', 'POST'])
-# def get_all_users():
-#     # Fetch all users from Supabase
-#     res = supabase.table('User').select('*').execute()
-#     # Return JSON response
-#     if res:
-#         return res.data, 200
-#     else:
-#         return 'error: No users found.', 404
-
-
-# @user_bp.route('/signup/<string:Email>/<string:Password>/<string:Username>', methods=['POST', 'GET'])
-# def signup(Email, Password, Username):
-#     if get_by_email(Email):
-#         return jsonify(
-#                 {
-#                     "code": 400,
-#                     "data": {
-#                         "Email": Email
-#                     },
-#                     "message": "Email already used."
-#                 }
-#             ), 400
-    
-#     else:   
-#         res = supabase.table('User').insert({
-#             "UserId": '4',
-#             "Email": Email,
-#             "Password": Password,
-#             "Username": Username,
-#         }).execute()
-
-#         return res.data, 200
 
 @user_bp.route('/setshop/<string:userid>/<string:shopid>', methods=['POST', 'PUT'])
 def setshop(userid, shopid):
@@ -191,23 +157,10 @@ def createshop():
     
 @user_bp.route('/get_user_id', methods=['GET'])
 def get_user_id():
-    head = request.headers
-    print('head: ', head)
-    auth_header = request.headers.get('Authorization')
-    print('auth_header: ',auth_header)
-    if auth_header is not None:
-        auth_token = auth_header.replace('Bearer ', '')
-        print(auth_token)
-        # auth_token = request.headers.get('Authorization').replace('Bearer ', '')
-        # user = supabase.auth.get_user(auth_token)
-        return auth_header
+    # Fetch all users from Supabase
+    res = supabase.table('TempUser').select('id').execute()
+        # Return JSON response 
+    if res:
+        return res.data, 200
     else:
-        return jsonify({
-                    "code": 404,
-                    "message": "WTF",
-                    "data": None
-                }), 404
-    
-@user_bp.route('/cobalagi', methods=['GET'])
-def get_id():
-    
+        return 'error: No users found.', 404
