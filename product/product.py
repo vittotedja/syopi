@@ -12,14 +12,14 @@ key = os.environ.get("PRODUCT_KEY")
 supabase = create_client(url, key)
 
 product_bp = Blueprint('product', __name__)
-
 cors = CORS(product_bp) 
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
 df_search = pd.DataFrame(supabase.table('product').select('ProductId, ProductName').execute().data).sort_values(by='ProductName', key=lambda x: x.str.len())
  
+# get all products
 @product_bp.route('/product', methods=['GET', 'POST'])
-def index():
+def get_all_products():
     # GET request
     if request.method == 'GET':
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
@@ -31,7 +31,7 @@ def index():
         response = supabase.table('product').insert(data).execute()
         return response.data
 
-# search bar
+# search products in search bar
 @product_bp.route('/product/search_bar/<string:keyword>', methods=['GET'])
 def search_bar(keyword):
     result = df_search[df_search.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
@@ -45,6 +45,7 @@ def search():
     response = supabase.table('product').select('*, ImageUrls(ImageUrl)', count='exact').neq('Stock', 0).like('ProductName', f'%{keyword}%').order('AvgRating').range((page - 1)*10, page*10).execute()
     return response.json()
 
+# get product details
 @product_bp.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
@@ -58,6 +59,7 @@ def update_rating(ProductId, avgRating):
 @product_bp.route('/product/getmultipleproducts', methods=['POST'])
 def get_multiple_products():
     data = request.get_json()
-    # print(data["data"])
+    # print(data["data"])   
     response = supabase.table('product').select("*").in_("ProductId", data["data"]).execute()
     return response.data
+

@@ -25,6 +25,16 @@ export default function Seller() {
     console.log(orderData)
   }, [])
   
+  function acceptOrder(orderId: string) {
+    const data = {OrderId: orderId}
+    fetch("http://127.0.0.1:5000/process_order/accept" , {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+  }
 
   return (
     <>
@@ -64,9 +74,14 @@ export default function Seller() {
                 <p className='seller-grid seller-productname'>Nama Produk yang sangat berguna dah bermanfaat</p>
               </div>
               <div className='col-6'>
-                
+                <button
+                  onClick={() => acceptOrder('pi_3MsQHqBJIMpkY9J21DXYT7Bn')}
+                >
+                  Accept Order
+                </button>
               </div>
             </div>
+
           </>
           :
           <SellerOrder orderData = {orderData}/>}
