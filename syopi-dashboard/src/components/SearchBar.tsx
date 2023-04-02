@@ -23,23 +23,23 @@ function SearchBar(props: any) {
   };
 
   const colourStyles = {
-    container: (style: Object) => ({...style,flex: 1}),
+    container: (style: Object) => ({...style, width: '70vw', flex: 1}),
     indicatorSeparator: (style: Object) => ({...style, display: 'none'}),
     dropdownIndicator: (style: Object) => ({...style, display: 'none'}),
-    control: (style: Object) => ({ ...style, backgroundColor: '#333', color: '#fff' }),
-    singleValue: (style: Object) => ({...style, color: '#fff',}),
-    input: (style: Object) => ({...style, color: '#fff',}),
-    menu: (style: Object) => ({ ...style, backgroundColor: '#333', color: '#fff' }),
-    option: (style: Object, { isDisabled, isFocused, isSelected }) => {
-      const backgroundColor = isDisabled ? '#444' : isSelected ? '#666' : isFocused ? '#555' : '#333';
-      const color = isDisabled ? '#888' : isSelected ? '#ccc' : isFocused ? '#fff' : '#ccc';
-      return {
-        ...style,
-        backgroundColor,
-        color,
-        cursor: isDisabled ? 'not-allowed' : 'default'
-      };
-    },
+    // control: (style: Object) => ({ ...style, backgroundColor: '#333', color: '#fff' }),
+    // singleValue: (style: Object) => ({...style, color: '#fff',}),
+    // input: (style: Object) => ({...style, color: '#fff',}),
+    // menu: (style: Object) => ({ ...style, backgroundColor: '#333', color: '#fff' }),
+    // option: (style: Object, { isDisabled, isFocused, isSelected }) => {
+    //   const backgroundColor = isDisabled ? '#444' : isSelected ? '#666' : isFocused ? '#555' : '#333';
+    //   const color = isDisabled ? '#888' : isSelected ? '#ccc' : isFocused ? '#fff' : '#ccc';
+    //   return {
+    //     ...style,
+    //     backgroundColor,
+    //     color,
+    //     cursor: isDisabled ? 'not-allowed' : 'default'
+    //   };
+    // },
   };
 
   let [keyword, setKeyword] = useState({productId: 0, productName: ''})
