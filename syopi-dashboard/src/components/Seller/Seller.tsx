@@ -4,13 +4,26 @@ import Button from 'react-bootstrap/Button'
 import { useEffect, useState } from 'react'
 import productpics from '../../assets/logofornow.jpg'
 import './Seller.css'
-import AddProduct from './AddProduct'
+// import AddProduct from './AddProduct'
 import { useNavigate } from 'react-router-dom'
+import SellerOrder from './SellerOrder'
 
 
-function Seller() {
+export default function Seller() {
   const navigate = useNavigate()
   const [showProduct, setshowProduct] = useState(true)
+  const [orderData, setOrderData] = useState(Array)
+  
+  const fetchData = () => {
+    fetch('http://127.0.0.1:5000/order/getall_order')
+      .then(res => res.json())
+      .then(data => setOrderData(data))
+    }
+ 
+  useEffect(() => {
+    fetchData()
+    console.log(orderData)
+  }, [])
   
 
   return (
@@ -56,9 +69,7 @@ function Seller() {
             </div>
           </>
           :
-          <>
-            This is the sales page
-          </>}
+          <SellerOrder orderData = {orderData}/>}
         </div>
       </div>
       </div>
@@ -66,5 +77,3 @@ function Seller() {
     
   )
 }
-
-export default Seller

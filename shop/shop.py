@@ -215,7 +215,14 @@ def get_multiple_shops():
         return jsonify({})
     
 
-# @shop_bp.route('/shop/debug', methods=['GET'])
-# def debug():
-#     response = supabase.table('shops').update({"id": "760000"}).eq('name', 'Target').execute()
-#     return response.data
+@shop_bp.route('/shop/getshopbyid/<string:ShopId>', methods=['GET'])
+def getshopbyid(shopId):
+    response = supabase.table('shops').select("*").eq("id", shopId).execute()
+    if response:
+        return jsonify({
+                "code": 200,
+                "message": "Store found",
+                "data": response.data
+                })
+    else:
+        return jsonify({})

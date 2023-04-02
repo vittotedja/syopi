@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Products from "./Products";
 import "./Products.css";
 
-function ProductsList() {
+export default function ProductsList() {
   const [products, setProducts] = useState(Array())
   const [ProductName, setProductName] = useState('Vitto Jelek')
   const [ShopId, setShopId] = useState(0)
@@ -37,11 +37,10 @@ function ProductsList() {
       console.error("Error:", error);
     });
 }
-
-
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <div>
       Discover Your Recomended Products!
@@ -64,4 +63,3 @@ function ProductsList() {
   );
 }
 
-export default ProductsList;

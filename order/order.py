@@ -31,7 +31,6 @@ def getall_order():
 @order_bp.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
 def find_by_orderid(OrderId):
     order = supabase.table("order").select("*").eq("OrderId", OrderId).execute()
-    
     if order:
         return jsonify(
             {
@@ -177,42 +176,6 @@ def update_order_to_cancelled(orderid):
         }
     ), 404
 
-"""
-@order_bp.route("/order/<string:OrderId>", methods=['PUT'])
-def update_order_to_paid(orderid):
-    newstatus= "Paid"
-    order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": newstatus}).eq("OrderId", orderid).execute()
-
-    return order.data
-
-def update_order_to_in_delivery(orderid):
-    newstatus= "In Delivery"
-    shippingid= "12345678"
-    order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": newstatus, "ShippingId":shippingid}).eq("OrderId", orderid).execute()
-
-    return jsonify(
-                list(order)
-            )
-
-def update_order_to_successful(orderid):
-    newstatus= "Successful"
-    order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": newstatus}).eq("OrderId", orderid).execute()
-
-    return jsonify(
-                list(order)
-            )
-
-def update_order_to_cancelled(orderid):
-    newstatus= "Cancelled"
-    order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": newstatus}).eq("OrderId", orderid).execute()
-
-
-    return jsonify(
-                list(order)
-            )
-"""
-
-
 
 #data = supabase.table("order").select("*").execute()
 
@@ -230,5 +193,5 @@ def update_order_to_cancelled(orderid):
 
 #print(data)
 
-if __name__ == '__main__':
-    order_bp.run(port=5000, debug=True)
+# if __name__ == '__main__':
+#     order_bp.run(port=5000, debug=True)

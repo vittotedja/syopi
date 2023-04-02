@@ -32,7 +32,6 @@ export default function Success(){
                     const response = await fetch(`http://localhost:5000/product/${item}`)
                     const productData = await response.json()
                     const usedData = productData[0]
-                    console.log(usedData)
                     const shopId = usedData.ShopId
                     const price = usedData.Price
                     addOrder({OrderId: searchTerm,
