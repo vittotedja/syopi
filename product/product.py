@@ -22,7 +22,7 @@ df_search = pd.DataFrame(supabase.table('product').select('ProductId, ProductNam
 def index():
     # GET request
     if request.method == 'GET':
-        response = supabase.table('product').select("*").limit(30).limit(10).execute()
+        response = supabase.table('product').select("*").limit(30).execute()
         return response.data
 
     # POST request

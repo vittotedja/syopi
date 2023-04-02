@@ -48,13 +48,11 @@ def find_by_orderid(OrderId):
 
 
 
-@order_bp.route('/order/create_order', methods=['GET', 'POST'])
+@order_bp.route('/order/create_order', methods=['POST'])
 def create_order():
-    data = {"OrderId": "Testing", "ShopId": "bbbbbbb", "ProductId": "ccccccc"}
+    data = request.get_json()
     response = supabase.table('order').insert(data).execute()
     return response.data
-
-
 
 
 @order_bp.route("/order/delete/<string:OrderId>")

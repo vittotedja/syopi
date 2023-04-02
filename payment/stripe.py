@@ -12,10 +12,6 @@ stripe_bp = Blueprint('stripe', __name__)
 
 cors = CORS(stripe_bp)
 
-# app = Flask(__name__, static_folder='public',
-#             static_url_path='', template_folder='public')
-
-
 def calculate_order_amount(items):
     total = 0
     for productId in items:
@@ -23,7 +19,7 @@ def calculate_order_amount(items):
         res = requests.get(f'http://localhost:5000/product/{productId}')
         res = res.json()
         data = res[0]
-        total += round(data['Price'] * items[productId], 2)
+        total += round(data['Price'] * items[productId],2)*100
     # Replace this constant with a calculation of the order's amount
     # Calculate the order total on the server to prevent
     # people from directly manipulating the amount on the client
@@ -34,17 +30,17 @@ def calculate_order_amount(items):
 def create_payment():   
     try:
         data = json.loads(request.data)
-        print(type(data['items']))
-        # return data['items']
+        print((data['items']))
         # Create a PaymentIntent with the order amount and currency
         # return data['items']
         intent = stripe.PaymentIntent.create(
             amount=calculate_order_amount(data['items']),
             currency='sgd',
-            automatic_payment_methods={
-                'enabled': True,
-            },
-            metadata= data['items']
+            # automatic_payment_methods={
+            #     'enabled': True,
+            # },
+            metadata= data['items'],
+            payment_method_types=['card', 'paynow', 'grabpay'],
         )
         return jsonify({
             'clientSecret': intent['client_secret']
