@@ -26,10 +26,9 @@ export function AuthProvider({ children }) {
           // })
           // supabase.auth.session().then(({ access_token }) => {
           //   supabase.auth.setAuth(access_token)
-          })
           
           localStorage.setItem('user', JSON.stringify(data.user));
-          console.log(user.)
+          console.log(user)
           setUser(data.user);
           localStorage.setItem('jwt', data.access_token);
 

@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 from supabase import create_client
-import { useAuth } from "./Context";
 
 url = os.environ.get('USER_URL')
 key = os.environ.get('USER_KEY')
