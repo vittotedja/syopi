@@ -24,7 +24,7 @@ export default function ProductsList() {
         Stock: Stock,
         Price: 1
     }
-    fetch('http://127.0.0.1:5000/product', {
+    fetch('http://127.0.0.1:5002/product', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"

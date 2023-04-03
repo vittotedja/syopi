@@ -28,13 +28,13 @@ def index():
 @app.route('/review/<string:ProductId>', methods=['GET'])
 def get_review(ProductId):
     if request.method == 'GET':
-        response = supabase.table('review').select("*").eq("product_id", ProductId).execute()
+        response = supabase.table('review').select("*").eq("ProductId", ProductId).execute()
         return response.data
     
-@app.route('/review//getreviewrating/<string:ProductId>', methods=['GET'])
+@app.route('/review/getreviewrating/<string:ProductId>', methods=['GET'])
 def get_review_rating(ProductId):
     if request.method == 'GET':
-        response = supabase.table('review').select("review_rating").eq("product_id", ProductId).execute()
+        response = supabase.table('review').select("Rating").eq("ProductId", ProductId).execute()
         return response.data
     
 @app.route('/review/giverating', methods=['POST'])

@@ -75,7 +75,7 @@ services:
       - give_rating
       - order
       - product
-      - recommender
+      - search
       - review
       - shipping
       - shop
@@ -277,9 +277,9 @@ services:
     hostname: browse1
     restart: always
     depends_on:
-      - recommender
+      - search
     environment:
-      recommender_URL: http://recommender:5010/recommender
+      search_URL: http://search:5010/search
       PYTHONUNBUFFERED: 1 
     ports:
       - "5007:5007"
@@ -336,15 +336,15 @@ services:
 
 
   ##################################
-  # Recommender: The Recommender microservice
+  # search: The search microservice
   ##################################
-  recommender:
+  search:
     build:
-      context: ./recommender
+      context: ./search
       dockerfile: Dockerfile
-    image: jrenaldi/recommender:syopi
-    container_name: recommender1
-    hostname: recommender1
+    image: jrenaldi/search:syopi
+    container_name: search1
+    hostname: search1
     restart: always
     depends_on:
       - product

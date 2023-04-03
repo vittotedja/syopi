@@ -43,11 +43,11 @@ def get_by_shop(shop):
     else:
         return 'error: No users found.', 404
     
-    
+
 @app.route('/user/getall', methods=['GET', 'POST'])
 def get_all_users():
     # Fetch all users from Supabase
-    res = supabase.table('User').select('*').execute()
+    res = supabase.table('UserPublic').select('*').execute()
     # Return JSON response
     if res:
         return res.data, 200
@@ -127,7 +127,7 @@ def keranjang(userid):
         "data": res.data
     }), 200
 
-@app.route('/get_owner_and_admin', methods=['GET'])
+@app.route('/user/get_owner_and_admin', methods=['GET'])
 def get_owner_and_admin():
     res = supabase.table('UserPublic').select('*').execute()
     # Return JSON response
@@ -145,7 +145,7 @@ def get_shop(user_id):
     else:
         return 'error: No users found.', 404
     
-@app.route('/openshop', methods=['PUT'])
+@app.route('/user/openshop', methods=['PUT'])
 def openshop():
     print('Received request for openshop')
     # print(supabase.auth.get_user())
@@ -175,7 +175,7 @@ def openshop():
                     "data": None
                 }), 404
 
-@app.route('/createshop', methods=['PUT', 'GET'])
+@app.route('/user/createshop', methods=['PUT', 'GET'])
 def createshop():
     print('semoga jalan ya Tuhan')
     res = supabase.table('UserPublic').select('*').execute()
@@ -188,7 +188,7 @@ def createshop():
                 }), 202
 
     
-@app.route('/get_user_id', methods=['GET'])
+@app.route('/user/get_user_id', methods=['GET'])
 def get_user_id():
     head = request.headers
     print('head: ', head)

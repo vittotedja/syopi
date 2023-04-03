@@ -7,12 +7,12 @@ app = Flask(__name__)
 
 CORS(app)
 
-recommender_URL = os.environ.get("recommender_URL")
+search_URL = os.environ.get("search_URL")
  
 @app.route('/browse', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        res = requests.get(recommender_URL)
+        res = requests.get(search_URL)
         product_list = res.json()
         return product_list
     

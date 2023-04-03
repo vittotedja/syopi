@@ -12,15 +12,6 @@ supabase = create_client(supabase_url, supabase_key)
 app = Flask(__name__)
 
 CORS(app)
-
-app = Flask(__name__, template_folder='order')
-
-url = os.environ.get("ORDER_URL")
-key = os.environ.get("ORDER_KEY")
-supabase = create_client(url, key)
-app = Flask(__name__)
-
-CORS(app)
  
 @app.route('/order/getall_order', methods=['GET'])
 def getall_order():
@@ -110,4 +101,7 @@ def cancel_order(orderid):
             "message": "can't be returned."
         }
     ), 404
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001, debug=True)
     

@@ -32,7 +32,7 @@ def get_all_products():
         return response.data
     
 @app.route('/product/search/<string:keyword>', methods=['GET'])
-def search(keyword):
+def search_bar(keyword):
     result = df_search[df_search.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
     return result.to_json(orient='records')
 
