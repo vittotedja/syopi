@@ -5,12 +5,20 @@ from flask import Flask, request, jsonify, Blueprint
 import requests
 from flask_cors import CORS, cross_origin
 import json
-import pandas as pd
+import os
+from pandas import pd
 
-view_cart_bp = Blueprint('view_cart', __name__)
-cors = CORS(view_cart_bp)
+app = Flask(__name__)
+CORS(app)
 
-@view_cart_bp.route('/getcartsproduct/<string:UserId>', methods=['GET'])
+user_URL = os.environ.get("user_URL")
+product_URL = os.environ.get("product_URL")
+shop_URL = os.environ.get("shop_URL")
+
+
+
+@app.route('/getcartsproduct/<string:userid>', methods=['GET'])
+
 def get_cart(UserId):
     products_in_cart = requests.get(f'http://127.0.0.1:5000/keranjang/{UserId}')
 
@@ -26,3 +34,6 @@ def get_cart(UserId):
     return jsonify({
         "data": final_dict
     })
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5008, debug=True)
