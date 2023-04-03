@@ -10,7 +10,6 @@ export function useAuth() {
 export function AuthProvider({ children }) {
     const [user, setUser] = useState()
     const [loading, setLoading] = useState(true)
-
     async function login(email, password){
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -57,7 +56,7 @@ export function AuthProvider({ children }) {
         const {removedata, removerror} = await supabase
           .from('TempUser')
           .delete()
-          .eq('id', user.id)
+          .eq('id', data.user.id)
         
         localStorage.removeItem('user');
       }

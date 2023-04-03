@@ -13,7 +13,7 @@ const SignUp = () => {
     address: ""
   });
 
-  const { user, session } = useAuth();
+  const { user, session, login } = useAuth();
 
   console.log(formData);
 
@@ -71,14 +71,20 @@ const SignUp = () => {
         if (insertError) {
           throw insertError;
         }
-        else {
-          console.log('inserted:', insertdata)
-        }
-
-        const { login } = useAuth();
         const {uselogin, error: loginerror} = await login(formData.email, formData.password)
+        const { tempdata, error: temperror } = await supabase
+            .from("TempUser")
+            .insert({
+              id: data.user.id,
+              email: formData.email,
+            });
+
+        if (loginerror) {
+          console.log('Login error:', loginerror)
+        }
+        else {
         console.log('login:', uselogin)
-        console.log('loginerror:', loginerror)
+        }
     }
         // const { user, error } = await supabase.auth.signInWithPassword({
         //   email: formData.email,
@@ -93,10 +99,7 @@ const SignUp = () => {
         // }
   
       alert("Registration successful!");
-   
-    
       window.location.href = "/";
-      
     } catch (error) {
       alert(error.message);
     }
