@@ -210,7 +210,7 @@ def deactivate_shop(name): #form to be rendered in app.jsx
                 "data": None
             }), 404
         
-@app.route('/shop/getmultipleshops', methods=['POST'])
+@app.route('/shop/get_multiple_shops', methods=['POST'])
 def get_multiple_shops():
     data = request.get_json()
     # print(data["data"])
