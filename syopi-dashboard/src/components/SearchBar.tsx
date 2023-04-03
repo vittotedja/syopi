@@ -10,7 +10,7 @@ function SearchBar(props: any) {
 
   const searchMovies = async (inputValue: string) => {
     if (inputValue) {
-      const response = await fetch(`http://127.0.0.1:5000/product/search_bar/${inputValue}`)
+      const response = await fetch(`http://127.0.0.1:5002/product/search/${inputValue}`)
       const data = await response.json()
       return data;  
     }

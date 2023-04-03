@@ -11,7 +11,7 @@ function Cart() {
   const [chosenProduct, setChosenProduct] = useState(Object);
 
   function fetchData() {
-    fetch(`http://127.0.0.1:5000/getcartsproduct/1`)
+    fetch(`http://127.0.0.1:5008/view_cart/1`)
       .then((response) => response.json())
       .then((data) => setData(data.data));
   }

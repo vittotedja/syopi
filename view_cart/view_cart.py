@@ -17,22 +17,22 @@ shop_URL = os.environ.get("shop_URL")
 
 
 
-@app.route('/   ', methods=['GET'])
+@app.route('/view_cart/<string:userid>', methods=['GET'])
 def get_cart(userid):
     productIdDict = {'data': []}
     shopIdDict = {"data": []}
-    cart_list = requests.get(f'http://127.0.0.1:5000/keranjang/1')
+    cart_list = requests.get(f'http://127.0.0.1:5007/cart/keranjang/1')
     for order in cart_list.json():
         productIdDict['data'].append(order['ProductId'])
     # print(productIdDict)
-    x = requests.post(f'http://127.0.0.1:5000/product/getmultipleproducts', json=productIdDict)
+    x = requests.post(f'http://127.0.0.1:5002/product/getmultipleproducts', json=productIdDict)
     print(x.json())
     for product in x.json():
         print(product)
         shopIdDict["data"].append(product["ShopId"])
-    # print("PRINTING SHOP ID DICT")
-    # print(shopIdDict)
-    y = requests.post(f'http://127.0.0.1:5000/shop/getmultipleshops', json=shopIdDict)
+    print("PRINTING SHOP ID DICT")
+    print(shopIdDict)
+    y = requests.post(f'http://127.0.0.1:5005/shop/getmultipleshops', json=shopIdDict)
     # return shopIdDict
     shop_list = y.json()
     shop_list = shop_list["data"]

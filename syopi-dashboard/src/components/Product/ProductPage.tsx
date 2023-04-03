@@ -20,9 +20,9 @@ function ProductPage() {
   function addToCart() {
     const sentData = {
       ProductId: productId,
-      Quantity: quantity
+      Quantity: quantity,
     }
-    fetch(`http://127.0.0.1:5000/tambahcart/${productId}/${quantity}`, {
+    fetch(`http://127.0.0.1:5007/cart/tambahcart/${productId}/${quantity}`, {
       method:'POST',
       headers: {
         "Content-Type": "application/json"

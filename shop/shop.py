@@ -204,7 +204,7 @@ def deactivate_shop(name): #form to be rendered in app.jsx
 def get_multiple_shops():
     data = request.get_json()
     print(data["data"])
-    response = supabase.table('shops').select("*").in_("id", data["data"]).execute()
+    response = supabase.table('shops').select("*").in_("ShopId", data["data"]).execute()
     if response:
         return jsonify({
                 "code": 200,
@@ -217,7 +217,7 @@ def get_multiple_shops():
 
 @app.route('/shop/getshopbyid/<string:shopId>', methods=['GET'])
 def getshopbyid(shopId):
-    response = supabase.table('shops').select("*").eq("id", shopId).execute()
+    response = supabase.table('shops').select("*").eq("ShopId", shopId).execute()
     if response:
         return jsonify({
                 "code": 200,
