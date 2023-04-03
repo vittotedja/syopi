@@ -8,7 +8,7 @@ export default function Success(){
     const searchTerm = searchParams.get("payment_intent") || "";
 
     async function addOrder(data:Object) {
-        fetch('http://127.0.0.1:5000/order/create_order', {
+        fetch('http://127.0.0.1:5001/order/create_order', {
             method:'POST',
             headers: {
               "Content-Type": "application/json"
@@ -45,7 +45,7 @@ export default function Success(){
     
 
     function getStripeData(searchTerm:any) {
-        fetch(`http://stripe_app1:5011/retrieve-payment-intent/${searchTerm}`)
+        fetch(`http://127.0.0.1:5011/stripe/retrieve-payment-intent/${searchTerm}`)
         .then((response) => response.json())
         .then((data) => {
             const orderedItems = data.metadata
@@ -72,7 +72,7 @@ export default function Success(){
     }
 
     useEffect(() => {
-        getStripeData()
+        getStripeData(searchTerm)
     }, [])
     
     return(
