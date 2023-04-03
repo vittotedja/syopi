@@ -207,6 +207,6 @@ def get_user_id():
                     "data": None
                 }), 404
     
-# @user_bp.route('/cobalagi', methods=['GET'])
-# def get_id():
-    
+@user_bp.route('/cobalagi', methods=['GET'])
+def get_id():
+    pass

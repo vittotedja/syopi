@@ -43,8 +43,9 @@ export default function OrderCard(props: any) {
 
   return (
     <div className="order-cart">
-      <div className="row header">
-        Order Id: <span>{props.OrderId}</span>
+      <div className="row header" style={{margin:'0px'}}>
+        <p className='ordercard-orderid'>Order Id:</p>
+        <p>{props.OrderId}</p>
       </div>
       <div className="row content">
         <div>
