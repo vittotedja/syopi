@@ -42,6 +42,7 @@ export default function OrderCard(props: any) {
   }, []);
 
   return (
+    <>
     <div className="order-cart">
       <div className="row header" style={{margin:'0px'}}>
         <p className='ordercard-orderid'>Order Id:</p>
@@ -72,5 +73,6 @@ export default function OrderCard(props: any) {
         <button> Request Delivery </button>}
       </div>
     </div>
+    </>
   );
 }

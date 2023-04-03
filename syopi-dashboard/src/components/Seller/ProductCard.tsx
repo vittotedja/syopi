@@ -31,7 +31,7 @@ export default function ProductCard(props: any) {
         <p>{props.Stock}</p>
     </div>
     <div className='col-2 seller-grid'>
-        <Button>Edit</Button>
+        <button>Edit</button>
     </div>
     </div>
     // <div className="order-cart">
