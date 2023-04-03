@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@supabase/supabase-js": "^2.13.1",
-    "react-bootstrap": "^2.7.2",
-    "react-overlays": "^5.2.1"
-  }
-}
