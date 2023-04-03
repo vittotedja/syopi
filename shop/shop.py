@@ -215,7 +215,7 @@ def get_multiple_shops():
         return jsonify({})
     
 
-@shop_bp.route('/shop/getshopbyid/<string:ShopId>', methods=['GET'])
+@shop_bp.route('/shop/getshopbyid/<string:shopId>', methods=['GET'])
 def getshopbyid(shopId):
     response = supabase.table('shops').select("*").eq("id", shopId).execute()
     if response:

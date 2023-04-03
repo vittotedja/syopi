@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import LandingPage from "./components/Browse/LandingPage";
 import ShopPage from "./components/Shop/ShopPage";
@@ -10,7 +11,6 @@ import SignUp from "./components/auth/SignUp";
 import Login from "./components/auth/Login";
 import Homepage from "./components/auth/Homepage";
 import PrivateRoute from "./components/auth/Priv";
-import "./App.css";
 
 import Seller from "./components/Seller/Seller";
 import AddProduct from "./components/Seller/AddProduct";

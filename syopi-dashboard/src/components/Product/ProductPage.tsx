@@ -1,12 +1,9 @@
 import productpics from '../../assets/logofornow.jpg'
 import './ProductPage.css'
 import { useEffect, useState } from 'react'
-import {Container, Col, Row, Button} from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import Review from '../Review/Review'
 import Navbar from '../Navbar'
 import { AiFillStar } from "react-icons/ai";
-import StarRating from '../Review/Review'
 
 function ProductPage() {
   let { productId } = useParams()
@@ -99,33 +96,33 @@ function ProductPage() {
             </div>
             <div className='row'>
               <div className='col-3'>
-                <Button variant='Primary'>Black</Button>
+                <button variant='Primary'>Black</button>
               </div>
               <div className='col-3'>
-                <Button variant='Primary'>Black</Button>
+                <button variant='Primary'>Black</button>
               </div>
               <div className='col-3'>
-                <Button variant='Primary'>Black</Button>
+                <button variant='Primary'>Black</button>
               </div>
               <div className='col-3'>
-                <Button variant='Primary'>Black</Button>
+                <button variant='Primary'>Black</button>
               </div>
             </div>
             <div className='row'></div>
             <div className='row shop'>
               <div className='col-5'>
-              <Button variant="Primary" className='shopbutton'  style={{display:'flex'}}>
+              <button variant="Primary" className='shopbutton'  style={{display:'flex'}}>
                 <div className='col-2'>
                   <img src={productpics} width='30px' className='shopimg'/>
                   </div>
                   <div className='col-10'>Shop namemu</div>
-                  </Button>
+                  </button>
               </div>
               <div className='col-4 rating'>
                 <AiFillStar style={{color: "gold"}}/> 5 (19 reviews)
               </div>
               <div className='col-3'>
-                <Button variant="Primary" className=''>+ Follow</Button>
+                <button variant="Primary" className=''>+ Follow</button>
               </div>
             </div>
             
@@ -136,11 +133,6 @@ function ProductPage() {
         <hr/>
         <div className='row'>
         <p className='productDesc'>{data.Description}</p>
-        </div>
-        <div className='row'>
-          {/* <Review ProductId = {productId}/> */}
-          <StarRating ProductId = {productId}/>
-          
         </div>
     </div>
     <div className='row addtocart'>
@@ -153,16 +145,16 @@ function ProductPage() {
             <p className='namecart'>{data.ProductName}</p>
           </div>
           <div className='col-2 productcart' style={{display:'flex'}}>
-            <Button onClick={() => kurangin()}>-</Button>
+            <button onClick={() => kurangin()}>-</button>
             <p className='quantity'>{quantity}</p>
-            <Button onClick={() => setQuantity(quantity+1)}>+</Button>
+            <button onClick={() => setQuantity(quantity+1)}>+</button>
           </div>
           <div className='col-2 productcart'>
             <p className='totalprice'>Total Price:</p>
             <p className='totalprice'>${data.Price*quantity}</p>
           </div>
           <div className='col-2 productcart'>
-            <Button onClick={() => addToCart()}>Add To Cart</Button>
+            <button onClick={() => addToCart()}>Add To Cart</button>
           </div>
         </div>
         </div>
