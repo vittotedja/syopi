@@ -6,7 +6,7 @@ import requests
 from flask_cors import CORS, cross_origin
 import json
 import os
-
+from pandas import pd
 
 app = Flask(__name__)
 CORS(app)
@@ -17,30 +17,22 @@ shop_URL = os.environ.get("shop_URL")
 
 
 
-@app.route('/view_cart/<string:userid>', methods=['GET'])
-def get_cart(userid):
-    productIdDict = {'data': []}
-    shopIdDict = {"data": []}
-    cart_list = requests.get(f'http://127.0.0.1:5007/cart/keranjang/1')
-    for order in cart_list.json():
-        productIdDict['data'].append(order['ProductId'])
-    # print(productIdDict)
-    x = requests.post(f'http://127.0.0.1:5002/product/getmultipleproducts', json=productIdDict)
-    print(x.json())
-    for product in x.json():
-        print(product)
-        shopIdDict["data"].append(product["ShopId"])
-    print("PRINTING SHOP ID DICT")
-    print(shopIdDict)
-    y = requests.post(f'http://127.0.0.1:5005/shop/getmultipleshops', json=shopIdDict)
-    # return shopIdDict
-    shop_list = y.json()
-    shop_list = shop_list["data"]
-    product_list = x.json()
-    final_list = [prod.update(shop) or prod for prod, shop in zip(shop_list, product_list)]
-    print(final_list)
+@app.route('/getcartsproduct/<string:userid>', methods=['GET'])
+
+def get_cart(UserId):
+    products_in_cart = requests.get(f'http://127.0.0.1:5000/keranjang/{UserId}')
+
+    product_ids = {'data': [product['ProductId'] for product in products_in_cart.json()]}
+    products_details = requests.post(f'http://127.0.0.1:5000/product/get_multiple_products', json=product_ids).json()
+    a = pd.DataFrame(products_details)
+
+    shop_ids = {'data': [product['ShopId'] for product in products_details]}
+    shop_list = requests.post(f'http://127.0.0.1:5000/shop/get_multiple_shops', json=shop_ids).json()
+    b = pd.DataFrame(shop_list)
+
+    final_dict = a.merge(b, on='ShopId', how='left').to_dict('records')
     return jsonify({
-        "data": final_list
+        "data": final_dict
     })
 
 if __name__ == '__main__':
