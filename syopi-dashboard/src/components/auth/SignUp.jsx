@@ -10,7 +10,7 @@ const SignUp = () => {
     email: "",
     password: "",
     accType: "",
-    address: ""
+    address: "",
   });
 
   const { user, session, login } = useAuth();
@@ -36,18 +36,17 @@ const SignUp = () => {
           data: {
             full_name: formData.fullName,
             acc_type: formData.accType,
-            address: formData.address
+            address: formData.address,
           },
         },
       });
-  
+
       console.log("User created:", data);
-      console.log("Id:", data.user.id)
+      console.log("Id:", data.user);
       console.log("Error:", error);
-  
+
       if (error) {
-        console.log(error)
-        
+        console.log(error);
       } else {
         const { insertdata, error: insertError } = await supabase
           .from("UserPublic")
@@ -56,31 +55,28 @@ const SignUp = () => {
             email: formData.email,
             acc_type: formData.accType,
             address: formData.address,
-            full_name: formData.fullName
+            full_name: formData.fullName,
           });
-  
+
         console.log("Insert data:", insertdata);
         console.log("Insert error:", insertError);
-  
+
         // if (insertError) {
         //   throw insertError;
         // }
-        await login(formData.email, formData.password)
-        await supabase
-            .from("TempUser")
-            .insert({
-              id: data.user.id,
-              email: formData.email,
-            });
-    }
-  
-      alert("Registration successful!");
-      window.location.href = "/";
+        await login(formData.email, formData.password);
+        await supabase.from("TempUser").insert({
+          id: data.user.id,
+          email: formData.email,
+        });
+
+        alert("Registration successful!");
+        window.location.href = "/";
+      }
     } catch (error) {
       alert(error.message);
     }
   }
-  
 
   return (
     <div>

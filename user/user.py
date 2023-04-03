@@ -5,15 +5,15 @@ load_dotenv()
 import os
 from supabase import create_client
 
-url = os.environ.get('USER_URL')
-key = os.environ.get('USER_KEY')
+url = os.environ.get('NEW_USER_URL')
+key = os.environ.get('NEW_USER_KEY')
 # get_jwt = os.environ.get('USer_JWT')
 supabase = create_client(url, key)
 
 app = Flask(__name__)
 cors = CORS(app)
 
-@user_bp.route('/get_owner_and_admin', methods=['GET'])
+@app.route('/get_owner_and_admin', methods=['GET'])
 def get_owner_and_admin():
     res = supabase.table('UserPublic').select('*').execute()
     # Return JSON response
@@ -35,24 +35,24 @@ def get_shop(user_id):
 def openshop():
     print('Received request for openshop')
     # print(supabase.auth.get_user())
+    data = request.get_json()
+    print(data)
     get_user = get_user_id()[0][0]
     uid = get_user['id']
     user_email = get_user['email']
-    print(uid)
-    shopid = 3
-    shopname = 'coba'
+    # print(uid)
+    shopname = data['shopname']
     res = supabase.table('UserPublic').select('*').eq('id', uid).execute()
     print(res)
-    if res.data[0]['shopid'] is None:
+    if res.data[0]['shopname'] is None:
         supabase.table('UserPublic').update({
-                                                'shopid': shopid, 
                                                 'acc_type': 'seller', 
                                                 'shopname': shopname,
                                                 'owner': True
                                             }).eq('id', uid).execute()
         supabase.table('Admin').insert({
-            'shopid': shopid,
-            'email': user_email
+            'shopname': shopname,
+            'admin_email': user_email
         }).execute()
             
         return jsonify({
@@ -68,18 +68,6 @@ def openshop():
                 "data": None
             }), 404
 
-@app.route('/user/createshop', methods=['PUT', 'GET'])
-def createshop():
-    print('semoga jalan ya Tuhan')
-    res = supabase.table('UserPublic').select('*').execute()
-    session = supabase.auth.get_session()
-    print(session)
-    return jsonify({
-                    "code": 202,
-                    "message": session,
-                    "data": session
-                }), 202
-
     
 @app.route('/user/get_user_id', methods=['GET'])
 def get_user_id():
@@ -92,13 +80,12 @@ def get_user_id():
         return 'error: No users found.', 404
     
 
-@user_bp.route('/assignadmin', methods=['PUT', 'POST'])
+@app.route('/user/assignadmin', methods=['PUT', 'POST'])
 def assignadmin():
     print('Received request for openshop')
     # print(supabase.auth.get_user())
     admin_email = 'yozafardharold@gmail.com'
-    get_admin = get_user_id()
-    sellerid = get_admin[0][0]['id']
+    sellerid = get_user_id()[0][0]['id']
     
     check_if_owner = supabase.table('UserPublic').select('owner').eq('id', sellerid).execute()
     print(check_if_owner.data[0]['owner'])
@@ -114,16 +101,18 @@ def assignadmin():
             else:
                 shop = supabase.table('UserPublic').select('*').eq('id', sellerid).execute().data[0]
                 add_admin = supabase.table('Admin').insert({
-                    'shopid': shop['shopid'],
+                    'shopname': shop['shopname'],
                     'admin_email': admin_email,
                 }).execute()
 
                 set_admin = supabase.table('UserPublic').update({
                     'acc_type': 'seller',
-                    'shopid': shop['shopid'],
                     'shopname': shop['shopname']
                     }).eq('email', admin_email).execute()
                 return "Yay", 202
                 
         else:
             return "Email not found", 404
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5006, debug=True)

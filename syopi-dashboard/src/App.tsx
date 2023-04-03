@@ -20,6 +20,7 @@ import Success from "./components/Success";
 import Confirmation from "./components/Payment/Confirmation";
 import Courier from "./components/Courier/Courier";
 
+import CreateShop from "./components/Shop/CreateShop";
 export default function App() {
   return (
     <>
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="/seller" element={<Seller />} />
         <Route path="/seller/addProduct" element={<AddProduct />} />
         <Route path="/courier" element={<Courier />} />
+        <Route path="/shop/CreateShop" element={<CreateShop />} />
         <Route element={<PrivateRoute role='seller'/>}>
         </Route>
         <Route element={<PrivateRoute allaccess='true'/>}>

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { supabase } from "./client";
+import { supabase } from "./Client";
 
 const AuthContext = React.createContext();
 
@@ -21,6 +21,7 @@ export function AuthProvider({ children }) {
       // })
       // supabase.auth.session().then(({ access_token }) => {
       //   supabase.auth.setAuth(access_token)
+      console.log('error:', error)
 
       localStorage.setItem("user", JSON.stringify(data.user));
       setUser(data.user);

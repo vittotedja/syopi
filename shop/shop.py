@@ -82,11 +82,20 @@ def find_by_name(name):
 @app.route("/shop/add_shop", methods=['POST'])
 def add_shop(): #form to be rendered in app.jsx
     if request.method == 'POST':
-        form_name = request.form["name"]
-        form_address = request.form["address"]
-        form_phone_number = request.form["phone_number"]
+        data = request.get_json()
+        print(data)
+        form_name = data['ShopName']
+        print(form_name)
+        form_address = data['ShopAddress']
+        print(form_address)
+        form_phone_number = data['ShopPhoneNumber']
+        print(form_phone_number)
         #get shop with name (Case insensitive)
+        # form_name = 'sanur'
+        # form_address = 'mangga dua'
+        # form_phone_number = '111-2222'
         shop = supabase.table("shops").select("*").ilike("ShopName", form_name).execute()
+        print(shop)
         #if found
         if (shop.data):
             return jsonify(
@@ -105,6 +114,7 @@ def add_shop(): #form to be rendered in app.jsx
                 "ShopPhoneNumber": form_phone_number,
                 "IsActive": "Active"
                 }).execute()
+            print(data)
             if data:
                 return jsonify({
                     'code': 200,

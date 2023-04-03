@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './Context.jsx'
 import UserOrder from './UserOrder.js'
+import { supabase } from "./Client";
 
 const Homepage = () => {
   let navigate = useNavigate()
