@@ -5,8 +5,8 @@ load_dotenv()
 import os
 from supabase import create_client
 
-url = os.environ.get('USER_URL')
-key = os.environ.get('USER_KEY')
+url = os.environ.get('CART_URL')
+key = os.environ.get('CART_KEY')
 supabase = create_client(url, key)
 
 app = Flask( __name__)

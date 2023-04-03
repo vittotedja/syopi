@@ -15,7 +15,7 @@ cors = CORS(app)
 @app.route('/recommender', methods=['GET'])
 def get_all():
     if request.method == 'GET':
-        res = requests.get('http://127.0.0.1:5002/product')
+        res = requests.get('http://localhost:5002/product')
         product_list = res.json()
         return sorted(product_list, key=lambda x: x['AvgRating']*x['AmountSold'], reverse=True)
 
@@ -24,7 +24,7 @@ def search():
     if request.method == 'GET':
         keyword = request.args.get('keyword')
         page = request.args.get('page', 1)
-        res = requests.get(f'http://127.0.0.1:5002/product/search?keyword={keyword}&page={page}')
+        res = requests.get(f'http://localhost:5002/product/search?keyword={keyword}&page={page}')
         return res.json()
     
 if __name__ == '__main__':
