@@ -27,3 +27,6 @@ def create_shipping():
     data = request.get_json()
     response = supabase.table('shipping').insert(data).execute()
     return response.data
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5004, debug=True)
