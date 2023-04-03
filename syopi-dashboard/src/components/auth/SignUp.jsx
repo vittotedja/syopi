@@ -29,6 +29,12 @@ const SignUp = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      const checkemail = await supabase.from('UserPublic').select('*').eq('email', formData.email)
+      if (checkemail) {
+        alert('Email already in use')
+        return 'Email already in use'
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
