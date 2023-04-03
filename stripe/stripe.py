@@ -8,15 +8,17 @@ import requests
 # This is your test secret API key.
 stripe.api_key = 'sk_test_51MrgP0BJIMpkY9J2rI7LfwAepAbvIOjGVEQl13zkAe00qXz8bvj8boOkxo028hU8zZX7gjvFmocElL0Ep0F83E4P00r146emq1'
 
-stripe_bp = Blueprint('stripe', __name__)
+app = Flask(__name__)
 
-cors = CORS(stripe_bp)
+cors = CORS(app)
+
+product_URL = os.environ.get("product_URL")
 
 def calculate_order_amount(items):
     total = 0
     for productId in items:
         print(productId)
-        res = requests.get(f'http://localhost:5000/product/{productId}')
+        res = requests.get(f'{product_URL}/{productId}')
         res = res.json()
         data = res[0]
         total += int(round(data['Price'] * items[productId],2)*100)
@@ -26,7 +28,7 @@ def calculate_order_amount(items):
     return total
 
 
-@stripe_bp.route('/create-payment-intent', methods=['POST'])
+@app.route('/create-payment-intent', methods=['POST'])
 def create_payment():   
     try:
         data = json.loads(request.data)
@@ -49,7 +51,10 @@ def create_payment():
         return jsonify(error=str(e)), 403
     
 
-@stripe_bp.route('/retrieve-payment-intent/<string:clientID>', methods=['GET'])
+@app.route('/retrieve-payment-intent/<string:clientID>', methods=['GET'])
 def retrieve_payment(clientID):
     data = stripe.PaymentIntent.retrieve(clientID)
     return data
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5011, debug=True)

@@ -17,7 +17,7 @@ shop_URL = os.environ.get("shop_URL")
 
 
 
-@app.route('/getcartsproduct/<string:userid>', methods=['GET'])
+@app.route('/   ', methods=['GET'])
 def get_cart(userid):
     productIdDict = {'data': []}
     shopIdDict = {"data": []}

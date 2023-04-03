@@ -70,8 +70,8 @@ services:
     container_name: kong
     user: root
     links:
-      - browse
-      - get_product_cart
+      - cart
+      - view_cart
       - give_rating
       - order
       - product
@@ -80,6 +80,8 @@ services:
       - shipping
       - shop
       - user
+      - process_order
+      - stripe
   
   #######################################
   # Konga: Kong GUI
@@ -266,20 +268,17 @@ services:
       - kong-net
 
   ###############################################
-  # Browse: The Browse complex microservice
+  # Cart: The Cart simple microservice
   ###############################################
-  browse:
+  cart:
     build:
-      context: ./browse
+      context: ./cart
       dockerfile: Dockerfile
-    image: jrenaldi/browse:syopi
-    container_name: browse1
-    hostname: browse1
+    image: jrenaldi/cart:syopi
+    container_name: cart1
+    hostname: cart1
     restart: always
-    depends_on:
-      - search
     environment:
-      search_URL: http://search:5010/search
       PYTHONUNBUFFERED: 1 
     ports:
       - "5007:5007"
@@ -287,15 +286,15 @@ services:
       - kong-net
 
   ###############################################
-  # Get Product Cart: The Get Product Cart complex microservice
+  # View Cart: The View Cart complex microservice
   ###############################################
-  get_product_cart:
+  view_cart:
     build:
-      context: ./get_product_cart
+      context: ./view_cart
       dockerfile: Dockerfile
-    image: jrenaldi/get_product_cart:syopi
-    container_name: get_product_cart1
-    hostname: get_product_cart1
+    image: jrenaldi/view_cart:syopi
+    container_name: view_cart1
+    hostname: view_cart1
     restart: always
     depends_on:
       - user
@@ -353,6 +352,49 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5010:5010"
+    networks:
+      - kong-net
+
+   ##################################
+  # stripe: The stripe microservice
+  ##################################
+  stripe:
+    build:
+      context: ./stripe
+      dockerfile: Dockerfile
+    image: jrenaldi/stripe:syopi
+    container_name: stripe1
+    hostname: stripe1
+    restart: always
+    depends_on:
+      - product
+    environment:
+      product_URL: http://product:5002/product
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5011:5011"
+    networks:
+      - kong-net
+
+   ##################################
+  # process_order: The process microservice
+  ##################################
+  process_order:
+    build:
+      context: ./process_order
+      dockerfile: Dockerfile
+    image: jrenaldi/process_order:syopi
+    container_name: process_order1
+    hostname: process_order1
+    restart: always
+    depends_on:
+      - product
+    environment:
+      order_URL: http://order:5001/order
+      shipping_URL: http://shipping:5004/shipping
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5012:5012"
     networks:
       - kong-net
 
