@@ -8,6 +8,7 @@ import AddProduct from './AddProduct'
 import { useNavigate } from 'react-router-dom'
 import SellerOrder from './SellerOrder'
 import SellerProduct from './SellerProduct'
+import AddAdmin from './AddAdmin'
 
 
 export default function Seller() {
@@ -17,6 +18,7 @@ export default function Seller() {
   const shopId = '9413c28a-3b0b-4955-9ac9-5171a3f8631d'
   const [productData, setproductData] = useState(Array)
   const [showAddProduct, setshowAddProduct] = useState(false)
+  const [showAddAdmin, setshowAddAdmin] = useState(false)
   
   const fetchData = () => {
     fetch('http://127.0.0.1:5000/order/get_all_order/' + shopId)
@@ -145,7 +147,8 @@ export default function Seller() {
                     <p className='seller-page-title'>Settings</p>
                     </div>
                     <div className='col-3 add-product-btn'>
-                      <button onClick={() => navigate('addproduct')}>Add Admin</button>
+                      <button onClick={() => setshowAddAdmin(true)}>Add Admin</button>
+                      <AddAdmin show = {showAddAdmin} onHide={() => setshowAddAdmin(false)}/>
                     </div>
                   </div>
                   <div className='row' style={{marginBottom:'10px'}}>
