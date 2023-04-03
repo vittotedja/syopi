@@ -29,8 +29,10 @@ export default function App() {
         <Route path="/product" element={<ProductPage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/review" element={<Review />} />
+        <Route path="/seller" element={<Seller />} />
+          <Route path="/seller/addproduct" element={<AddProduct/>} />
         <Route element={<PrivateRoute role='seller'/>}>
-          <Route path="/seller" element={<Seller />} />
+          
         </Route>
         <Route element={<PrivateRoute allaccess='true'/>}>
           <Route path="/user" element={<User />} />

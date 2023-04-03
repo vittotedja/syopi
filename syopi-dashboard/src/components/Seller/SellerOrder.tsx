@@ -6,9 +6,7 @@ export default function SellerOrder(props:any) {
 
   return (
     <>
-        <div>
-            See All Orders
-        </div>
+        
         <div className="order-list">
         {data.map((order:any) => {
           return <OrderCard

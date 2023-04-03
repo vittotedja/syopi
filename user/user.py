@@ -209,4 +209,4 @@ def get_user_id():
     
 @user_bp.route('/cobalagi', methods=['GET'])
 def get_id():
-    
+    pass
