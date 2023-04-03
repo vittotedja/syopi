@@ -20,11 +20,6 @@ def index():
         response = supabase.table('review').select("*").execute()
         return response.data
 
-    if request.method == 'POST':
-        data = request.get_json()
-        response = supabase.table('review').insert(data).execute()
-        return response.data
-
 @app.route('/review/<string:ProductId>', methods=['GET'])
 def get_review(ProductId):
     if request.method == 'GET':

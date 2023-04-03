@@ -2,18 +2,7 @@ import React, { useEffect, useState } from "react";
 import productpics from "../../assets/logofornow.jpg";
 
 function CartItem(props: any) {
-  const [data, setData] = useState(Object);
-  const [qty, setQty] = useState(0);
-
-  function fetchData() {
-    fetch(`http://127.0.0.1:5000/getcart/1/${props.productId}`)
-      .then((response) => response.json())
-      .then((res) => {
-        setData(res[0]);
-        setQty(res[0].Quantity)
-      });
-  }
-
+  const [qty, setQty] = useState(props.quantity);
 
   function updateQuantity(newQty:number) {
     const data = {
@@ -21,7 +10,7 @@ function CartItem(props: any) {
       Quantity: newQty
     }
 
-    fetch('http://127.0.0.1:5000/updatequantity', {
+    fetch('http://127.0.0.1:5007/cart/updatequantity', {
       method:'POST',
       headers: {
         "Content-Type": "application/json"
@@ -47,26 +36,6 @@ function CartItem(props: any) {
 
     }
   }
-
-
-//   const handleCheckbox = () => {
-//     if (props.productId in props.chosenProduct){
-//       let id = props.productId
-//       // delete props.chosenProduct[props.productId]
-//       // props.setChosenProduct(props.chosenProduct)
-//       props.setChosenProduct(current => {
-//         const {id, ...rest} = current
-//         return rest
-//       })
-//     }
-//     else{
-//       props.setChosenProduct({...props.chosenProduct, [props.productId] : qty})
-//   }
-// }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div className="flex">
