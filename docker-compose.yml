@@ -2,8 +2,105 @@ version: "3.8"
 
 volumes:
   rabbitmq_data:
+  pgdata: 
+  kongadata:
 
 services:
+
+   #######################################
+  # Postgres: The database used by Kong
+  #######################################
+  kong-database:
+    image: postgres:9.6
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      POSTGRES_DB: kong
+      POSTGRES_USER: kong
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "kong"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  #######################################
+  # Kong database migration
+  #######################################
+  kong-migration:
+    image: kong:2.0.4
+    command: "kong migrations bootstrap"
+    restart: on-failure
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+    depends_on:
+      - kong-database
+
+  #######################################
+  # Kong: The API Gateway
+  #######################################
+  kong:
+    image: kong:2.0.4
+    restart: always
+    networks:
+      - kong-net
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: kong-database
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: password
+      KONG_PROXY_LISTEN: 0.0.0.0:8000
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+    depends_on:
+      - kong-migration
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    hostname: kong
+    container_name: kong
+    user: root
+    links:
+      - browse
+      - get_product_cart
+      - give_rating
+      - order
+      - product
+      - recommender
+      - review
+      - shipping
+      - shop
+      - user
+  
+  #######################################
+  # Konga: Kong GUI
+  #######################################
+  konga:
+    image: pantsel/konga
+    restart: always
+    networks:
+        - kong-net
+    environment:
+      DB_ADAPTER: postgres
+      DB_HOST: kong-database
+      DB_USER: kong
+      DB_PASSWORD: password
+      DB_DATABASE: konga_db
+    depends_on:
+      - kong
+    ports:
+      - "1337:1337"
+    volumes:
+      - kongadata:/app/kongadata
  
   ###################################
   # Order: The Order microservice
@@ -13,11 +110,15 @@ services:
       context: ./order
       dockerfile: Dockerfile
     image: jrenaldi/order:syopi
+    container_name: order1
+    hostname: order1
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5001:5001"
+    networks:
+      - kong-net
  
   #######################################################
   # Product: The Product microservice
@@ -27,11 +128,15 @@ services:
       context: ./product
       dockerfile: Dockerfile
     image: jrenaldi/product:syopi
+    container_name: product1
+    hostname: product1
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5002:5002"
+    networks:
+      - kong-net
   
   #######################################################
   # Review: The Review microservice
@@ -41,11 +146,15 @@ services:
       context: ./review
       dockerfile: Dockerfile
     image: jrenaldi/review:syopi
+    container_name: review1
+    hostname: review1
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5003:5003"
+    networks:
+      - kong-net
 
   #######################################################
   # Shipping: The Shipping microservice
@@ -55,11 +164,15 @@ services:
       context: ./shipping
       dockerfile: Dockerfile
     image: jrenaldi/shipping:syopi
+    container_name: shipping1
+    hostname: shipping1
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5004:5004"
+    networks:
+      - kong-net
 
   #######################################################
   # Shop: The Shop microservice
@@ -69,11 +182,15 @@ services:
       context: ./shop
       dockerfile: Dockerfile
     image: jrenaldi/shop:syopi
+    container_name: shop1
+    hostname: shop1
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5005:5005"
+    networks:
+      - kong-net
 
   #######################################################
   # User: The User microservice
@@ -83,11 +200,15 @@ services:
       context: ./user
       dockerfile: Dockerfile
     image: jrenaldi/user:syopi
+    container_name: user1
+    hostname: user1
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
     ports:
       - "5006:5006"
+    networks:
+      - kong-net
 
   ####################################
   # RabbitMQ: The messaging broker   
@@ -101,6 +222,8 @@ services:
       - "15672:15672"
     volumes: 
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - kong-net
       
   #################################################
   # Order Log: The Order Log microservice
@@ -110,6 +233,8 @@ services:
       context: ./order_log
       dockerfile: Dockerfile
     image: jrenaldi/order_log:syopi
+    container_name: order_log1
+    hostname: order_log1
     restart: always
     depends_on:
       - rabbitmq
@@ -117,6 +242,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
+    networks:
+      - kong-net
 
   ###################################
   # Error: The Error microservice
@@ -126,6 +253,8 @@ services:
       context: ./error
       dockerfile: Dockerfile
     image: jrenaldi/error:syopi
+    container_name: error1
+    hostname: error1
     restart: always
     depends_on:
       - rabbitmq
@@ -133,6 +262,8 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
+    networks:
+      - kong-net
 
   ###############################################
   # Browse: The Browse complex microservice
@@ -142,6 +273,8 @@ services:
       context: ./browse
       dockerfile: Dockerfile
     image: jrenaldi/browse:syopi
+    container_name: browse1
+    hostname: browse1
     restart: always
     depends_on:
       - recommender
@@ -150,6 +283,8 @@ services:
       PYTHONUNBUFFERED: 1 
     ports:
       - "5007:5007"
+    networks:
+      - kong-net
 
   ###############################################
   # Get Product Cart: The Get Product Cart complex microservice
@@ -159,6 +294,8 @@ services:
       context: ./get_product_cart
       dockerfile: Dockerfile
     image: jrenaldi/get_product_cart:syopi
+    container_name: get_product_cart1
+    hostname: get_product_cart1
     restart: always
     depends_on:
       - user
@@ -171,6 +308,8 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5008:5008"
+    networks:
+      - kong-net
 
   ###############################################
   # Give Rating: Give Rating complex microservice
@@ -180,6 +319,8 @@ services:
       context: ./give_rating
       dockerfile: Dockerfile
     image: jrenaldi/give_rating:syopi
+    container_name: give_rating1
+    hostname: give_rating1
     restart: always
     depends_on:
       - review
@@ -190,6 +331,8 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5009:5009"
+    networks:
+      - kong-net
 
 
   ##################################
@@ -200,6 +343,8 @@ services:
       context: ./recommender
       dockerfile: Dockerfile
     image: jrenaldi/recommender:syopi
+    container_name: recommender1
+    hostname: recommender1
     restart: always
     depends_on:
       - product
@@ -208,3 +353,9 @@ services:
       PYTHONUNBUFFERED: 1
     ports:
       - "5010:5010"
+    networks:
+      - kong-net
+
+networks:
+  kong-net:
+    driver: bridge
