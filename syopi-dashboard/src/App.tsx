@@ -5,7 +5,6 @@ import ShopPage from "./components/Shop/ShopPage";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import ProductPage from "./components/Product/ProductPage";
 import Review from "./components/Review/Review";
-import User from "./components/User";
 import Cart from "./components/Cart/Cart";
 import SignUp from "./components/auth/SignUp";
 import Login from "./components/auth/Login";
@@ -19,6 +18,7 @@ import SearchPage from "./components/Search/Search";
 
 import Success from "./components/Success";
 import Confirmation from "./components/Payment/Confirmation";
+import Courier from "./components/Courier/Courier";
 
 export default function App() {
   return (
@@ -30,21 +30,19 @@ export default function App() {
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/review" element={<Review />} />
         <Route path="/seller" element={<Seller />} />
-          <Route path="/seller/addproduct" element={<AddProduct/>} />
+        <Route path="/seller/addProduct" element={<AddProduct />} />
+        <Route path="/courier" element={<Courier />} />
         <Route element={<PrivateRoute role='seller'/>}>
-          
         </Route>
         <Route element={<PrivateRoute allaccess='true'/>}>
-          <Route path="/user" element={<User />} />
+          <Route path="/user" element={<Homepage />} />
           <Route path="/success" element={<Success />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/confirmation" element={<Confirmation />} />
-          <Route path={"/homepage"} element={<Homepage />} />
+          <Route path="/homepage" element={<Homepage />} />
         </Route>
         <Route path={"/signup"} element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-
-        <Route path="/" element={<LandingPage />} />
         <Route path="/search" element={<SearchPage />} />
       </Routes>
     </>

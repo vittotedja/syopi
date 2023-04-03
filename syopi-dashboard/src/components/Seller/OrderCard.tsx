@@ -4,12 +4,37 @@ import "./OrderCard.css";
 
 export default function OrderCard(props: any) {
   const [productData, setProductData] = useState<any>({});
+  const [orderStatus, setOrderStatus] = useState<string>(props.OrderStatus);
   let navigate = useNavigate();
 
   function getProductData() {
     fetch(`http://127.0.0.1:5000/product/${props.ProductId}`)
       .then((response) => response.json())
       .then((data) => setProductData(data[0]));
+  }
+
+  const acceptOrder = (orderId: string) => {
+    const data = { OrderId: orderId };
+    fetch("http://127.0.0.1:5000/process_order/accept",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+    .then((response) => response.json())
+    .then(() => setOrderStatus('Accepted'))
+  }
+
+  const requestDelivery = (orderId: string) => {
+    const data = { OrderId: orderId };
+    fetch("http://127.0.0.1:5000/order/accept",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+    .then((response) => response.json())
+    .then(() => setOrderStatus('Accepted'))
   }
 
   useEffect(() => {
@@ -42,8 +67,9 @@ export default function OrderCard(props: any) {
         </div>
       </div>
       <div className="row footer">
-        <div>{props.OrderStatus}</div>
-        <button> Accept Order </button>
+        <div>{orderStatus}</div>
+        {orderStatus == 'Paid' ? <button onClick={() => acceptOrder(props.OrderId)}> Accept Order </button>:
+        <button> Request Delivery </button>}
       </div>
     </div>
   );

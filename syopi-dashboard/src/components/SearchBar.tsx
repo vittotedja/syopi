@@ -49,7 +49,7 @@ function SearchBar(props: any) {
         cacheOptions
         loadOptions={loadOptions}
         defaultOptions
-        placeholder='Search for a movie...'
+        placeholder='Search for products'
         onChange={(selectedOption: Object) => setKeyword({productId: selectedOption.value, productName: selectedOption.label})}
         styles={colourStyles}
       />
