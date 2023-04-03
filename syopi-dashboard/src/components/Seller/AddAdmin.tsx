@@ -8,13 +8,13 @@ import Modal from 'react-bootstrap/Modal';
 
 
 
-export default function AddProduct(props:any) {
-    let [productName, setProductName] = useState()
-    let [category, setCategory] = useState()
-    let [productDescription, setProductDescription] = useState()
-    let [price, setPrice] = useState()
-    let [stock, setStock] = useState()
-    const [image, setImage] = useState([])
+export default function AddAdmin(props:any) {
+    let [userId, setUserId] = useState('')
+    let [email, setemail] = useState('')
+    let [shopId, setshopId] = useState('')
+    let [userName, setuserName] = useState('')
+    let [adminStatus, setadminStatus] = useState('')
+    
     
 
     // const handleFileSelected = (e) => {
@@ -50,14 +50,13 @@ export default function AddProduct(props:any) {
 
     // }
 
-function addProduct() {
+function addAdmin() {
         const sentData = {
-            ProductName: productName,
-            Category: category,
-            ProductDescription: productDescription,
-            Price: price,
-            Stock: stock,
-            Image: image
+            UserId: userId,
+            Email: email,
+            ShopId: shopId,
+            UserName: userName,
+            AdminStatus: adminStatus
         }
 
 
@@ -84,63 +83,38 @@ function addProduct() {
         <Modal show = {props.show} size='lg' onHide= {props.onHide} centered>
         <Modal.Header closeButton>
         <Modal.Title>
-                    Add Product
+                    Add Admin
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
       <form className='seller-form'>
                 <div className='row' style={{margin:'0'}}>
                     <div className='col-4 seller-grid'>
-                        <p>Product Name</p>
+                        <p>User Id</p>
                     </div>
                     <div className='col-8'>
-                        <input type='text' className='form-control' placeholder='Product Name' onChange={(e) => setProductName(e.target.value)}/>
+                        <input type='text' className='form-control' placeholder='User Id' onChange={(e) => setUserId(e.target.value)}/>
                         
                     </div>
                 </div>
                 <div className='row' style={{margin:'0'}}>
                     <div className='col-4 seller-grid'>
-                        <p>Category</p>
+                        <p>Email</p>
                     </div>
                     <div className='col-8'>
-                        <input type='text' className='form-control' placeholder='Category' onChange={(e) => setCategory(e.target.value)}/>
+                        <input type='text' className='form-control' placeholder='Email' onChange={(e) => setemail(e.target.value)}/>
                     </div>
                 </div>
                 <div className='row' style={{margin:'0'}}>
                     <div className='col-4 seller-grid'>
-                        <p>Product Description</p>
+                        <p>User Name</p>
                     </div>
                     <div className='col-8'>
-                        <textarea className='form-control' placeholder='Product Description' onChange={(e) => setProductDescription(e.target.value)}/>
-                    </div>
-                </div>
-                <div className='row' style={{margin:'0'}}>
-                    <div className='col-4 seller-grid'>
-                        <p>Price</p>
-                    </div>
-                    <div className='col-8'>
-                        <input type='text' className='form-control' placeholder='10.00' onChange={(e) => setPrice(e.target.value)}/>
-                    </div>
-                </div>
-                <div className='row' style={{margin:'0'}}>
-                    <div className='col-4 seller-grid'>
-                        <p>Stock</p>
-                    </div>
-                    <div className='col-8'>
-                        <input type='text' className='form-control' placeholder='Input Total Stock Available' onChange={(e) => setStock(e.target.value)}/>
-                    </div>
-                </div>
-                <div className='row' style={{margin:'0'}}>
-                    <div className='col-4 seller-grid'>
-                        <p>Image</p>
-                    </div>
-                    <div className='col-8'>
-                    <input type="file" name="image[]" onChange={checkUpload} multiple/>
-                    {image}
+                    <input type='text' className='form-control' placeholder='User Name' onChange={(e) => setuserName(e.target.value)}/>
                     </div>
                 </div>
                 <div className='row'>
-                    <button onClick={()=> addProduct()}>Submit</button>
+                    <button onClick={()=> {addAdmin(); setadminStatus('Active') ; setshopId({shopId})}}>Submit</button>
                 </div>
             </form>
         

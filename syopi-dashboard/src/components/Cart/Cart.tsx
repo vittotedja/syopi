@@ -5,15 +5,16 @@ import { useNavigate } from "react-router";
 
 function Cart() {
   let navigate = useNavigate();
-  const [data, setData] = useState(Array);
+  const [cart, setCart] = useState(Array);
   // const [product, setProduct] = useState(Array)
   // const [string, setString] = useState("/confirmation?data=");
   const [chosenProduct, setChosenProduct] = useState(Object);
+  const userId = 1
 
   function fetchData() {
-    fetch(`http://127.0.0.1:5000/getcartsproduct/1`)
+    fetch('http://127.0.0.1:5008/view_cart/' + userId)
       .then((response) => response.json())
-      .then((data) => setData(data.data));
+      .then((data) => setCart(data.data));
   }
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function Cart() {
   return (
     <div>
       Your Cart
-      {data.map((item: any) => {
+      {cart.map((item: any) => {
         return (
           <CartItem
             key={item.ProductId}

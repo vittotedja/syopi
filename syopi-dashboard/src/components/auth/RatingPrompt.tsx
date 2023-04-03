@@ -14,7 +14,7 @@ export default function RatingPrompt(props: any) {
   }
 
   function getSpecificProduct(ProductId: any) {
-    fetch(`http://127.0.0.1:5000/product/${ProductId}`)
+    fetch(`http://127.0.0.1:5002/product/${ProductId}`)
       .then((response: any) => response.json())
       .then((data: any) => {
         console.log(data);
@@ -59,13 +59,16 @@ export default function RatingPrompt(props: any) {
     <>
       {show ? (
         <>
-          <div className="flex justify-between">
-            <div>
-              <img />
-              <div>Product Name</div>
-              <div>Price x Quantity</div>
-            </div>
-            <button
+        <div className='row' style={{margin:'0'}}>
+          <div className='col-3 seller-grid'>
+            Image
+          </div>
+          <div className='col-7 seller-grid'>
+            <p>Product Name</p>
+            <p>Price x Quantity</p>
+          </div>
+          <div className='col-2 seller-grid'>
+          <button
               className="review-button"
               disabled={props.isClicked < 1}
               onClick={() => {
@@ -76,38 +79,25 @@ export default function RatingPrompt(props: any) {
               Add Review
             </button>
           </div>
-          <div>
-            <Review
+          <div className='row'>
+          <Review
               isClicked={props.isClicked}
               setIsClicked={props.setIsClicked}
             />
           </div>
-          <div>
+          <div className='row'>
             <textarea placeholder="Share your thoughts on the product"/>
           </div>
+        </div>
+        
           <hr />
-          <br />
+          <br/>
+          
         </>
       ) : (
         <></>
       )}
-      {/* 
-      <div className="flex justify-between">
-        <div>
-          <img />
-          <div>Product Name</div>
-          <div>Price x Quantity</div>
-        </div>
-        <button className="review-button" disabled = {props.isClicked < 1} onClick={() => {giveRating()}}>Add Review</button>
-      </div>
-      <div>
-        <Review isClicked={props.isClicked} setIsClicked={props.setIsClicked} />
-      </div>
-      <div>
-        <textarea placeholder="Share your thoughts on the product" />
-      </div>
-      <hr/>
-      <br/> */}
+      
     </>
   );
 }

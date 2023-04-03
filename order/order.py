@@ -13,10 +13,10 @@ app = Flask(__name__)
 
 CORS(app)
  
-@app.route('/order/getall_order', methods=['GET'])
+@app.route('/order/get_all_order', methods=['GET'])
 def getall_order():
     order = supabase.table("order").select("*").execute()
-    return order.data
+    return jsonify(order.data)
 
 
 @app.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])

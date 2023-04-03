@@ -5,14 +5,14 @@ load_dotenv()
 import os
 from supabase import create_client
 
-url = os.environ.get('USER_URL')
-key = os.environ.get('USER_KEY')
+url = os.environ.get('CART_URL')
+key = os.environ.get('CART_KEY')
 supabase = create_client(url, key)
 
-cart_bp = Blueprint('cart', __name__)
-cors = CORS(cart_bp)
+app = Flask( __name__)
+cors = CORS(app)
 
-@cart_bp.route('/getcart/<string:userid>/<string:productid>', methods=['GET', 'POST'])
+@app.route('/cart/getcart/<string:userid>/<string:productid>', methods=['GET', 'POST'])
 def get_cart(userid, productid):
     # Fetch all users from Supabase
     res = supabase.table('Cart').select('*').eq('UserId', userid).eq('ProductId', productid).execute()
@@ -22,7 +22,7 @@ def get_cart(userid, productid):
     else:
         return 'error: No users found.', 404
 
-@cart_bp.route('/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
+@app.route('/cart/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def signup(userid, productid, quantity):
     res = supabase.table('Cart').insert({
         "UserId": userid,
@@ -32,12 +32,12 @@ def signup(userid, productid, quantity):
     
     return res.data, 200
 
-@cart_bp.route('/keranjang/<string:userid>', methods=['POST', 'GET'])
+@app.route('/cart/keranjang/<string:userid>', methods=['POST', 'GET'])
 def keranjang(userid):
     res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
     return res.data, 200
 
-@cart_bp.route('/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
+@app.route('/cart/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def tambahcart(productid, quantity):
     response = supabase.table('Cart').select('*').eq('ProductId', productid).execute()
     cart = supabase.table('Cart').select('*').eq('UserId', "1").eq('ProductId', productid).execute()
@@ -52,8 +52,13 @@ def tambahcart(productid, quantity):
         }).eq('UserId', "1").eq('ProductId', productid).execute()
     return response.data
 
-@cart_bp.route('/updatequantity', methods=['POST'])
+@app.route('/cart/updatequantity', methods=['POST'])
 def updatequantity():
     data = request.get_json()
     res = supabase.table('Cart').update({'Quantity': data["Quantity"]}).eq('UserId', "1").eq('ProductId', data["ProductId"]).execute()
     return res.data, 200
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5007, debug=True)
+

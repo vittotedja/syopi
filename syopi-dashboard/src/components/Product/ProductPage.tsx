@@ -12,7 +12,7 @@ function ProductPage() {
   const [mainImage, setMainImage] = useState<string>('')
 
   function fetchData() {  
-    fetch(`http://127.0.0.1:5000/product/${productId}`)
+    fetch(`http://127.0.0.1:5002/product/${productId}`)
     .then((response) => response.json())
     .then((data) => {setData(data[0]); setMainImage(data[0].ImageUrls[0].ImageUrl)})
   }
@@ -20,9 +20,9 @@ function ProductPage() {
   function addToCart() {
     const sentData = {
       ProductId: productId,
-      Quantity: quantity
+      Quantity: quantity,
     }
-    fetch(`http://127.0.0.1:5000/tambahcart/${productId}/${quantity}`, {
+    fetch(`http://127.0.0.1:5007/cart/tambahcart/${productId}/${quantity}`, {
       method:'POST',
       headers: {
         "Content-Type": "application/json"

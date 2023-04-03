@@ -3,6 +3,8 @@ import { Modal } from "react-bootstrap";
 import Review from "../Review/Review";
 import "./UserOrder.css";
 import RatingPrompt from "./RatingPrompt";
+import Card from 'react-bootstrap/Card';
+import IndivProduct from "./IndivProduct";
 
 export default function UserOrder(props:any) {
   const [show, setShow] = useState(false);
@@ -16,36 +18,37 @@ export default function UserOrder(props:any) {
 
   return (
     <>
-      <div className="order-cart">
-        <div className="row header d-flex">
-          <span>Tanggal</span>
-          <div>Order Status</div>
-          <span>OrderId</span>
-        </div>
-        <div className="row ">shopName</div>
-        <div className="row content">
-          <div>
-            <div
-              style={{ cursor: "pointer", color: "blue" }}
-            >
-              ProductName
-            </div>
-            <div>Quantity:</div>
-            <div>Price per Item</div>
+    <Card className='order-card-user'>
+      <Card.Header className='order-card-user-header'>
+        <div className='row' style={{margin:'0'}}>
+          <div className='col-6'>
+          OrderId / Date / ShopName 
           </div>
-          <div>
-            <div>Total Purchase : S$</div>
-            <div>ShippingId</div>
+          <div className='col-6' style={{textAlign:'right'}}>
+            OrderStatus
           </div>
         </div>
-        <div className="row footer">
-          <div>Total Paid</div>
-          <button onClick={handleShow}>Review</button>
+        
+      </Card.Header>
+
+      <IndivProduct/>
+      
+      <Card.Footer>
+        <div className='row' style={{margin:'0'}}>
+          <div className='col-11 seller-grid' style={{textAlign:'right'}}>
+            <p>Total Price:</p>
+            <p className='total-price-user'>S$123.00</p>
+          </div>
+          <div className='col-1 seller-grid' style={{padding:'0'}}>
+            <button onClick={handleShow}>Review</button>
+          </div>
         </div>
-      </div>
+      </Card.Footer>
+    </Card>
+      
 
 
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal show={show} onHide={handleClose}  size='lg' centered>
         <Modal.Header closeButton>
           <Modal.Title>Review OrderID</Modal.Title>
         </Modal.Header>
