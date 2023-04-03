@@ -10,10 +10,10 @@ key = os.environ.get('USER_KEY')
 # get_jwt = os.environ.get('USer_JWT')
 supabase = create_client(url, key)
 
-user_bp = Blueprint('user', __name__)
-cors = CORS(user_bp)
+app = Flask(__name__)
+cors = CORS(app)
 
-@user_bp.route('/getbyemail/<string:email>', methods=['GET', 'POST'])
+@app.route('/user/getbyemail/<string:email>', methods=['GET', 'POST'])
 def get_by_email(email):
     # Fetch all users from Supabase
     res = supabase.table('User').select('*').eq('Email', email).execute()
@@ -23,7 +23,7 @@ def get_by_email(email):
     else:
         return 'error: No users found.', 404
     
-@user_bp.route('/getbyname/<string:username>', methods=['GET', 'POST'])
+@app.route('/user/getbyname/<string:username>', methods=['GET', 'POST'])
 def get_by_name(username):
     # Fetch all users from Supabase
     res = supabase.table('User').select('*').eq('Username', username).execute()
@@ -33,7 +33,7 @@ def get_by_name(username):
     else:
         return 'error: No users found.', 404
     
-@user_bp.route('/getbyshop/<string:shop>', methods=['GET', 'POST'])
+@app.route('/user/getbyshop/<string:shop>', methods=['GET', 'POST'])
 def get_by_shop(shop):
     # Fetch all users from Supabase
     res = supabase.table('User').select('*').eq('ShopId', shop).execute()
@@ -43,16 +43,16 @@ def get_by_shop(shop):
     else:
         return 'error: No users found.', 404
     
-    
-# @user_bp.route('/getall', methods=['GET', 'POST'])
-# def get_all_users():
-#     # Fetch all users from Supabase
-#     res = supabase.table('User').select('*').execute()
-#     # Return JSON response
-#     if res:
-#         return res.data, 200
-#     else:
-#         return 'error: No users found.', 404
+
+@app.route('/user/getall', methods=['GET', 'POST'])
+def get_all_users():
+    # Fetch all users from Supabase
+    res = supabase.table('UserPublic').select('*').execute()
+    # Return JSON response
+    if res:
+        return res.data, 200
+    else:
+        return 'error: No users found.', 404
 
 
 # @user_bp.route('/signup/<string:Email>/<string:Password>/<string:Username>', methods=['POST', 'GET'])
@@ -78,17 +78,17 @@ def get_by_shop(shop):
 
 #         return res.data, 200
 
-@user_bp.route('/setshop/<string:userid>/<string:shopid>', methods=['POST', 'PUT'])
+@app.route('/user/setshop/<string:userid>/<string:shopid>', methods=['POST', 'PUT'])
 def setshop(userid, shopid):
     res = supabase.table('User').update({"ShopId": shopid}).eq('UserId', userid).execute()
     return jsonify(list(res))
 
-@user_bp.route('/updatecart/<string:userid>/<string:productid>/<int:qty>', methods=['POST', 'PUT'])
+@app.route('/user/updatecart/<string:userid>/<string:productid>/<int:qty>', methods=['POST', 'PUT'])
 def updatecart(userid, productid, qty):
     res = supabase.table('Cart').update({"Quantity": qty}).eq('UserId', userid).eq('ProductId', productid).execute()
     return jsonify(list(res))
 
-@user_bp.route('/getcart/<string:userid>/<string:productid>', methods=['GET', 'POST'])
+@app.route('/user/getcart/<string:userid>/<string:productid>', methods=['GET', 'POST'])
 def get_cart(userid, productid):
     # Fetch all users from Supabase
     res = supabase.table('Cart').select('*').eq('UserId', userid).eq('ProductId', productid).execute()
@@ -98,7 +98,7 @@ def get_cart(userid, productid):
     else:
         return 'error: No users found.', 404
 
-@user_bp.route('/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
+@app.route('/user/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def addtocart(userid, productid, quantity):
     res = supabase.table('Cart').insert({
         "UserId": userid,
@@ -109,7 +109,7 @@ def addtocart(userid, productid, quantity):
     return res.data, 200
 
 
-@user_bp.route('/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
+@app.route('/user/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def tambahcart(productid, quantity):
     res = supabase.table('Cart').insert({
         "ProductId": productid,
@@ -118,7 +118,7 @@ def tambahcart(productid, quantity):
     
     return res.data, 200
 
-@user_bp.route('/keranjang/<string:userid>', methods=['POST', 'GET'])
+@app.route('/user/keranjang/<string:userid>', methods=['POST', 'GET'])
 def keranjang(userid):
     res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
     return jsonify({
@@ -127,7 +127,7 @@ def keranjang(userid):
         "data": res.data
     }), 200
 
-@user_bp.route('/get_owner_and_admin', methods=['GET'])
+@app.route('/user/get_owner_and_admin', methods=['GET'])
 def get_owner_and_admin():
     res = supabase.table('UserPublic').select('*').execute()
     # Return JSON response
@@ -136,7 +136,7 @@ def get_owner_and_admin():
     else:
         return 'error: No users found.', 404
     
-@user_bp.route('/get_shop/<string:user_id>', methods=['GET'])
+@app.route('/get_shop/<string:user_id>', methods=['GET'])
 def get_shop(user_id):
     res = supabase.table('UserPublic').select('*').eq('id', user_id).execute()
     # Return JSON response
@@ -145,7 +145,7 @@ def get_shop(user_id):
     else:
         return 'error: No users found.', 404
     
-@user_bp.route('/openshop', methods=['PUT'])
+@app.route('/user/openshop', methods=['PUT'])
 def openshop():
     print('Received request for openshop')
     # print(supabase.auth.get_user())
@@ -175,7 +175,7 @@ def openshop():
                     "data": None
                 }), 404
 
-@user_bp.route('/createshop', methods=['PUT', 'GET'])
+@app.route('/user/createshop', methods=['PUT', 'GET'])
 def createshop():
     print('semoga jalan ya Tuhan')
     res = supabase.table('UserPublic').select('*').execute()
@@ -188,7 +188,7 @@ def createshop():
                 }), 202
 
     
-@user_bp.route('/get_user_id', methods=['GET'])
+@app.route('/user/get_user_id', methods=['GET'])
 def get_user_id():
     head = request.headers
     print('head: ', head)
@@ -207,6 +207,9 @@ def get_user_id():
                     "data": None
                 }), 404
     
-# @user_bp.route('/cobalagi', methods=['GET'])
-# def get_id():
-    
+@app.route('/cobalagi', methods=['GET'])
+def get_id():
+    pass
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5006, debug=True)

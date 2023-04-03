@@ -62,8 +62,10 @@ const Star = ({ i, isHoveringWrapper, isClicked }) => {
     </>
   )
 }
-const StarRating = (props:any) => {
-  const [isClicked, setIsClicked] = useState(0);
+
+
+function Review(props:any) {
+  // const [isClicked, setIsClicked] = useState(0);
   const [isHovering, setIsHovering] = useState(0);
   const [specificProduct, setSpecificProduct] = useState({});
 
@@ -84,39 +86,40 @@ const StarRating = (props:any) => {
     })
   }
 
-  function giveRating() {
-    const data = {
-        product_id: props.ProductId,
-        review_description: "ehehhehh",
-        review_rating: isClicked,
-        user_id: 2
-    }
-    fetch(`http://127.0.0.1:5000/review/giverating`, {
-      method:'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-  })
-  .then((response) => {
-    response.json()
-    getSpecificProduct(props.ProductId)
-  })
-  .then((data) => {
-    const avgRating:any = getAvgRating(props.ProductId)
-    console.log("Success:", data)
-    setSpecificProduct({
-      ...specificProduct,
-      AvgRating: avgRating
-    })
-})
-.then(() =>
-{navigate('/')
-})
-  .catch((error) => {
-    console.error("Error:", error);
-  });
-}
+//   function giveRating() {
+//     const data = {
+//         OrderId: props.OrderId,
+//         ProductId: props.ProductId,
+//         Description: "ehehhehh",
+//         Rating: isClicked,
+//         UserId: "1"
+//     }
+//     fetch(`http://127.0.0.1:5000/review/giverating`, {
+//       method:'POST',
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify(data)
+//   })
+//   .then((response) => {
+//     response.json()
+//     getSpecificProduct(props.ProductId)
+//   })
+//   .then((data) => {
+//     const avgRating:any = getAvgRating(props.ProductId)
+//     console.log("Success:", data)
+//     setSpecificProduct({
+//       ...specificProduct,
+//       AvgRating: avgRating
+//     })
+// })
+// .then(() =>
+// {navigate('/')
+// })
+//   .catch((error) => {
+//     console.error("Error:", error);
+//   });
+// }
   
   return (
     <>
@@ -126,21 +129,21 @@ const StarRating = (props:any) => {
           <motion.div 
             className="star-wrapper"
             onMouseOver={() => setIsHovering(i)}
-            onClick={() => {i!=isClicked ? setIsClicked(i) : setIsClicked(0)}}
+            onClick={() => {i != props.isClicked ? props.setIsClicked(i) : props.setIsClicked(0)}}
             key={i}
           >
             <Star 
               i={i}   
               isHoveringWrapper={isHovering >= i} 
-              isClicked={isClicked >= i}    
+              isClicked={props.isClicked >= i}    
             />  
           </motion.div>
         ))}
       </div>
-    <button disabled = {isClicked < 1} onClick={() => giveRating()}>Add Review</button>
+    {/* <button disabled = {props.isClicked < 1} onClick={() => giveRating()}>Add Review</button> */}
     </div>
     </>
   )
 }
 
-export default StarRating;
+export default Review;

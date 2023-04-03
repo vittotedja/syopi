@@ -9,9 +9,12 @@ export default function ProductsList() {
   const [Stock, setStock] = useState(0)
 
   function fetchData() {  
-    fetch("http://127.0.0.1:5000/recommender")
+    fetch("http://127.0.0.1:5010/recommender")
     .then((response) => response.json())
     .then((data) => setProducts(data))
+    .catch((error)=>{
+      console.log(error)
+    })
   }
 
   function addProduct() {
@@ -21,7 +24,7 @@ export default function ProductsList() {
         Stock: Stock,
         Price: 1
     }
-    fetch('http://127.0.0.1:5000/product', {
+    fetch('http://127.0.0.1:5002/product', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"

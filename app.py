@@ -28,6 +28,3 @@ app.register_blueprint(user_bp)
 app.register_blueprint(view_cart_bp)
 app.register_blueprint(stripe_bp)
 app.register_blueprint(process_order_bp)
-
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
