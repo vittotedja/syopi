@@ -14,10 +14,6 @@ url = os.environ.get("SHIPPING_URL")
 key = os.environ.get("SHIPPING_KEY")
 supabase = create_client(url, key)
 
-url = os.environ.get("SHIPPING_URL")
-key = os.environ.get("SHIPPING_KEY")
-supabase = create_client(url, key)
-
 # Seller requests shipping
 @app.route("/shipping/request", methods=['POST'])
 def request_shipping():
