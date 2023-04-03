@@ -1,0 +1,33 @@
+.order-cart{
+    border: 1px solid #e0e0e0;
+    margin: 5px;
+    background-color:rgb(245, 189, 189);
+    border-radius: 10px;
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 0px;
+}
+
+.content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: white;
+    margin: 0;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+ .ordercard-orderid{
+    font-weight: bold;
+    padding-right: 10px;
+ }

@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import Products from "./Products";
 import "./Products.css";
 
-function ProductsList() {
+export default function ProductsList() {
   const [products, setProducts] = useState(Array())
   const [ProductName, setProductName] = useState('Vitto Jelek')
   const [ShopId, setShopId] = useState(0)
   const [Stock, setStock] = useState(0)
 
   function fetchData() {  
-    fetch("http://127.0.0.1:5000/recommender")
+    fetch("http://127.0.0.1:5010/recommender")
     .then((response) => response.json())
     .then((data) => setProducts(data))
+    .catch((error)=>{
+      console.log(error)
+    })
   }
 
   function addProduct() {
@@ -21,7 +24,7 @@ function ProductsList() {
         Stock: Stock,
         Price: 1
     }
-    fetch('http://127.0.0.1:5000/product', {
+    fetch('http://127.0.0.1:5002/product', {
         method:'POST',
         headers: {
           "Content-Type": "application/json"
@@ -37,16 +40,15 @@ function ProductsList() {
       console.error("Error:", error);
     });
 }
-
-
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <div>
       Discover Your Recomended Products!
       <br/>
-      <button onClick={() => addProduct()}>add product</button>
+      {/* <button onClick={() => addProduct()}>add product</button> */}
       <div className="product-list">
         {products.map((product) => {
           return <Products 
@@ -64,4 +66,3 @@ function ProductsList() {
   );
 }
 
-export default ProductsList;

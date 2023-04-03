@@ -32,11 +32,8 @@
 .col-12 {width: 100%;}
 
 .seller-info{
-    position:-webkit-sticky;
-    position: sticky;
-    top: 20px;
-    padding: 20px;
-    background-color: pink;
+    text-align: left;
+    padding-left: 20px;
 }
 
 .seller-img{
@@ -58,18 +55,27 @@
 
 .seller-name{
     font-weight: bold;
-    font-size: 30px;
+    font-size: 20px;
     
 }
 
 .seller-page{
     font-size: 20px;
+    text-align: left;
+    margin-top: 10px;
 }
 
 .seller-menu{
     position: -webkit-sticky;
-    position:sticky;
-    top: 50px;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    padding-top: 20px;
+}
+
+.seller-menu Button{
+    width: 100%;
+    padding: 10px;
 }
 
 .seller-page-title{

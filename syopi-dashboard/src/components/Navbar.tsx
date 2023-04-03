@@ -12,7 +12,7 @@ function Navbar() {
   return (
     <div className='navbar flex'>
         <img src={logo} alt="Logo" width={"60px"} onClick={() => navigate('/')} style={{cursor: 'pointer'}}/>
-          <HiSearch className = "icon"/>
+          {/* <HiSearch className = "icon"/> */}
           <SearchBar components={{ DropdownIndicator:() => null, IndicatorSeparator:() => null }}/>
           <HiBell className="icon notif"/>
           <div onClick={() => navigate('/cart')}>

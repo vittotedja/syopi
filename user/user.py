@@ -10,8 +10,8 @@ key = os.environ.get('USER_KEY')
 # get_jwt = os.environ.get('USer_JWT')
 supabase = create_client(url, key)
 
-user_bp = Blueprint('user', __name__)
-cors = CORS(user_bp)
+app = Flask(__name__)
+cors = CORS(app)
 
 @user_bp.route('/get_owner_and_admin', methods=['GET'])
 def get_owner_and_admin():
@@ -22,7 +22,7 @@ def get_owner_and_admin():
     else:
         return 'error: No users found.', 404
     
-@user_bp.route('/get_shop/<string:user_id>', methods=['GET'])
+@app.route('/get_shop/<string:user_id>', methods=['GET'])
 def get_shop(user_id):
     res = supabase.table('UserPublic').select('*').eq('id', user_id).execute()
     # Return JSON response
@@ -31,7 +31,7 @@ def get_shop(user_id):
     else:
         return 'error: No users found.', 404
     
-@user_bp.route('/openshop', methods=['PUT'])
+@app.route('/user/openshop', methods=['PUT'])
 def openshop():
     print('Received request for openshop')
     # print(supabase.auth.get_user())
@@ -68,8 +68,20 @@ def openshop():
                 "data": None
             }), 404
 
+@app.route('/user/createshop', methods=['PUT', 'GET'])
+def createshop():
+    print('semoga jalan ya Tuhan')
+    res = supabase.table('UserPublic').select('*').execute()
+    session = supabase.auth.get_session()
+    print(session)
+    return jsonify({
+                    "code": 202,
+                    "message": session,
+                    "data": session
+                }), 202
+
     
-@user_bp.route('/get_user_id', methods=['GET'])
+@app.route('/user/get_user_id', methods=['GET'])
 def get_user_id():
     # Fetch all users from Supabase
     res = supabase.table('TempUser').select('*').execute()
