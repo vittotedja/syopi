@@ -4,23 +4,25 @@ import './Seller.css'
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 
-function AddProduct() {
+export default function AddProduct(props:any) {
     let [productName, setProductName] = useState()
     let [category, setCategory] = useState()
     let [productDescription, setProductDescription] = useState()
     let [price, setPrice] = useState()
     let [stock, setStock] = useState()
     const [image, setImage] = useState([])
+    
 
     // const handleFileSelected = (e) => {
     //     // setImage(e.target.files[0]);
     //     console.log(files)
     //     };
 
-    function checkUpload(event){
+    function checkUpload(event:any){
         console.log(event.target.files)
         // setImage(event.target.files)
         // console.log(image)
@@ -48,7 +50,7 @@ function AddProduct() {
 
     // }
 
-    function addProduct() {
+function addProduct() {
         const sentData = {
             ProductName: productName,
             Category: category,
@@ -79,10 +81,75 @@ function AddProduct() {
 
     return (
         <>
-        <div className='seller-container'>
+        <Modal show = {props.show} size='lg' onHide= {props.onHide} centered>
+        <Modal.Header closeButton>
+        <Modal.Title>
+                    Add Product
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+      <form className='seller-form'>
+                <div className='row' style={{margin:'0'}}>
+                    <div className='col-4 seller-grid'>
+                        <p>Product Name</p>
+                    </div>
+                    <div className='col-8'>
+                        <input type='text' className='form-control' placeholder='Product Name' onChange={(e) => setProductName(e.target.value)}/>
+                        
+                    </div>
+                </div>
+                <div className='row' style={{margin:'0'}}>
+                    <div className='col-4 seller-grid'>
+                        <p>Category</p>
+                    </div>
+                    <div className='col-8'>
+                        <input type='text' className='form-control' placeholder='Category' onChange={(e) => setCategory(e.target.value)}/>
+                    </div>
+                </div>
+                <div className='row' style={{margin:'0'}}>
+                    <div className='col-4 seller-grid'>
+                        <p>Product Description</p>
+                    </div>
+                    <div className='col-8'>
+                        <textarea className='form-control' placeholder='Product Description' onChange={(e) => setProductDescription(e.target.value)}/>
+                    </div>
+                </div>
+                <div className='row' style={{margin:'0'}}>
+                    <div className='col-4 seller-grid'>
+                        <p>Price</p>
+                    </div>
+                    <div className='col-8'>
+                        <input type='text' className='form-control' placeholder='10.00' onChange={(e) => setPrice(e.target.value)}/>
+                    </div>
+                </div>
+                <div className='row' style={{margin:'0'}}>
+                    <div className='col-4 seller-grid'>
+                        <p>Stock</p>
+                    </div>
+                    <div className='col-8'>
+                        <input type='text' className='form-control' placeholder='Input Total Stock Available' onChange={(e) => setStock(e.target.value)}/>
+                    </div>
+                </div>
+                <div className='row' style={{margin:'0'}}>
+                    <div className='col-4 seller-grid'>
+                        <p>Image</p>
+                    </div>
+                    <div className='col-8'>
+                    <input type="file" name="image[]" onChange={checkUpload} multiple/>
+                    {image}
+                    </div>
+                </div>
+                <div className='row'>
+                    <button onClick={()=> addProduct()}>Submit</button>
+                </div>
+            </form>
+        
+      </Modal.Body>
+        </Modal>
+        {/* <div className='seller-container'>
             <div className='row'>
                 <div className='col-12'>
-                    <p className='seller-page-title'>Add Produk</p>
+                    <p className='seller-page-title'>Add Product</p>
                 </div>
             </div>
         </div>
@@ -142,9 +209,7 @@ function AddProduct() {
                     <Button onClick={()=> addProduct()}>Submit</Button>
                 </div>
             </form>
-        </div>
+        </div> */}
         </>
     )
     }
-
-    export default AddProduct

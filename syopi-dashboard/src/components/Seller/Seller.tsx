@@ -16,18 +16,19 @@ export default function Seller() {
   const [orderData, setOrderData] = useState(Array)
   const shopId = '9413c28a-3b0b-4955-9ac9-5171a3f8631d'
   const [productData, setproductData] = useState(Array)
+  const [showAddProduct, setshowAddProduct] = useState(false)
   
   const fetchData = () => {
     fetch('http://127.0.0.1:5000/order/get_all_order/' + shopId)
       .then(res => res.json())
       .then(data => setOrderData(data));
-      fetch (`http://127.0.0.1:5000/product`)
+      fetch (`http://127.0.0.1:5002/product`)
       .then(response => response.json())
       .then(data => setproductData(data))
     }
  
   useEffect(() => {
-    fetchData()
+    // fetchData()
   }, [])
 
   
@@ -72,7 +73,7 @@ export default function Seller() {
     <Navbar/>
       <div className='seller-container'>
       <div className='row' style={{margin:'0'}}>
-        <div className='col-3' style={{margin: '20px'}}>
+        <div className='col-3'>
           <div className='seller-menu'>
           <div className='row'>
           <div className='col-3'>
@@ -86,9 +87,9 @@ export default function Seller() {
           </div>
           
           
-          <p><Button onClick={()=>{setshowProduct(true); setshowSales(false); setshowSettings(false)}} className='seller-page'>Product</Button></p>
-          <p><Button onClick={()=>{setshowProduct(false); setshowSales(true); setshowSettings(false)}} className='seller-page'>Sales</Button></p>
-          <p><Button onClick={()=>{setshowProduct(false); setshowSales(false); setshowSettings(true)}} className='seller-page'>Settings</Button></p>
+          <p><button onClick={()=>{setshowProduct(true); setshowSales(false); setshowSettings(false)}} className='seller-page'>Product</button></p>
+          <p><button onClick={()=>{setshowProduct(false); setshowSales(true); setshowSettings(false)}} className='seller-page'>Sales</button></p>
+          <p><button onClick={()=>{setshowProduct(false); setshowSales(false); setshowSettings(true)}} className='seller-page'>Settings</button></p>
           </div>
         </div>
         
@@ -106,7 +107,8 @@ export default function Seller() {
                     <p className='seller-page-title'>Product</p>
                     </div>
                     <div className='col-3 add-product-btn'>
-                      <Button variant='success' onClick={() => navigate('addproduct')}>Add Product</Button>
+                      <button onClick={() => setshowAddProduct(true)}>Add Product</button>
+                      <AddProduct show = {showAddProduct} onHide={() => setshowAddProduct(false)}/>
                     </div>
                   </div>
                   <div className='row' style={{marginBottom:'10px'}}>
@@ -143,7 +145,7 @@ export default function Seller() {
                     <p className='seller-page-title'>Settings</p>
                     </div>
                     <div className='col-3 add-product-btn'>
-                      <Button variant='success' onClick={() => navigate('addproduct')}>Add Admin</Button>
+                      <button onClick={() => navigate('addproduct')}>Add Admin</button>
                     </div>
                   </div>
                   <div className='row' style={{marginBottom:'10px'}}>
@@ -155,7 +157,9 @@ export default function Seller() {
                   <hr/>
                   </div>
                   <div className='row'>
+                    <div className='col-12'>
                     No Admin Registered
+                    </div>
                   </div>
                   </>
           })()

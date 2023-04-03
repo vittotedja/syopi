@@ -23,7 +23,7 @@ def get_all_products():
     # GET request
     if request.method == 'GET':
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
-        return response.data
+        return jsonify(response.data)
 
     # POST request
     if request.method == 'POST':
