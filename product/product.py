@@ -55,7 +55,7 @@ def search_bar(keyword):
 # For search.py to preload items
 @app.route('/product/search', methods=['GET'])
 def search():
-    keyword = request.args.get('keyword')
+    keyword = request.args.get('keyword',"")
     page = int(request.args.get('page', 1))
     response = supabase.table('product').select('*, ImageUrls(ImageUrl)', count='exact').neq('Stock', 0).like('ProductName', f'%{keyword}%').order('AvgRating').range((page - 1)*10, page*10).execute()
     return response.json()

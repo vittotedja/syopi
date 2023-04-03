@@ -3,4 +3,4 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN python -m pip install --no-cache-dir -r requirements.txt
 COPY . .
-CMD ["python","./stripe.py"]
+CMD ["python","./stripe_app.py"]

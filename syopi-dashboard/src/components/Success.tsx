@@ -22,14 +22,37 @@ export default function Success(){
         });
     }
 
-    function getStripeData() {
-        fetch(`http://localhost:5000/retrieve-payment-intent/${searchTerm}`)
+    async function clearCart(productIds:any) {
+        try {
+            const response = await fetch('http://cart1:5007/cart/clear/1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ product_ids: productIds }),
+            });
+            const data = await response.json();
+            if (data.status === 'success') {
+                console.log('Selected items removed from cart.');
+            } else {
+                console.error('Failed to remove items from cart:', data.message);
+            }
+        } catch (error) {
+            console.error('Error removing items from cart:', error);
+        }
+    }
+
+    
+
+    function getStripeData(searchTerm:any) {
+        fetch(`http://stripe_app1:5011/retrieve-payment-intent/${searchTerm}`)
         .then((response) => response.json())
         .then((data) => {
             const orderedItems = data.metadata
+            const productIdsToClear = Object.keys(orderedItems);
             for (let item in orderedItems) {
                 const product = async () => {
-                    const response = await fetch(`http://localhost:5000/product/${item}`)
+                    const response = await fetch(`http://product1:5002/product/${item}`)
                     const productData = await response.json()
                     const usedData = productData[0]
                     const shopId = usedData.ShopId
@@ -43,6 +66,8 @@ export default function Success(){
                 }
                 product()
             }
+            console.log(productIdsToClear)
+            clearCart(productIdsToClear);
         })
     }
 

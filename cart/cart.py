@@ -58,6 +58,19 @@ def updatequantity():
     res = supabase.table('Cart').update({'Quantity': data["Quantity"]}).eq('UserId', "1").eq('ProductId', data["ProductId"]).execute()
     return res.data, 200
 
+@app.route('/cart/clear/<string:userid>', methods=['POST'])
+def clear_cart(userid):
+    data = request.get_json()
+    product_ids = data.get('product_ids', [])
+    
+    if not product_ids:
+        return {'status': 'error', 'message': 'No product IDs provided.'}, 400
+
+    for product_id in product_ids:
+        res = supabase.table('Cart').delete().eq('UserId', 1).eq('ProductId', product_id).execute()
+
+    return {'status': 'success'}, 200
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5007, debug=True)

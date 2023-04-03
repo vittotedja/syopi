@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from './Context.jsx'
 import UserOrder from './UserOrder.js'
 import { supabase } from "./Client";
+import Navbar from '../Navbar.js';
 
 const Homepage = () => {
   let navigate = useNavigate()

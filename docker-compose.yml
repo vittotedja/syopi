@@ -81,7 +81,7 @@ services:
       - shop
       - user
       - process_order
-      - stripe
+      - stripe_app
   
   #######################################
   # Konga: Kong GUI
@@ -358,13 +358,13 @@ services:
    ##################################
   # stripe: The stripe microservice
   ##################################
-  stripe:
+  stripe_app:
     build:
-      context: ./stripe
+      context: ./stripe_app
       dockerfile: Dockerfile
-    image: jrenaldi/stripe:syopi
-    container_name: stripe1
-    hostname: stripe1
+    image: jrenaldi/stripe_app:syopi
+    container_name: stripe_app1
+    hostname: stripe_app1
     restart: always
     depends_on:
       - product

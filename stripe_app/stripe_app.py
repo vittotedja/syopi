@@ -12,7 +12,7 @@ stripe.api_key = 'sk_test_51MrgP0BJIMpkY9J2JBqVmLA4gjghReMD7rCJZ1dY3WDmJMqXNAFfL
 app = Flask(__name__, static_folder='public',
             static_url_path='', template_folder='public')
 
-cors = CORS(app)
+CORS(app)
 
 product_URL = os.environ.get("product_URL")
 
@@ -20,14 +20,18 @@ def calculate_order_amount(items):
     total = 0
     for productId in items:
         print(productId)
-        res = requests.get(f'http://127.0.0.1:5002/{productId}')
+        res = requests.get(f'http://product1:5002/product/{productId}')
+        if res.status_code != 200:
+            print(f"Error fetching product {productId}: {res.status_code} {res.content}")
+            continue
         res = res.json()
         data = res[0]
+        print(data)
         total += int(round(data['Price'] * items[productId],2)*100)
+    return total
     # Replace this constant with a calculation of the order's amount
     # Calculate the order total on the server to prevent
     # people from directly manipulating the amount on the client
-    return total
 
 
 @app.route('/stripe/create-payment-intent', methods=['POST'])
@@ -49,10 +53,10 @@ def create_payment():
         'clientSecret': payment_intent['client_secret']
     })
 
-# @app.route('/stripe/retrieve-payment-intent/<string:clientID>', methods=['GET'])
-# def retrieve_payment(clientID):
-#     data = srp.PaymentIntent.retrieve(clientID)
-#     return data
+@app.route('/stripe/retrieve-payment-intent/<string:clientID>', methods=['GET'])
+def retrieve_payment(clientID):
+    data = stripe.PaymentIntent.retrieve(clientID)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5011, debug=True)

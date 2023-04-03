@@ -13,7 +13,7 @@ export default function SearchResult(props: any) {
   }, [props.keyword, props.page])
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5010/recommender/search?keyword=" + keyword + "&page=" + page)
+    fetch("http://127.0.0.1:5002/product/search?keyword=" + keyword + "&page=" + page)
     .then((response) => response.json())
     .then((data) => {setProducts(data.data), props.setCount(data.count)})
   }, [page])
