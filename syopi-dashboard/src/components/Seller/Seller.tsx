@@ -21,7 +21,7 @@ export default function Seller() {
   const [showAddAdmin, setshowAddAdmin] = useState(false)
   
   const fetchData = () => {
-    fetch('http://127.0.0.1:5000/order/get_all_order/' + shopId)
+    fetch('http://127.0.0.1:5001/order/get_shop_order/' + shopId)
       .then(res => res.json())
       .then(data => setOrderData(data));
       fetch (`http://127.0.0.1:5002/product`)
@@ -30,7 +30,7 @@ export default function Seller() {
     }
  
   useEffect(() => {
-    // fetchData()
+    fetchData()
   }, [])
 
   
@@ -135,6 +135,7 @@ export default function Seller() {
                   <hr/>
                   </div>
                   {orderData.map((order:any) => {
+                    console.log(order)
                     return <SellerOrder key={order[0].OrderId} orderData={order}/>
                   })}
                   </>

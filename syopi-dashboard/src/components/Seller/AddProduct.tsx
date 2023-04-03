@@ -14,19 +14,13 @@ export default function AddProduct(props:any) {
     let [productDescription, setProductDescription] = useState()
     let [price, setPrice] = useState()
     let [stock, setStock] = useState()
-    const [image, setImage] = useState([])
+    const [image, setImage] = useState(Object)
     
 
     // const handleFileSelected = (e) => {
     //     // setImage(e.target.files[0]);
     //     console.log(files)
     //     };
-
-    function checkUpload(event:any){
-        console.log(event.target.files)
-        // setImage(event.target.files)
-        // console.log(image)
-    }
 
     // function uploadImage(){
     //     const avatarFile = event.target.files[0]
@@ -135,8 +129,8 @@ function addProduct() {
                         <p>Image</p>
                     </div>
                     <div className='col-8'>
-                    <input type="file" name="image[]" onChange={checkUpload} multiple/>
-                    {image}
+                    <input type="file" name="image[]" onChange={(e: Event) => console.log(setImage(e.target.files))} multiple/>
+                    {/* {image} */}
                     </div>
                 </div>
                 <div className='row'>
