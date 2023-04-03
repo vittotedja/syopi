@@ -6,7 +6,7 @@ import requests
 from flask_cors import CORS, cross_origin
 import json
 import os
-from pandas import pd
+import pandas as pd
 
 app = Flask(__name__)
 CORS(app)

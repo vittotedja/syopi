@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify, render_template, Blueprint
 from flask_cors import CORS, cross_origin
 import os
 from supabase import create_client
+import pandas as pd
 
 supabase_url = os.getenv('ORDER_URL')
 supabase_key = os.getenv('ORDER_KEY')
@@ -18,6 +19,11 @@ def getall_order():
     order = supabase.table("order").select("*").execute()
     return jsonify(order.data)
 
+@app.route('/order/get_shop_order/<string:shopId>', methods=['GET'])
+def get_shop_order(shopId):
+    response = supabase.table("order").select("*").eq("ShopId", shopId).execute()
+    order = pd.DataFrame(response.data).groupby("OrderId").apply(lambda x: x.to_dict(orient='records')).to_list()
+    return order
 
 @app.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
 def find_by_orderid(OrderId):
