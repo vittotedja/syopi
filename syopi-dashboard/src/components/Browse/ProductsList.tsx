@@ -45,7 +45,7 @@ export default function ProductsList() {
     <div>
       Discover Your Recomended Products!
       <br/>
-      <button onClick={() => addProduct()}>add product</button>
+      {/* <button onClick={() => addProduct()}>add product</button> */}
       <div className="product-list">
         {products.map((product) => {
           return <Products 

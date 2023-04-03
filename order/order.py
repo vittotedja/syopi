@@ -98,3 +98,9 @@ def cancel_order(orderid):
             "message": "can't be returned."
         }
     ), 404
+
+# Get all orders by status
+@order_bp.route("/order/getall_order_by_status/<string:status>", methods=['GET'])
+def get_all_order_by_status(status):
+    order = supabase.table("order").select("*").eq("OrderStatus", status).execute()
+    return order.data

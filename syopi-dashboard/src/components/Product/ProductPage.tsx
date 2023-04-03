@@ -12,11 +12,12 @@ function ProductPage() {
   let { productId } = useParams()
   const [data, setData] = useState(Object)
   const [quantity, setQuantity] = useState(1)
+  const [mainImage, setMainImage] = useState<string>('')
 
   function fetchData() {  
     fetch(`http://127.0.0.1:5000/product/${productId}`)
     .then((response) => response.json())
-    .then((data) => setData(data[0]))
+    .then((data) => {setData(data[0]); setMainImage(data[0].ImageUrls[0].ImageUrl)})
   }
 
   function addToCart() {
@@ -59,7 +60,7 @@ function ProductPage() {
         </div>
         <div className='row'>
           <div className='col-6 productimg'>
-            <img src={productpics} width='60%' style={{display: 'initial'}}/> 
+            <img src={mainImage} width='60%' style={{display: 'initial'}}/> 
             {/* Should have been a carousel but idk why it doesnt work */}
             <div className='row'>
               <div className='col-4'>
@@ -80,10 +81,10 @@ function ProductPage() {
             <p className='productName'>{data.ProductName}</p>
             <div className='rating-row'>
               <div className='col-3'>
-                Sold 50+
+                Sold {data.AmountSold}
               </div>
               <div className='col-2 rating'>
-              <AiFillStar style={{color: "gold"}}/> 5 
+              <AiFillStar style={{color: "gold"}}/> {data.AvgRating} 
               </div>
               <div className='col-3'>
               <a href='#review'>Review 40+</a>
@@ -146,10 +147,10 @@ function ProductPage() {
       <div className='container'>
         <div className='row' style={{margin:'0'}}>
           <div className='col-1 productcart'>
-            <img src={productpics} width='50px' className='imgcart'/>
+            <img src={mainImage} width='50px' className='imgcart'/>
           </div>
           <div className='col-5 productcart'>
-            <p className='namecart'>Laptop paling bener dan canggih</p>
+            <p className='namecart'>{data.ProductName}</p>
           </div>
           <div className='col-2 productcart' style={{display:'flex'}}>
             <Button onClick={() => kurangin()}>-</Button>
