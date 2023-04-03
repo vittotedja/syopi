@@ -1,14 +1,21 @@
 from flask import Flask, jsonify, request, Blueprint
 from flask_cors import CORS
 import requests
+import os
 
-browse_bp = Blueprint('browse', __name__)
+app = Flask(__name__)
 
-cors = CORS(browse_bp)
+CORS(app)
+
+recommender_URL = os.environ.get("recommender_URL")
  
-@browse_bp.route('/browse', methods=['GET', 'POST'])
+@app.route('/browse', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        res = requests.get('http://127.0.0.1:5000/recommender')
+        res = requests.get(recommender_URL)
         product_list = res.json()
         return product_list
+    
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5007, debug=True)

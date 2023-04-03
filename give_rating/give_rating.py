@@ -5,11 +5,15 @@ from flask import Flask, request, jsonify, Blueprint
 import requests
 from flask_cors import CORS, cross_origin
 from supabase import create_client
+import os
 
-give_rating_bp = Blueprint('give_rating', __name__)
-cors = CORS(give_rating_bp)
+app = Flask(__name__)
+cors = CORS(app)
 
-@give_rating_bp.route('/rating/<string:ProductId>', methods=['GET'])
+review_URL = os.environ.get("review_URL")
+product_URL = os.environ.get("product_URL")
+
+@app.route('/rating/<string:ProductId>', methods=['GET'])
 def index(ProductId):
     res = requests.get(f'http://127.0.0.1:5000/review/getreviewrating/{ProductId}')
     rating_list = res.json()
@@ -19,11 +23,14 @@ def index(ProductId):
         sum += rating_list[i]['review_rating']
         count += 1
     avgRating = sum/count
-    x = requests.get(f'http://127.0.0.1:5000/product/{ProductId}/{avgRating}')
+    x = requests.get(f'{product_URL}/{ProductId}/{avgRating}')
     return x.json()[0]
 
-# @give_rating_bp.route('/giverating/<string:ProductId>', methods=['POST'])
+# @app.route('/giverating/<string:ProductId>', methods=['POST'])
 # def give_rating(ProductId):
 #     data = request.get_json()
 #     response = review.table('review').insert(data).execute()
 #     return response.data    
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5009, debug=True)

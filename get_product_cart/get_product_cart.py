@@ -5,11 +5,19 @@ from flask import Flask, request, jsonify, Blueprint
 import requests
 from flask_cors import CORS, cross_origin
 import json
+import os
 
-get_product_cart_bp = Blueprint('get_product_cart', __name__)
-cors = CORS(get_product_cart_bp)
 
-@get_product_cart_bp.route('/getcartsproduct/<string:userid>', methods=['GET'])
+app = Flask(__name__)
+CORS(app)
+
+user_URL = os.environ.get("user_URL")
+product_URL = os.environ.get("product_URL")
+shop_URL = os.environ.get("shop_URL")
+
+
+
+@app.route('/getcartsproduct/<string:userid>', methods=['GET'])
 def get_cart(userid):
     productIdDict = {'data': []}
     shopIdDict = {"data": []}
@@ -34,3 +42,6 @@ def get_cart(userid):
     return jsonify({
         "data": final_list
     })
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5008, debug=True)
