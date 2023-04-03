@@ -9,7 +9,7 @@ from search.search import search_bp
 from order.order import order_bp
 from user.cart import cart_bp
 from user.user import user_bp
-from get_product_cart.get_product_cart import get_product_cart_bp
+from view_cart.view_cart import view_cart_bp
 from payment.stripe import stripe_bp
 from process_order.process_order import process_order_bp
 
@@ -25,7 +25,7 @@ app.register_blueprint(search_bp)
 app.register_blueprint(order_bp)
 app.register_blueprint(cart_bp)
 app.register_blueprint(user_bp)
-app.register_blueprint(get_product_cart_bp)
+app.register_blueprint(view_cart_bp)
 app.register_blueprint(stripe_bp)
 app.register_blueprint(process_order_bp)
 

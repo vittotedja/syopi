@@ -48,7 +48,7 @@ def search_by_name(search_term, limit=10):
     #sorted_shops is a list of the exact match at the top, then similar shops
     sorted_shops = exact_match + similar_shops
     #results
-    results = [{'id': shop["id"], 'name': shop["name"], 'address': shop["address"], 'phone_number': shop["phone_number"], "active": shop["active"]} for shop in sorted_shops]
+    results = [{'id': shop["ShopId"], 'name': shop["ShopName"], 'address': shop["ShopAddress"], 'phone_number': shop["ShopPhoneNumber"], "active": shop["IsActive"]} for shop in sorted_shops]
 
     return jsonify({
         'data': results,
@@ -200,24 +200,17 @@ def deactivate_shop(name): #form to be rendered in app.jsx
                 "data": None
             }), 404
         
-@shop_bp.route('/shop/getmultipleshops', methods=['POST'])
+@shop_bp.route('/shop/get_multiple_shops', methods=['POST'])
 def get_multiple_shops():
     data = request.get_json()
-    print(data["data"])
-    response = supabase.table('shops').select("*").in_("id", data["data"]).execute()
-    if response:
-        return jsonify({
-                "code": 200,
-                "message": "Stores found",
-                "data": response.data
-                })
-    else:
-        return jsonify({})
+    # print(data["data"])
+    response = supabase.table('shops').select("*").in_("ShopId", data["data"]).execute()
+    return response.data
     
 
 @shop_bp.route('/shop/getshopbyid/<string:ShopId>', methods=['GET'])
 def getshopbyid(shopId):
-    response = supabase.table('shops').select("*").eq("id", shopId).execute()
+    response = supabase.table('shops').select("*").eq("ShopId", shopId).execute()
     if response:
         return jsonify({
                 "code": 200,

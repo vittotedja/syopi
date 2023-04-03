@@ -13,9 +13,10 @@ export default function Seller() {
   const navigate = useNavigate()
   const [showProduct, setshowProduct] = useState(true)
   const [orderData, setOrderData] = useState(Array)
+  const shopId = '9413c28a-3b0b-4955-9ac9-5171a3f8631d'
   
   const fetchData = () => {
-    fetch('http://127.0.0.1:5000/order/getall_order')
+    fetch('http://127.0.0.1:5000/order/get_all_order/' + shopId)
       .then(res => res.json())
       .then(data => setOrderData(data))
     }
@@ -51,7 +52,6 @@ export default function Seller() {
     .then((response) => response.json())
     .then((data) => console.log(data))
   }
-
   return (
     <>
     <Navbar/>
@@ -105,7 +105,17 @@ export default function Seller() {
 
           </>
           :
-          <SellerOrder orderData = {orderData}/>}
+          // {orderData.map((order:any) => {})}
+          // <SellerOrder orderData = {orderData}/>
+          <>
+            <div>
+                See All Orders
+            </div>
+            {orderData.map((order:any) => {
+              return <SellerOrder key={order[0].OrderId} orderData={order}/>
+            })}
+          </>
+        }
         </div>
       </div>
       </div>

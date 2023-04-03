@@ -32,10 +32,11 @@ def signup(userid, productid, quantity):
     
     return res.data, 200
 
-@cart_bp.route('/keranjang/<string:userid>', methods=['POST', 'GET'])
-def keranjang(userid):
-    res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
-    return res.data, 200
+# Get cart content for a user
+@cart_bp.route('/keranjang/<string:UserId>', methods=['POST', 'GET'])
+def keranjang(UserId):
+    res = supabase.table('Cart').select('*').eq('UserId', UserId).execute()
+    return res.data
 
 @cart_bp.route('/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def tambahcart(productid, quantity):
