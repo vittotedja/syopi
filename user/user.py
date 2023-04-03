@@ -13,87 +13,6 @@ supabase = create_client(url, key)
 user_bp = Blueprint('user', __name__)
 cors = CORS(user_bp)
 
-@user_bp.route('/getbyemail/<string:email>', methods=['GET', 'POST'])
-def get_by_email(email):
-    # Fetch all users from Supabase
-    res = supabase.table('User').select('*').eq('Email', email).execute()
-    # Return JSON response 
-    if res:
-        return res.data, 200
-    else:
-        return 'error: No users found.', 404
-    
-@user_bp.route('/getbyname/<string:username>', methods=['GET', 'POST'])
-def get_by_name(username):
-    # Fetch all users from Supabase
-    res = supabase.table('User').select('*').eq('Username', username).execute()
-    # Return JSON response 
-    if res:
-        return res.data, 200
-    else:
-        return 'error: No users found.', 404
-    
-@user_bp.route('/getbyshop/<string:shop>', methods=['GET', 'POST'])
-def get_by_shop(shop):
-    # Fetch all users from Supabase
-    res = supabase.table('User').select('*').eq('ShopId', shop).execute()
-    # Return JSON response 
-    if res:
-        return res.data, 200
-    else:
-        return 'error: No users found.', 404
-    
-    
-
-@user_bp.route('/setshop/<string:userid>/<string:shopid>', methods=['POST', 'PUT'])
-def setshop(userid, shopid):
-    res = supabase.table('User').update({"ShopId": shopid}).eq('UserId', userid).execute()
-    return jsonify(list(res))
-
-@user_bp.route('/updatecart/<string:userid>/<string:productid>/<int:qty>', methods=['POST', 'PUT'])
-def updatecart(userid, productid, qty):
-    res = supabase.table('Cart').update({"Quantity": qty}).eq('UserId', userid).eq('ProductId', productid).execute()
-    return jsonify(list(res))
-
-@user_bp.route('/getcart/<string:userid>/<string:productid>', methods=['GET', 'POST'])
-def get_cart(userid, productid):
-    # Fetch all users from Supabase
-    res = supabase.table('Cart').select('*').eq('UserId', userid).eq('ProductId', productid).execute()
-    # Return JSON response 
-    if res:
-        return res.data, 200
-    else:
-        return 'error: No users found.', 404
-
-@user_bp.route('/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
-def addtocart(userid, productid, quantity):
-    res = supabase.table('Cart').insert({
-        "UserId": userid,
-        "ProductId": productid,
-        "Quantity": quantity
-        }).execute()
-    
-    return res.data, 200
-
-
-@user_bp.route('/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
-def tambahcart(productid, quantity):
-    res = supabase.table('Cart').insert({
-        "ProductId": productid,
-        "Quantity": quantity
-        }).execute()
-    
-    return res.data, 200
-
-@user_bp.route('/keranjang/<string:userid>', methods=['POST', 'GET'])
-def keranjang(userid):
-    res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
-    return jsonify({
-        "code": 200,
-        "message": "Cart Returned",
-        "data": res.data
-    }), 200
-
 @user_bp.route('/get_owner_and_admin', methods=['GET'])
 def get_owner_and_admin():
     res = supabase.table('UserPublic').select('*').execute()
@@ -134,7 +53,7 @@ def openshop():
         supabase.table('Admin').insert({
             'shopid': shopid,
             'email': user_email
-        })
+        }).execute()
             
         return jsonify({
             "code": 202,
@@ -196,31 +115,3 @@ def assignadmin():
                 
         else:
             return "Email not found", 404
-
-    # if check_if_owner:
-    #     getshop = supabase.table('UserPublic').select('shopid').eq('id', sellerid).execute()
-    #     if getshop:
-    #         checkadmin = supabase.table('Admin').select('shopid').eq('id', get_admin[0][0]['id']).execute()
-    #     else:
-    #         return 'error: Please open a shop first.', 404 
-    #     res = supabase.table('UserPublic').select('*').eq('id', uid).execute()
-    #     print(res)
-    #     if res.data[0]['shopid'] is None:
-    #         supabase.table('UserPublic').update({
-    #                                               'shopid': shopid, 
-    #                                               'acc_type': 'owner', 
-    #                                               'shopname': shopname
-    #                                               }).eq('id', uid).execute()
-    #         return jsonify({
-    #             "code": 202,
-    #             "message": "yay",
-    #             "data": None
-    #         }), 202
-            
-    #     else:
-    #         return jsonify({
-    #                 "code": 404,
-    #                 "message": "User can only open 1 shop",
-    #                 "data": None
-    #             }), 404
-        

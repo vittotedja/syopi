@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "./Client";
 
@@ -46,14 +46,8 @@ const SignUp = () => {
       console.log("Error:", error);
   
       if (error) {
-        // if (error.code == "auth/email-already-in-use") {
-        //   alert(
-        //     "An account with this email already exists. Please sign in instead."
-        //   );
-        // } else {
-        //   throw error;
-        // }
         console.log(error)
+        
       } else {
         const { insertdata, error: insertError } = await supabase
           .from("UserPublic")
@@ -68,35 +62,17 @@ const SignUp = () => {
         console.log("Insert data:", insertdata);
         console.log("Insert error:", insertError);
   
-        if (insertError) {
-          throw insertError;
-        }
-        const {uselogin, error: loginerror} = await login(formData.email, formData.password)
-        const { tempdata, error: temperror } = await supabase
+        // if (insertError) {
+        //   throw insertError;
+        // }
+        await login(formData.email, formData.password)
+        await supabase
             .from("TempUser")
             .insert({
               id: data.user.id,
               email: formData.email,
             });
-
-        if (loginerror) {
-          console.log('Login error:', loginerror)
-        }
-        else {
-        console.log('login:', uselogin)
-        }
     }
-        // const { user, error } = await supabase.auth.signInWithPassword({
-        //   email: formData.email,
-        //   password: formData.password,
-        // });
-  
-        // console.log("User:", user);
-        // console.log("Error:", error);
-  
-        // if (error) {
-        //   throw error;
-        // }
   
       alert("Registration successful!");
       window.location.href = "/";

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './Context.jsx'
+import { supabase } from "./Client";
 
 const Homepage = () => {
   let navigate = useNavigate()
@@ -16,7 +17,9 @@ const Homepage = () => {
   // }
   async function handleLogout(e){
     e.preventDefault()
-    //console.log(data)
+    await supabase
+        .from("TempUser")
+        .delete().eq('id', user.id);
     await logout
     localStorage.clear()
     console.log('BYE')
