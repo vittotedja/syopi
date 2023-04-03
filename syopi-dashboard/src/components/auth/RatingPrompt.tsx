@@ -14,7 +14,7 @@ export default function RatingPrompt(props: any) {
   }
 
   function getSpecificProduct(ProductId: any) {
-    fetch(`http://127.0.0.1:5000/product/${ProductId}`)
+    fetch(`http://127.0.0.1:5002/product/${ProductId}`)
       .then((response: any) => response.json())
       .then((data: any) => {
         console.log(data);
