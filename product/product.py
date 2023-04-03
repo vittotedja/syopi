@@ -23,7 +23,14 @@ def get_all_products():
     # GET request
     if request.method == 'GET':
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
-        return jsonify(response.data)
+        if response:    
+            return response.data
+        return jsonify(
+        {
+            "code": 404,
+            "message": "Order not found."
+        }
+        ), 404
 
     # POST request
     if request.method == 'POST':
@@ -31,10 +38,19 @@ def get_all_products():
         response = supabase.table('product').insert(data).execute()
         return response.data
     
+        
 @app.route('/product/search/<string:keyword>', methods=['GET'])
 def search_bar(keyword):
     result = df_search[df_search.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
-    return result.to_json(orient='records')
+    if result.to_json(orient='records'):
+        if result.to_json(orient='records')!="[]":
+            return result.to_json(orient='records')
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Order not found."
+        }
+    ), 404
 
 # For search.py to preload items
 @app.route('/product/search', methods=['GET'])

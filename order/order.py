@@ -16,19 +16,20 @@ CORS(app)
 @app.route('/order/get_all_order', methods=['GET'])
 def getall_order():
     order = supabase.table("order").select("*").execute()
-    return jsonify(order.data)
-
+    if order:
+        return order.data
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Order not found."
+        }
+    ), 404
 
 @app.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
 def find_by_orderid(OrderId):
     order = supabase.table("order").select("*").eq("OrderId", OrderId).execute()
-    if order:
-        return jsonify(
-            {
-                "code": 200,
-                "data": order.json()
-            }
-        )
+    if order.data:
+        return order.data
     return jsonify(
         {
             "code": 404,
@@ -38,15 +39,16 @@ def find_by_orderid(OrderId):
 
 
 
-@app.route('/order/create_order', methods=['GET', 'POST'])
+
+@app.route('/order/create_order', methods=['POST'])
 def create_order():
     data = request.get_json()
     response = supabase.table('order').insert(data).execute()
     return response.data
+    
 
 
-
-
+"""
 @app.route("/order/delete/<string:OrderId>")
 def delete_order(OrderId):
     order = data = supabase.table("order").delete().eq("OrderId", OrderId).execute()
@@ -57,6 +59,7 @@ def delete_order(OrderId):
                 "data": order.json()
             }
         ), 201
+"""
 
 # Seller accepts order
 @app.route("/order/accept", methods=['POST'])
@@ -67,17 +70,19 @@ def update_order_status():
     return order.data
 
 # Courier accepts order delivery
+"""
 @app.route("/order/deliver/<string:OrderId>")
 def deliver_order(OrderId):
     order = supabase.table("order").update({"OrderId":OrderId, "OrderStatus": "In Delivery"}).eq("OrderId", OrderId).execute()
     return order.data
+"""
 
 # User confirms order delivery
 # @order_bp.route("/order/delivered/<string:orderid>")
 # def update_order_status(orderid):
 #     order = supabase.table("order").update({"OrderId":orderid, "OrderStatus": 'Delivered'}).eq("OrderId", orderid).execute().data
 #     return order
-
+"""
 @app.route("/order/cancelled/<string:orderid>", methods=['GET', 'POST', 'PUT'])
 def cancel_order(orderid):
     checkstatus = supabase.table("order").select("OrderStatus").eq("OrderId", orderid).execute()
@@ -101,7 +106,7 @@ def cancel_order(orderid):
             "message": "can't be returned."
         }
     ), 404
-
+"""
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
     
