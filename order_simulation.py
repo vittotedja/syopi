@@ -6,7 +6,7 @@ import sys
 
 import requests
 
-import amqp_setup
+import order.amqp_setup as amqp_setup
 import pika
 import json
 

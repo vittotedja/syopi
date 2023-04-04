@@ -5,6 +5,9 @@ from flask_cors import CORS, cross_origin
 import os
 from supabase import create_client
 import pandas as pd
+import amqp_setup
+import pika
+import json
 
 supabase_url = os.getenv('ORDER_URL')
 supabase_key = os.getenv('ORDER_KEY')
@@ -33,6 +36,28 @@ def get_shop_order(shopId):
         order = pd.DataFrame(response.data).groupby("OrderId").apply(lambda x: x.to_dict(orient='records')).to_list()
         return jsonify(order)
     return jsonify([])
+
+@app.route("/order/send_email", methods=['POST'])
+def place_order():
+    data = request.get_json()
+    print(data)
+    if data["code"] not in range(200, 300):
+        message = "Order Failed"
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="order.error",
+            body=message, properties=pika.BasicProperties(delivery_mode=2))
+        # make message persistent within the matching queues until it is received by some receiver
+        # (the matching queues have to exist and be durable and bound to the exchange)
+        return {
+            "code": 500,
+            "data": {"order_result": "Unsuccesful"},
+            "message": "Order creation failure sent for error handling."
+        }
+    else:
+        message = json.dumps({"message":"Order Success", "order": data})
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="order.order",
+            body=message)
+        print("EMAILING SUCCESS TO CLIENT")
+        return ("Email is sent")
 
 @app.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
 def find_by_orderid(OrderId):

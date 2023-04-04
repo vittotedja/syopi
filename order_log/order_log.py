@@ -83,12 +83,12 @@ def callback(channel, method, properties, body):
 		}
 	</style>"""
     table_content = ""
-    for item in data["order"]["order_items"]:
+    for item in data["order"]["order"]:
         print(item)
         table_content += f"""<tr>
-                            <td>{ item["productName"] }</td>
-                            <td>{ item["quantity"] }</td>
-                            <td>${ item["price"] }</td>
+                            <td>{ item["ProductName"] }</td>
+                            <td>{ item["Quantity"] }</td>
+                            <td>${ item["Price"] }</td>
                             </tr>"""
 
     message = {
@@ -102,7 +102,7 @@ def callback(channel, method, properties, body):
         <body>
             <div class="container">
                 <h1>Order Confirmation</h1>
-                <p>Dear { data["order"]["username"] },</p>
+                <p>Dear {data["order"]["email"]},</p>
                 <p>Thank you for your recent order with us. We have received your order and it is being processed. Below are the details of your order:</p>
                 <table>
                     <thead>
@@ -117,8 +117,7 @@ def callback(channel, method, properties, body):
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="2">Total:</td>
-                            <td>${ data["order"]["orderTotal"] }</td>
+                            <td colspan="2">Total:{data["order"]["orderTotal"]}</td>
                         </tr>
                     </tfoot>
                 </table>

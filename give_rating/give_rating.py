@@ -15,7 +15,7 @@ product_URL = os.environ.get("product_URL")
 
 @app.route('/rating/<string:ProductId>', methods=['GET'])
 def index(ProductId):
-    res = requests.get(f'http://127.0.0.1:5003/review/getreviewrating/{ProductId}')
+    res = requests.get(f'http://review1:5003/review/getreviewrating/{ProductId}')
     rating_list = res.json()
     sum  = 0
     count = 0
