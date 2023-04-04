@@ -1,11 +1,15 @@
 import React, {useEffect,useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import "./Courier.css";
+import Card from 'react-bootstrap/Card';
+import CourierCard from './CourierCard'
 
 export default function Courier(props: any) {
     const [orders, setOrders] = useState(Array)
     const [shippingData, setShippingData] = useState<any>({});
     const [shippingStatus, setShippingStatus] = useState<string>(props.ShippingStatus);
+    const [showNewShipping, setshowNewShipping] = useState(true)
+    const [showcurrentShipping, setshowcurrentShipping] = useState(false)
     let navigate = useNavigate();
 
     function fetchData(){
@@ -41,46 +45,62 @@ export default function Courier(props: any) {
 
   return (
     <>
-        <div>Courier</div>
-        <div>
-            See All Available Orders
+    <div className='seller-container'>
+      <div className='row'>
+        <div className='col-12'>
+          <p className='seller-page-title'>Courier</p>
+        </div>
+      </div>
+    <div className='row' style={{margin:'0'}}>
+        <div className='col-3'>
+          <div className='seller-menu'>
+          
+          
+          <p><button onClick={()=>{setshowNewShipping(true), setshowcurrentShipping(false)}} className='seller-page'>New Shipping Order</button></p>
+          <p><button onClick={()=>{setshowcurrentShipping(true),setshowNewShipping(false)}} className='seller-page'>Current Shipping Order</button></p>
+          </div>
         </div>
         
-        <div className="couriers">
-      <div className="row header">
-        Courier
-      </div>
-      <div className="row content">
-        <div>
-          <div
-            style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => navigate(`/product/${props.ProductId}`)}
-          >
-          Kucing
           
-          </div>
-          <div>Quantity: 2 {props.Quantity}</div>
-          <div>Total : S$ 5 {props.Price}</div>
-        </div>
-        <div>
           
-         
-          To: Cina {shippingData.UserAddress}
-          <br />
-          From: Indo {shippingData.ShopAddress}
-          <br />
-          Shipping Id: {shippingData.ShippingId}
-          <br />
-          Courier Id: {shippingData.CourierId}
-          <br />
-          Driver Id: {shippingData.DriverId}
-        </div>
-      </div>
-      <div className="row footer">
-        <div></div>
-        {shippingStatus == 'NULL' ? <button onClick={() => acceptShipping(props.OrderId)}> Accept Delivery </button>:
-        <button> Accept Delivery </button>}
-      </div>
+        <div className='col-9 output'>
+        {
+          (() => {
+              if (showNewShipping)
+                  return <>
+                  <div className='seller-menu'>
+                  <div className='row' style={{margin:'0'}}>
+                    
+                    <div className='col-12'>
+                    <p className='seller-page-title'>New Shipping Order</p>
+                    </div>
+                  </div>
+                  
+                  <hr/>
+                  </div>
+                  <CourierCard shippingData = {shippingData} shippingStatus = {shippingStatus}/>
+                </>
+              else (showcurrentShipping)
+                  return <>
+                  <div className='seller-menu'>
+                  <div className='row' style={{margin:'0'}}>
+                    
+                    <div className='col-12'>
+                    <p className='seller-page-title'>Current Shipping Order</p>
+                    </div>
+                  </div>
+                  <hr/>
+                  </div>
+                  <CourierCard shippingData = {shippingData} shippingStatus = {shippingStatus}/>
+                  {/* {orderData.map((order:any) => {
+                    console.log(order)
+                    return <SellerOrder key={order[0].OrderId} orderData={order}/>
+                  })} */}
+                  </>
+              
+          })()
+        }
+        </div></div>
     </div>
     </>
 
