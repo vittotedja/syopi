@@ -1,5 +1,6 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import './Navbar.css'
 
 export default function Success(){
     let navigate = useNavigate()
@@ -77,7 +78,14 @@ export default function Success(){
     
     return(
     <>
-    Your Payment is Successful
+    <div className='seller-container'>
+        <div className='row success-box'>
+            <div className='col-12'>
+                <p className='success-word'>Your Payment is Successful</p>
+            </div>
+        </div>
+    </div>
+    
     <br/>
     Your Order Id is: {searchTerm}
     <br/>

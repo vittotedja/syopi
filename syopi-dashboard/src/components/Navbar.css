@@ -10,3 +10,13 @@
     font-size: 28px;
     fill: white;
 }
+
+.success-box{
+    background-color: #DCEDC1;
+}
+
+.success-word{
+    font-size: 30px;
+    font-weight: bold;
+    padding: 20px;
+}
