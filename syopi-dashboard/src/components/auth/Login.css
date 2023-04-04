@@ -1,7 +1,7 @@
 .login-page{
     display: grid;
     align-items: center;
-    
+    justify-content: center;
 }
 
 .login-container{
@@ -9,12 +9,17 @@
     box-shadow: 5px 5px 5px lightgray;
     margin:auto;
     border-radius: 10px;
+    background-color: #FFD3B6;
+}
+
+.login-img{
+    margin: auto;
+    padding: 20px;
 }
 
 .login-title{
     font-weight: bold;
     font-size: 30px;
-    padding: 20px;
     text-align: left;
 }
 

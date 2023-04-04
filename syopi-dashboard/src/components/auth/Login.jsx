@@ -48,9 +48,9 @@ const Login = ({setToken}) => {
     
     
     <div>
-      <img src={logo}/>
+      <img src={logo} className='login-img'/>
     <form onSubmit={handleSubmit} className='login-container login-page'>
-      <div className='row login-title'>
+      <div className='row login-title' style={{margin:'0'}}>
       <p>Login</p>
       </div>
       <div className='row'>
@@ -89,6 +89,11 @@ const Login = ({setToken}) => {
         </div>
       </div>
       </form>
+      <div className='row'>
+        <div className='col-12'>
+        Don't have an account? <Link to='/signup'>Sign Up</Link> 
+        </div>
+      </div>
     </div>
   
       
@@ -97,7 +102,7 @@ const Login = ({setToken}) => {
         
 
       
-      Don't have an account? <Link to='/signup'>Sign Up</Link> 
+      
     
     </>
   )
