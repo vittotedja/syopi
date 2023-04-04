@@ -24,7 +24,7 @@ def get_all_products():
     if request.method == 'GET':
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
         if response:    
-            return jsonify(response.data)
+            return response.data
         return jsonify(
         {
             "code": 404,
@@ -36,7 +36,7 @@ def get_all_products():
     if request.method == 'POST':
         data = request.get_json()
         response = supabase.table('product').insert(data).execute()
-        return jsonify(response.data)
+        return response.data
     
         
 @app.route('/product/search/<string:keyword>', methods=['GET'])
@@ -66,8 +66,8 @@ def search():
 @app.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
-    if response:
-        return jsonify(response.data)
+    if response.data:
+        return response.data
     return jsonify(
         {
             "code": 404,
@@ -78,12 +78,12 @@ def product(ProductId):
 @app.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])
 def update_rating(ProductId, avgRating):
     response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
-    if response:
+    if response.data:
         return response.data
     return jsonify(
         {
             "code": 404,
-            "message": "Order not found."
+            "message": "Error in Rating Update."
         }
     ), 404
 """
