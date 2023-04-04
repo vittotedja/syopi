@@ -36,7 +36,13 @@ def get_review_rating(ProductId):
 def give_rating():
     data = request.get_json()
     response = supabase.table('review').insert(data).execute()
-    return response.data   
+    return response.data
+
+@app.route('/review/getreview/<string:ProductId>/<string:OrderId>', methods=['GET'])
+def get_review_by_order_productid(ProductId, OrderId):
+    if request.method == 'GET':
+        response = supabase.table('review').select("*").eq("ProductId", ProductId).eq("OrderId", OrderId).execute()
+        return response.data   
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003, debug=True)

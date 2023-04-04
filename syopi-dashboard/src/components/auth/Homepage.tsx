@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './Context.jsx'
 import UserOrder from './UserOrder.js'
-import { supabase } from "./Client";
+import { supabase } from "./client";
 import Navbar from '../Navbar.js';
 
 export default function Homepage() {
@@ -31,13 +31,15 @@ export default function Homepage() {
   }
 
   async function fetchOrders() {
-    const data = fetch("http://order1:5001/order/find_by_userid/1", {
-      method: "GET",
-    })
+    fetch("http://127.0.0.1:5001/order/find_by_userid/1")
     .then((res) => res.json())
     .then((data) => {
       setOrders(data)
     })}
+
+  useEffect(() => {
+    fetchOrders()
+  }, [])
 
   return (
     <>
@@ -57,14 +59,17 @@ export default function Homepage() {
           Orders
           {orders.map((order:any) => {
           return <UserOrder 
-            key={order.ProductId} 
+            key={`${order.ProductId}-${order.OrderId}`} 
             ProductId={order.ProductId} 
+            OrderId={order.OrderId}
             ShopId={order.ShopId} 
             Price={order.Price} 
             Quantity={order.Quantity} 
             DateTime={order.DateTime}
             ShippingId={order.ShippingId}
-            imageUrl={order.ImageUrls[0].ImageUrl}/> })} 
+            OrderStatus = {order.OrderStatus}
+            // imageUrl={order.ImageUrls[0].ImageUrl}
+            /> })}
           </div>
       </div>
     </div>

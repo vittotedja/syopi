@@ -55,9 +55,8 @@ def create_order():
     response = supabase.table('order').insert(data).execute()
     return response.data
     
-@app.route('/order/find_by_userid/<string:UserId>', methods=['POST'])
+@app.route('/order/find_by_userid/<string:UserId>', methods=['GET'])
 def find_by_user_id(UserId):
-    data = request.get_json()
     response = supabase.table('order').select("*").eq("UserId", UserId).execute()
     return response.data
 

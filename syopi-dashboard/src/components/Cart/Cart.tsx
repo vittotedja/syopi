@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CartItem from "./CartItem";
 import Stripe from "../Payment/Stripe";
 import { useNavigate } from "react-router";
+import Navbar from "../Navbar";
 
 function Cart() {
   let navigate = useNavigate();
@@ -26,6 +27,8 @@ function Cart() {
   }, []);
   
   return (
+    <>
+    <Navbar/>
     <div>
       Your Cart
       {cart.map((item: any) => {
@@ -53,6 +56,7 @@ function Cart() {
       {JSON.stringify(chosenProduct)}
       {/* <Stripe/> */}
     </div>
+    </>
   );
 }
 

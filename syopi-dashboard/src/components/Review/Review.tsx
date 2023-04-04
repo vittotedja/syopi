@@ -140,7 +140,7 @@ function Review(props:any) {
           </motion.div>
         ))}
       </div>
-    {/* <button disabled = {props.isClicked < 1} onClick={() => giveRating()}>Add Review</button> */}
+    {/* <button disabled = {props.isClicked < 1} onClick={() => giveRating()}>Add Review</button> */} 
     </div>
     </>
   )

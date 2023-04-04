@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import Review from "../Review/Review";
+import productpics from "../../assets/logofornow.jpg";
+
 
 export default function RatingPrompt(props: any) {
 //   const [isClicked, setIsClicked] = useState(0);
   const [isHovering, setIsHovering] = useState(0);
   const [specificProduct, setSpecificProduct] = useState({});
   const [show, setShow] = useState(true);
+  const [description, setDescription] = useState("");
 
   function getAvgRating(ProductId: any) {
-    fetch(`http://127.0.0.1:5000/rating/${ProductId}`)
+    fetch(`http://127.0.0.1:5009/rating/${ProductId}`)
       .then((response) => response.json())
       .then((data) => console.log(data));
   }
@@ -24,13 +27,13 @@ export default function RatingPrompt(props: any) {
 
   function giveRating() {
     const data = {
-      OrderId: "pi_3MsQHqBJIMpkY9J21DXYT7Bn",
-      ProductId: "10607759-99a3-45fa-8141-58465e1d5f97",
-      Description: "product ini bagoes",
+      OrderId: props.OrderId,
+      ProductId: props.ProductId,
+      Description: description,
       Rating: props.isClicked,
       UserId: "1",
     };
-    fetch(`http://127.0.0.1:5000/review/giverating`, {
+    fetch(`http://127.0.0.1:5003/review/giverating`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,16 +43,16 @@ export default function RatingPrompt(props: any) {
       .then((response) => {
         response.json();
         setShow(false);
-        // getSpecificProduct();
+        getSpecificProduct(props.ProductId);
       })
-      // .then((data) => {
-      //   const avgRating: any = getAvgRating("1");
-      //   console.log("Success:", data);
-      //   setSpecificProduct({
-      //     ...specificProduct,
-      //     AvgRating: avgRating,
-      //   });
-      // })
+      .then((data) => {
+        const avgRating: any = getAvgRating("1");
+        console.log("Success:", data);
+        setSpecificProduct({
+          ...specificProduct,
+          AvgRating: avgRating,
+        });
+      })
       .catch((error) => {
         console.error("Error:", error);
       });
@@ -61,18 +64,18 @@ export default function RatingPrompt(props: any) {
         <>
         <div className='row' style={{margin:'0'}}>
           <div className='col-3 seller-grid'>
-            Image
+            <img src={props.Image} style={{borderRadius: '50%'}}/>
           </div>
           <div className='col-7 seller-grid'>
-            <p>Product Name</p>
-            <p>Price x Quantity</p>
+            <p>{props.ProductName}</p>
+            <p>${props.Price / props.Quantity} x {props.Quantity}</p>
           </div>
           <div className='col-2 seller-grid'>
           <button
               className="review-button"
               disabled={props.isClicked < 1}
               onClick={() => {
-                // giveRating();
+                giveRating();
                 setShow(false)
               }}
             >
@@ -86,7 +89,7 @@ export default function RatingPrompt(props: any) {
             />
           </div>
           <div className='row'>
-            <textarea placeholder="Share your thoughts on the product"/>
+            <textarea placeholder="Share your thoughts on the product" onChange = {(e:any) => setDescription(e.target.value)}/>
           </div>
         </div>
         
