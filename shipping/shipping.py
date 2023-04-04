@@ -36,17 +36,12 @@ def find_by_shippingid(ShippingId):
 @app.route("/shipping/find_by_driverid/<string:DriverId>", methods=['GET'])
 def find_by_driverid(DriverId):
     shipping = supabase.table("shipping").select("*").eq("DriverId", DriverId).execute()
-    if shipping:
-        return jsonify(
-            {
-                "code": 200,
-                "data": shipping.json()
-            }
-        )
+    if shipping.data:
+        return shipping.data
     return jsonify(
         {
             "code": 404,
-            "message": "Shipping not found."
+            "message": "Driver Id not found."
         }
     ), 404
 
@@ -55,13 +50,26 @@ def find_by_driverid(DriverId):
 @app.route('/shipping/getall_shipping', methods=['GET'])
 def get_all_shipping():
     shipping = supabase.table("shipping").select("*").execute()
-    return shipping.data
+    if shipping:
+        return shipping.data
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Driver Id not found."
+        }
+    ), 404
 
 @app.route("/shipping/getall_shipping_by_status/<string:status>", methods=['GET'])
 def get_all_shipping_by_status(status):
     shipping = supabase.table("shipping").select("*").eq("ShippingStatus", status).execute()
-    return shipping.data
-
+    if shipping.data:
+        return shipping.data
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Status not found."
+        }
+    ), 404
 
 @app.route("/shipping/accept", methods=['POST'])
 def update_shipping_status():
@@ -70,13 +78,7 @@ def update_shipping_status():
     shipping = supabase.table("shipping").update({"ShippingId":shipping_id, "ShippingStatus": shipping_status}).eq("ShippingId", shipping_id).execute()
     return shipping.data
 
-"""
-@app.route("/shipping/accept/<string:ShippingId>", methods=['POST'])
-def update_shipping_status(ShippingId):
-    shipping_status = "Awaiting Pickup"
-    shipping = supabase.table("shipping").update({"ShippingId":ShippingId, "ShippingStatus": shipping_status}).eq("ShippingId", ShippingId).execute()
-    return shipping.data
-"""
+
 
 
 
