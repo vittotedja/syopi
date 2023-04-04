@@ -20,7 +20,7 @@ def calculate_order_amount(items):
     total = 0
     for productId in items:
         print(productId)
-        res = requests.get(f'http://127.0.0.1:5002/product/{productId}')
+        res = requests.get(f'http://product1:5002/product/{productId}')
         if res.status_code != 200:
             print(f"Error fetching product {productId}: {res.status_code} {res.content}")
             continue

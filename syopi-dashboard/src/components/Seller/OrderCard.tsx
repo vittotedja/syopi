@@ -83,7 +83,7 @@ export default function OrderCard(props: any) {
         <div className='row' style={{margin:'0'}}>
           <div className='col-12 seller-grid' style={{padding:'0'}}>
             {orderStatus == 'Paid' ? <button onClick={() => acceptOrder(props.OrderId)}> Accept Order </button>:
-        <button> Request Delivery </button>}
+        <button onClick={() => requestDelivery(props.OrderId)}> Request Delivery </button>}
           </div>
         </div>
       </Card.Footer>

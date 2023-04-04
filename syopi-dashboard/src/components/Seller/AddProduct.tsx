@@ -14,7 +14,7 @@ export default function AddProduct(props:any) {
     let [productDescription, setProductDescription] = useState()
     let [price, setPrice] = useState()
     let [stock, setStock] = useState()
-    const [image, setImage] = useState(Object)
+    let [image, setImage] = useState(Object)
     
 
     // const handleFileSelected = (e) => {
@@ -53,7 +53,6 @@ function addProduct() {
             Stock: stock,
             Image: image
         }
-
 
         fetch(`http://127.0.0.1:5000/product/addproduct`, {
             method:'POST',

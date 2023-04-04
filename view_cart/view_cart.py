@@ -25,7 +25,7 @@ def get_cart(userid):
         products_details = requests.post(f'http://product1:5002/product/get_multiple_products', json=product_ids).json()
         a = pd.DataFrame(products_details)
         a['Quantity'] = [product['Quantity'] for product in products_in_cart]
-
+    
         shop_ids = {'data': [product['ShopId'] for product in products_details]}
         shop_list = requests.post(f'http://shop1:5005/shop/get_multiple_shops', json=shop_ids).json()
         b = pd.DataFrame(shop_list)

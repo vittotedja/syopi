@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "./client";
+import logo from '../../assets/logo.png';
 
 import { useAuth } from "./Context.jsx";
 
@@ -85,20 +86,57 @@ const SignUp = () => {
   }
 
   return (
+    <>
     <div>
-      <form onSubmit={handleSubmit}>
+      <img src={logo} className='login-img'/>
+    <form onSubmit={handleSubmit} className='login-container login-page'>
+      <div className='row login-title' style={{margin:'0'}}>
+      <p>Sign Up</p>
+      </div>
+      <div className='row'>
+        <div className='col-4'>
+          <p>Fullname</p>
+        </div>
+        <div className='col-8'>
         <input placeholder="Fullname" name="fullName" onChange={handleChange} />
 
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-4'>
+          <p>Email</p>
+        </div>
+        <div className='col-8'>
         <input placeholder="Email" name="email" onChange={handleChange} />
-
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-4'>
+          <p>Address</p>
+        </div>
+        <div className='col-8'>
         <input placeholder="address" name="address" onChange={handleChange} />
 
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-4'>
+          <p>Account Type</p>
+        </div>
+        <div className='col-8'>
         <select name="accType" value={formData.accType} onChange={handleChange}>
           <option value="customer">Customer</option>
           <option value="seller">Seller</option>
           <option value="courier">Courier</option>
         </select>
 
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-4'>
+          <p>Password</p>
+        </div>
+        <div className='col-8'>
         <input
           placeholder="Password"
           name="password"
@@ -106,10 +144,25 @@ const SignUp = () => {
           onChange={handleChange}
         />
 
-        <button type="submit">Submit</button>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-12'>
+        <button type='submit'>
+          Submit
+        </button>
+
+        </div>
+      </div>
       </form>
-      Already have an account?<Link to="/login">Login</Link>
+      <div className='row'>
+        <div className='col-12'>
+        Already have an account?<Link to="/login">Login</Link> 
+        </div>
+      </div>
     </div>
+    
+    </>
   );
 };
 

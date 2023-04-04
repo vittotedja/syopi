@@ -30,11 +30,11 @@ export default function App() {
         <Route path="/product" element={<ProductPage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/review" element={<Review />} />
-        <Route path="/seller" element={<Seller />} />
-        <Route path="/seller/addProduct" element={<AddProduct />} />
         <Route path="/courier" element={<Courier />} />
-        <Route path="/shop/CreateShop" element={<CreateShop />} />
         <Route element={<PrivateRoute role='seller'/>}>
+          <Route path="/seller" element={<Seller />} />
+          <Route path="/seller/addProduct" element={<AddProduct />} />
+          <Route path="/shop/CreateShop" element={<CreateShop />} />
         </Route>
         <Route element={<PrivateRoute allaccess='true'/>}>
           <Route path="/user" element={<Homepage />} />

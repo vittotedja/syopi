@@ -6,11 +6,7 @@ import pika
 hostname = "rabbitmq" # default hostname
 port = 5672 # default port
 # connect to the broker and set up a communication channel in the connection
-connection = pika.BlockingConnection(
-    pika.ConnectionParameters(
-        host=hostname, port=port,
-        heartbeat=3600, blocked_connection_timeout=3600, # these parameters to prolong the expiration time (in seconds) of the connection
-))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port, heartbeat=3600, blocked_connection_timeout=3600 ))
     # Note about AMQP connection: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
     # If "pika.exceptions.AMQPConnectionError" happens, may try again after disconnecting the wifi and/or disabling firewalls.
     # If see: Stream connection lost: ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)

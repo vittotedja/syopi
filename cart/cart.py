@@ -35,7 +35,7 @@ def signup(userid, productid, quantity):
 @app.route('/cart/keranjang/<string:userid>', methods=['POST', 'GET'])
 def keranjang(userid):
     res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
-    return res.data, 200
+    return jsonify(res.data), 200
 
 @app.route('/cart/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def tambahcart(productid, quantity):

@@ -24,7 +24,7 @@ def get_all_products():
     if request.method == 'GET':
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
         if response:    
-            return response.data
+            return jsonify(response.data)
         return jsonify(
         {
             "code": 404,
@@ -37,7 +37,19 @@ def get_all_products():
         data = request.get_json()
         response = supabase.table('product').insert(data).execute()
         return response.data
-    
+
+# Get products of a shop
+@app.route('/product/get_product_by_shop/<string:ShopId>')
+def get_product_by_shop(ShopId):
+    response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ShopId', '9413c28a-3b0b-4955-9ac9-5171a3f8631d').execute()
+    if response:    
+        return response.data
+    return jsonify(
+    {
+        "code": 404,
+        "message": "No products yet. Add some products to start selling!"
+    }
+    ), 404
         
 @app.route('/product/search/<string:keyword>', methods=['GET'])
 def search_bar(keyword):
@@ -67,7 +79,7 @@ def search():
 def product(ProductId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
     if response.data:
-        return response.data
+        return jsonify(response.data)
     return jsonify(
         {
             "code": 404,
@@ -79,22 +91,21 @@ def product(ProductId):
 def update_rating(ProductId, avgRating):
     response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
     if response.data:
-        return response.data
+        return jsonify(response.data)
     return jsonify(
         {
             "code": 404,
             "message": "Error in Rating Update."
         }
     ), 404
-"""
-@app.route('/product/getmultipleproducts', methods=['POST'])
+
+@app.route('/product/get_multiple_products', methods=['POST'])
 def get_multiple_products():
     data = request.get_json()
     # print(data["data"])   
     response = supabase.table('product').select("*").in_("ProductId", data["data"]).execute()
     return response.data
 
-"""
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)
