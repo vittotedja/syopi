@@ -96,22 +96,22 @@ function ProductPage() {
             </div>
             <div className='row'>
               <div className='col-3'>
-                <button variant='Primary'>Black</button>
+                <button>Black</button>
               </div>
               <div className='col-3'>
-                <button variant='Primary'>Black</button>
+                <button>Black</button>
               </div>
               <div className='col-3'>
-                <button variant='Primary'>Black</button>
+                <button>Black</button>
               </div>
               <div className='col-3'>
-                <button variant='Primary'>Black</button>
+                <button>Black</button>
               </div>
             </div>
             <div className='row'></div>
             <div className='row shop'>
               <div className='col-5'>
-              <button variant="Primary" className='shopbutton'  style={{display:'flex'}}>
+              <button className='shopbutton'  style={{display:'flex'}}>
                 <div className='col-2'>
                   <img src={productpics} width='30px' className='shopimg'/>
                   </div>
@@ -122,7 +122,7 @@ function ProductPage() {
                 <AiFillStar style={{color: "gold"}}/> 5 (19 reviews)
               </div>
               <div className='col-3'>
-                <button variant="Primary" className=''>+ Follow</button>
+                <button className=''>+ Follow</button>
               </div>
             </div>
             

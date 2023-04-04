@@ -1,0 +1,13 @@
+.login-container{
+    width: 60vw;
+    box-shadow: 5px 5px 5px lightgray;
+    margin:auto;
+    border-radius: 10px;
+}
+
+.login-title{
+    font-weight: bold;
+    font-size: 30px;
+    padding: 20px;
+    text-align: left;
+}

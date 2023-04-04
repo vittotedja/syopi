@@ -17,7 +17,7 @@ def get_all():
     if request.method == 'GET':
         res = requests.get('http://product1:5002/product')
         product_list = res.json()
-        return sorted(product_list, key=lambda x: x['AvgRating']*x['AmountSold'], reverse=True)
+        return jsonify(sorted(product_list, key=lambda x: x['AvgRating']*x['AmountSold'], reverse=True))
 
 # @app.route('/recommender/search', methods=['GET'])
 # def search():

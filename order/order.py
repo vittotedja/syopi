@@ -30,7 +30,7 @@ def getall_order():
 def get_shop_order(shopId):
     response = supabase.table("order").select("*").eq("ShopId", shopId).execute()
     order = pd.DataFrame(response.data).groupby("OrderId").apply(lambda x: x.to_dict(orient='records')).to_list()
-    return order
+    return jsonify(order)
 
 @app.route("/order/find_by_orderid/<string:OrderId>", methods=['GET'])
 def find_by_orderid(OrderId):

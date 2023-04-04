@@ -24,7 +24,7 @@ def get_all_products():
     if request.method == 'GET':
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
         if response:    
-            return response.data
+            return jsonify(response.data)
         return jsonify(
         {
             "code": 404,
@@ -36,7 +36,7 @@ def get_all_products():
     if request.method == 'POST':
         data = request.get_json()
         response = supabase.table('product').insert(data).execute()
-        return response.data
+        return jsonify(response.data)
     
         
 @app.route('/product/search/<string:keyword>', methods=['GET'])
@@ -67,7 +67,7 @@ def search():
 def product(ProductId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
     if response:
-        return response.data
+        return jsonify(response.data)
     return jsonify(
         {
             "code": 404,
