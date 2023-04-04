@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from './Context.jsx'
 import UserOrder from './UserOrder.js'
 import { supabase } from "./Client";
 import Navbar from '../Navbar.js';
 
-const Homepage = () => {
+export default function Homepage() {
   let navigate = useNavigate()
   const { login, user, logout } = useAuth()
+  const [orders, setOrders] = useState(Array)
 
   useEffect(()=>{
     console.log(user)
@@ -29,6 +30,15 @@ const Homepage = () => {
     
   }
 
+  async function fetchOrders() {
+    const data = fetch("http://order1:5001/order/find_by_userid/1", {
+      method: "GET",
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      setOrders(data)
+    })}
+
   return (
     <>
     <Navbar/>
@@ -43,15 +53,21 @@ const Homepage = () => {
       </div>
       
       <div className='main'>
-        <p className='user-see-order'>Orders</p>
-        <UserOrder/>
-        <UserOrder/>
-        <UserOrder/>
+        <div className='user-see-order'>
+          Orders
+          {orders.map((order:any) => {
+          return <UserOrder 
+            key={order.ProductId} 
+            ProductId={order.ProductId} 
+            ShopId={order.ShopId} 
+            Price={order.Price} 
+            Quantity={order.Quantity} 
+            DateTime={order.DateTime}
+            ShippingId={order.ShippingId}
+            imageUrl={order.ImageUrls[0].ImageUrl}/> })} 
+          </div>
       </div>
-
     </div>
     </>
   )
 }
-
-export default Homepage

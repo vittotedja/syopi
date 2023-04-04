@@ -8,7 +8,7 @@ function LandingPage() {
     return (
         <>
             <Navbar />
-            <Promotions />
+            {/* <Promotions /> */}
             <ProductsList />
             {/* <ShopList /> */}
         </>

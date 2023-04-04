@@ -24,7 +24,7 @@ export default function Success(){
 
     async function clearCart(productIds:any) {
         try {
-            const response = await fetch('http://cart1:5007/cart/clear/1', {
+            const response = await fetch('http://127.0.0.1:5007/cart/clear/1', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
