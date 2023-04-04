@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link, useNavigate} from 'react-router-dom';
 import { supabase } from './client';
 import './Login.css'
+import logo from '../../assets/logo.png'
 
 import { useAuth } from './Context.jsx'
 
@@ -44,8 +45,11 @@ const Login = ({setToken}) => {
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
-    <div className="login-container">
+    
+    
+    <div>
+      <img src={logo}/>
+    <form onSubmit={handleSubmit} className='login-container login-page'>
       <div className='row login-title'>
       <p>Login</p>
       </div>
@@ -76,33 +80,23 @@ const Login = ({setToken}) => {
         />
         </div>
       </div>
-      
+      <div className='row'>
+        <div className='col-12'>
+        <button type='submit'>
+          Submit
+        </button>
+
+        </div>
+      </div>
+      </form>
     </div>
   
       
         
 
-        <input
-          ref={emailRef} 
-          placeholder='Email'
-          name='email'
-          //onChange={handleChange}
-        />
+        
 
-        <input 
-          placeholder='Password'
-          ref = {passwordRef}
-          name='password'
-          type="password"
-          //onChange={handleChange}
-        />
-
-        <button type='submit'>
-          Submit
-        </button>
-
-
-      </form>
+      
       Don't have an account? <Link to='/signup'>Sign Up</Link> 
     
     </>

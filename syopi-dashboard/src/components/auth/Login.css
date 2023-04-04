@@ -1,3 +1,9 @@
+.login-page{
+    display: grid;
+    align-items: center;
+    
+}
+
 .login-container{
     width: 60vw;
     box-shadow: 5px 5px 5px lightgray;
@@ -11,3 +17,204 @@
     padding: 20px;
     text-align: left;
 }
+
+*{
+    box-sizing: border-box;
+}
+
+.back{
+    padding-left: 20px;
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 100vw;
+    position: sticky;
+}
+
+ .back span{
+    font-weight: bold;
+    margin: 10px;
+    cursor: pointer;
+}
+.back img{
+  cursor: pointer;
+}
+
+.logerror{
+    width: 80%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'); */
+
+* {
+    box-sizing: border-box;
+  }
+  
+  .login {
+    /* font-family: Arial, Helvetica, sans-serif; */
+    width: 100vw;
+    margin-left: auto;
+    margin-right:auto;
+    padding: 0vh 10vw;
+    
+  }
+  
+.boxx{
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login .greeting{
+    color:#024959;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2vw;
+    margin-left: 2vw;
+    margin-bottom: 20px;
+}
+
+.login .greeting h1{
+    font-size: calc(3vw + 2em);
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+
+.login .greeting p{
+    font-size: calc(0.75vw + 0.75em);
+    margin:0px;
+}
+
+.login .signup p{
+    color:#EFF7FF;
+    font-size: 15px;
+}
+.login .signup .link{
+    text-decoration: none;
+    color:#6EC1AF;
+    margin-left: 10px;
+}
+  /* Float four columns side by side */
+  .column-login {
+    float: left;
+    width: 50%;
+    /* padding: 20px 10px; */
+  }
+  
+  /* Remove extra left and right margins, due to padding in columns */
+  .roww-login {
+    margin-left: auto;
+    margin-right: auto;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    }
+  
+  /* Clear floats after the columns */
+  .roww-login:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Style the counter cards */
+  .cardd {
+    text-align: center;
+  }
+
+
+  /* Responsive columns - one column layout (vertical) on small screens */
+  @media screen and (max-width: 900px) {
+    .roww-login{
+        flex-direction: column;
+    }
+    .column-login {
+      width: 100%;
+      display: block;
+      /* margin-bottom: 20px; */
+    }
+  }
+
+  
+
+  .login .centerr {
+    position: relative;
+    padding: 7vh 3vw;
+    background: #024959;
+    border-radius: 10px;
+  }
+  .login .centerr h1 {
+    font-size: 2em;
+    /* border-left: 5px solid dodgerblue; */
+    /* padding: 10px; */
+    color: #fff;
+    /* letter-spacing: 5px; */
+    margin-bottom: 40px;
+    font-weight: bold;
+    /* padding-left: 10px; */
+  }
+  .login .centerr .inputbox {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 30px;
+    color: #fff;
+    margin-right: 30px;
+  }
+  
+   .login .inputbox input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 2px solid #fff;
+    outline: none;
+    background: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    color: #fff;
+    resize: vertical;
+    margin: auto;
+  }
+  
+   .login .inputbox input:invalid:focus{
+    border-color: #CD2C2C;
+  }
+  
+   .login .inputbox:last-child {
+    margin-bottom: 0;
+  }
+   .login .inputbox span {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    font-size: 0.8em;
+    transition: 0.6s;
+    /* font-family: sans-serif; */
+    background-color:#024959;
+    padding-left:5px;
+    padding-right: 5px;
+    border-radius: 3px;
+  }
+  .login .inputbox input:focus ~ span,
+  .login .inputbox input:valid ~ span {
+    transform: translateX(-13px) translateY(-30px);
+    font-size: 0.8em;
+  }
+
+  .login .inputbtn{
+    margin-bottom: 20px;
+  }

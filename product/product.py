@@ -24,7 +24,7 @@ def get_all_products():
     if request.method == 'GET':
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
         if response:    
-            return response.data
+            return jsonify(response.data)
         return jsonify(
         {
             "code": 404,
@@ -67,7 +67,7 @@ def search():
 def product(ProductId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
     if response.data:
-        return response.data
+        return jsonify(response.data)
     return jsonify(
         {
             "code": 404,
@@ -79,7 +79,7 @@ def product(ProductId):
 def update_rating(ProductId, avgRating):
     response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
     if response.data:
-        return response.data
+        return jsonify(response.data)
     return jsonify(
         {
             "code": 404,
