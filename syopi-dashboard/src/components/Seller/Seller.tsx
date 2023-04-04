@@ -21,7 +21,7 @@ export default function Seller() {
   const [showAddAdmin, setshowAddAdmin] = useState(false)
   
   const fetchData = () => {
-    fetch('http://127.0.0.1:5001/order/get_shop_order/' + shopId)
+    fetch(`http://127.0.0.1:5001/order/get_shop_order/${shopId}`)
       .then(res => res.json())
       .then(data => setOrderData(data));
       fetch (`http://127.0.0.1:5002/product`)
@@ -33,43 +33,9 @@ export default function Seller() {
     fetchData()
   }, [])
 
-  
-
-  useEffect(() => {
-    fetchData()
-    console.log(productData)
-  }, [])
-
   const [showSales, setshowSales] = useState(false)
   const [showSettings, setshowSettings] = useState(false)
   
-  function acceptOrder (orderId: string) {
-    const data = {OrderId: orderId}
-    fetch("http://127.0.0.1:5000/process_order/accept" , {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(data)
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-  }
-
-  function requestShipping (orderId: string, shippingId: string, shopAddress: string, customerAddress: string, courierId: string) {
-    const data = {
-      OrderId: orderId,
-      ShippingId: shippingId,
-      ShopAddress: shopAddress,
-      CustomerAddress: customerAddress,
-      CourierId: courierId
-    }
-    fetch("http://127.0.0.1:5000/process_order/request_shipping" , {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(data)
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-  }
   return (
     <>
     <Navbar/>
