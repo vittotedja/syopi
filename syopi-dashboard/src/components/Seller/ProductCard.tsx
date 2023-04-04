@@ -9,7 +9,7 @@ export default function ProductCard(props: any) {
   let navigate = useNavigate();
 
   function getProductData() {
-    fetch(`http://127.0.0.1:5000/product/${props.ProductId}`)
+    fetch(`http://127.0.0.1:5002/product/${props.ProductId}`)
       .then((response) => response.json())
       .then((data) => setProductData(data[0]));
   }

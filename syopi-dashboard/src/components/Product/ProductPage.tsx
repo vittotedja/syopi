@@ -87,15 +87,16 @@ function ProductPage() {
             </div>
             <div className='row'>
               <div className='col-3'>
-                <button variant='Primary'>Black</button>
+                <button>Black</button>
               </div>
               <div className='col-3'>
-                <button variant='Primary'>Black</button>
+                <button>Black</button>
               </div>
               <div className='col-3'>
-                <button variant='Primary'>Black</button>
+                <button>Black</button>
               </div>
               <div className='col-3'>
+                <button>Black</button>
                 <button>Black</button>
               </div>
             </div> */}

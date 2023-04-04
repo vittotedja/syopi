@@ -20,21 +20,22 @@ shop_URL = os.environ.get("shop_URL")
 @app.route('/view_cart/<string:userid>', methods=['GET'])
 
 def get_cart(userid):
-    products_in_cart = requests.get(f'http://cart1:5007/cart/keranjang/1').json()
+    products_in_cart = requests.get(f'http://127.0.0.1:5007/cart/keranjang/1').json()
+    if products_in_cart:
+        product_ids = {'data': [product['ProductId'] for product in products_in_cart]}
+        products_details = requests.post(f'http://127.0.0.1:5002/product/get_multiple_products', json=product_ids).json()
+        a = pd.DataFrame(products_details)
+        a['Quantity'] = [product['Quantity'] for product in products_in_cart]
 
-    product_ids = {'data': [product['ProductId'] for product in products_in_cart]}
-    products_details = requests.post(f'http://product1:5002/product/get_multiple_products', json=product_ids).json()
-    a = pd.DataFrame(products_details)
-    a['Quantity'] = [product['Quantity'] for product in products_in_cart]
+        shop_ids = {'data': [product['ShopId'] for product in products_details]}
+        shop_list = requests.post(f'http://127.0.0.1:5005/shop/get_multiple_shops', json=shop_ids).json()
+        b = pd.DataFrame(shop_list)
 
-    shop_ids = {'data': [product['ShopId'] for product in products_details]}
-    shop_list = requests.post(f'http://shop1:5005/shop/get_multiple_shops', json=shop_ids).json()
-    b = pd.DataFrame(shop_list)
-
-    final_dict = a.merge(b, on='ShopId', how='left').to_dict('records')
-    return jsonify({
-        "data": final_dict
-    })
+        final_dict = a.merge(b, on='ShopId', how='left').to_dict('records')
+        return jsonify({
+            "data": final_dict
+        })
+    return jsonify({'data': []})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

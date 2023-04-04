@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./OrderCard.css";
+import Card from 'react-bootstrap/Card';
 
 export default function OrderCard(props: any) {
   const [productData, setProductData] = useState<any>({});
@@ -8,7 +9,7 @@ export default function OrderCard(props: any) {
   let navigate = useNavigate();
 
   function getProductData() {
-    fetch(`http://127.0.0.1:5000/product/${props.ProductId}`)
+    fetch(`http://127.0.0.1:5002/product/${props.ProductId}`)
       .then((response) => response.json())
       .then((data) => setProductData(data[0]));
   }
@@ -43,36 +44,51 @@ export default function OrderCard(props: any) {
 
   return (
     <>
-    <div className="order-cart">
-      <div className="row header" style={{margin:'0px'}}>
-        <p className='ordercard-orderid'>Order Id:</p>
-        <p>{props.OrderId}</p>
-      </div>
-      <div className="row content">
-        <div>
-          <div
-            style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => navigate(`/product/${props.ProductId}`)}
-          >
-            {productData.ProductName}
+    <Card className='order-card-user'>
+      <Card.Header className='order-card-user-header'>
+        <div className='row' style={{margin:'0'}}>
+          <div className='col-6'>
+          {props.OrderId} / Date / {props.UserId} 
           </div>
-          <div>Quantity: {props.Quantity}</div>
-          <div>Total : S$ {props.Price}</div>
+          <div className='col-6' style={{textAlign:'right'}}>
+          {orderStatus}
+          </div>
         </div>
-        <div>
-          {props.UserId}
-          <br />
-          User Address
-          <br />
-          Shipping Id?
+        
+      </Card.Header>
+
+      <Card.Body>
+        <div className='row' style={{margin:'0'}}>
+          <div className='col-3'>
+            {/* <img src={props.ImageUrl}></img> */}
+          </div>
+          <div className='col-6' style={{textAlign:'left'}}>
+            <p style={{ cursor: "pointer", color: "blue" }} onClick={() => navigate(`/product/${props.ProductId}`)}>{productData.ProductName}</p>
+            <p className='text-muted'>Product variant</p>
+            <p>Quantity: {props.Quantity}</p>
+            <p>Price: S${props.Price}</p>
+            <p>Total: S${props.Price*props.Quantity}</p>
+          </div>
+          <div className='col-3 seller-grid'>
+            <p>User Address</p>
+            <p>Shipping ID</p>
+            <p>Shipping Status</p>
+          </div>
         </div>
-      </div>
-      <div className="row footer">
-        <div>{orderStatus}</div>
-        {orderStatus == 'Paid' ? <button onClick={() => acceptOrder(props.OrderId)}> Accept Order </button>:
+        <br/>
+        <hr/>
+      </Card.Body>
+      
+      <Card.Footer>
+        <div className='row' style={{margin:'0'}}>
+          <div className='col-12 seller-grid' style={{padding:'0'}}>
+            {orderStatus == 'Paid' ? <button onClick={() => acceptOrder(props.OrderId)}> Accept Order </button>:
         <button> Request Delivery </button>}
-      </div>
-    </div>
+          </div>
+        </div>
+      </Card.Footer>
+    </Card>
+    
     </>
   );
 }

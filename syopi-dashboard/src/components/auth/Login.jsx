@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link, useNavigate} from 'react-router-dom';
 import { supabase } from './client';
+import './Login.css'
 
 import { useAuth } from './Context.jsx'
 
@@ -42,8 +43,43 @@ const Login = ({setToken}) => {
 
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <>
+    <form onSubmit={handleSubmit}>
+    <div className="login-container">
+      <div className='row login-title'>
+      <p>Login</p>
+      </div>
+      <div className='row'>
+        <div className='col-4'>
+          <p>Email</p>
+        </div>
+        <div className='col-8'>
+        <input
+          ref={emailRef} 
+          placeholder='Email'
+          name='email'
+          //onChange={handleChange}
+        />
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col-4'>
+          <p>Password</p>
+        </div>
+        <div className='col-8'>
+        <input 
+          placeholder='Password'
+          ref = {passwordRef}
+          name='password'
+          type="password"
+          //onChange={handleChange}
+        />
+        </div>
+      </div>
+      
+    </div>
+  
+      
         
 
         <input
@@ -68,7 +104,8 @@ const Login = ({setToken}) => {
 
       </form>
       Don't have an account? <Link to='/signup'>Sign Up</Link> 
-    </div>
+    
+    </>
   )
 }
 

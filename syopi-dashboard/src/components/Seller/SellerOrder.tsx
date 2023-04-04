@@ -6,10 +6,11 @@ export default function SellerOrder(props:any) {
   // console.log(data)
   return (
     <>
-      <div className="order-list" style={{border:'1px solid black'}}>
+      <div className="order-list">
       {data.map((order:any) => {
         return <OrderCard
           key={`${order.OrderId}${order.ProductId}`}
+          // ImageUrl={order.ImageUrl}
           OrderId = {order.OrderId}
           ProductId={order.ProductId}
           Quantity={order.Quantity}
