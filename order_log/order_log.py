@@ -116,11 +116,9 @@ def callback(channel, method, properties, body):
                         {table_content}
                     </tbody>
                     <tfoot>
-                        <tr>
-                            <td colspan="2">Total:{data["order"]["orderTotal"]}</td>
-                        </tr>
                     </tfoot>
                 </table>
+                <br>
                 <p>Thank you for choosing us. If you have any questions or concerns about your order, please feel free to contact us.</p>
                 <p>Sincerely,</p>
                 <p>The Syopi Team</p>
