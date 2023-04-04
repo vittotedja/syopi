@@ -9,7 +9,7 @@ export default function ProductsList() {
   const [Stock, setStock] = useState(0)
 
   function fetchData() {  
-    fetch("http://localhost:8000/recommender")
+    fetch("http://127.0.0.1:5010/recommender")
     .then((response) => response.json())
     .then((data) => setProducts(data))
     .catch((error)=>{

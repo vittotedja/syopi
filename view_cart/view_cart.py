@@ -23,7 +23,7 @@ def get_cart(userid):
     products_in_cart = requests.get(f'http://cart1:5007/cart/keranjang/1').json()
 
     product_ids = {'data': [product['ProductId'] for product in products_in_cart]}
-    products_details = requests.post(f'http://product1:5002/product/get_multiple_products', json=product_ids).json()
+    products_details = requests.post(f'http://127.0.0.1:5002/product/get_multiple_products', json=product_ids).json()
     a = pd.DataFrame(products_details)
     a['Quantity'] = [product['Quantity'] for product in products_in_cart]
 

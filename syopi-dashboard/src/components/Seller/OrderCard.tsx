@@ -60,7 +60,7 @@ export default function OrderCard(props: any) {
       <Card.Body>
         <div className='row' style={{margin:'0'}}>
           <div className='col-3'>
-            Image
+            {/* <img src={props.ImageUrl}></img> */}
           </div>
           <div className='col-6' style={{textAlign:'left'}}>
             <p style={{ cursor: "pointer", color: "blue" }} onClick={() => navigate(`/product/${props.ProductId}`)}>{productData.ProductName}</p>

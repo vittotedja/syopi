@@ -52,7 +52,7 @@ export default function Success(){
             const productIdsToClear = Object.keys(orderedItems);
             for (let item in orderedItems) {
                 const product = async () => {
-                    const response = await fetch(`http://product1:5002/product/${item}`)
+                    const response = await fetch(`http://127.0.0.1:5002/product/${item}`)
                     const productData = await response.json()
                     const usedData = productData[0]
                     const shopId = usedData.ShopId

@@ -10,6 +10,7 @@ export default function SellerOrder(props:any) {
       {data.map((order:any) => {
         return <OrderCard
           key={`${order.OrderId}${order.ProductId}`}
+          // ImageUrl={order.ImageUrl}
           OrderId = {order.OrderId}
           ProductId={order.ProductId}
           Quantity={order.Quantity}
