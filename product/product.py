@@ -52,31 +52,49 @@ def search_bar(keyword):
         }
     ), 404
 
+
+"""
 # For search.py to preload items
 @app.route('/product/search', methods=['GET'])
 def search():
-    keyword = request.args.get('keyword',"")
+    keyword = request.args.get('keyword')
     page = int(request.args.get('page', 1))
     response = supabase.table('product').select('*, ImageUrls(ImageUrl)', count='exact').neq('Stock', 0).like('ProductName', f'%{keyword}%').order('AvgRating').range((page - 1)*10, page*10).execute()
     return response.json()
-
+"""
 # get product details
 @app.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
-    return response.data
+    if response:
+        return response.data
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Order not found."
+        }
+    ), 404 
 
 @app.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])
 def update_rating(ProductId, avgRating):
     response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
-    return response.data
-
-@app.route('/product/get_multiple_products', methods=['POST'])
+    if response:
+        return response.data
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Order not found."
+        }
+    ), 404
+"""
+@app.route('/product/getmultipleproducts', methods=['POST'])
 def get_multiple_products():
     data = request.get_json()
     # print(data["data"])   
     response = supabase.table('product').select("*").in_("ProductId", data["data"]).execute()
     return response.data
 
+"""
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)
