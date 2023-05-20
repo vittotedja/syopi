@@ -99,7 +99,6 @@ export default function Success() {
                 const itemInfo = {
                     OrderId: searchTerm,
                     ProductId: item,
-                    ProductName: productName,
                     ShopId: shopId,
                     Quantity: orderedItems[item],
                     Price: (price * orderedItems[item]).toFixed(2),

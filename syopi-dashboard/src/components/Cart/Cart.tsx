@@ -13,7 +13,7 @@ function Cart() {
   const userId = 1
 
   function fetchData() {
-    fetch(`http://127.0.0.1:5008/view_cart/${userId}`)
+    fetch(`http://127.0.0.1:5008/view_cart/1`)
       .then((response) => response.json())
       .then((data) => setCart(data.data));
   }
