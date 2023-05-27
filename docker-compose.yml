@@ -6,7 +6,6 @@ volumes:
   kongadata:
 
 services:
-
    #######################################
   # Postgres: The database used by Kong
   #######################################
@@ -109,11 +108,13 @@ services:
   ###################################
   order:
     build:
-      context: ./order
+      context: ./simple_microservices/order
       dockerfile: Dockerfile
     image: jrenaldi/order:syopi
     container_name: order1
     hostname: order1
+    volumes:
+      - ./simple_microservices/order:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -127,11 +128,13 @@ services:
   #######################################################
   product:
     build:
-      context: ./product
+      context: ./simple_microservices/product
       dockerfile: Dockerfile
     image: jrenaldi/product:syopi
     container_name: product1
     hostname: product1
+    volumes:
+      - ./simple_microservices/product:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -145,11 +148,13 @@ services:
   #######################################################
   review:
     build:
-      context: ./review
+      context: ./simple_microservices/review
       dockerfile: Dockerfile
     image: jrenaldi/review:syopi
     container_name: review1
     hostname: review1
+    volumes:
+      - ./simple_microservices/review:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -163,11 +168,13 @@ services:
   #######################################################
   shipping:
     build:
-      context: ./shipping
+      context: ./simple_microservices/shipping
       dockerfile: Dockerfile
     image: jrenaldi/shipping:syopi
     container_name: shipping1
     hostname: shipping1
+    volumes:
+      - ./simple_microservices/shipping:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -181,11 +188,13 @@ services:
   #######################################################
   shop:
     build:
-      context: ./shop
+      context: ./simple_microservices/shop
       dockerfile: Dockerfile
     image: jrenaldi/shop:syopi
     container_name: shop1
     hostname: shop1
+    volumes:
+      - ./simple_microservices/shop:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -204,6 +213,8 @@ services:
     image: jrenaldi/user:syopi
     container_name: user1
     hostname: user1
+    volumes:
+      - .user:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -232,11 +243,13 @@ services:
   #################################################
   order_log:
     build:
-      context: ./order_log
+      context: ./logs_microservices/order_log
       dockerfile: Dockerfile
     image: jrenaldi/order_log:syopi
     container_name: order_log1
     hostname: order_log1
+    volumes:
+      - ./logs_microservices/order_log:/usr/src/app
     restart: always
     depends_on:
       - rabbitmq
@@ -252,11 +265,13 @@ services:
   ###################################
   error:
     build:
-      context: ./error
+      context: ./logs_microservices/error
       dockerfile: Dockerfile
     image: jrenaldi/error:syopi
     container_name: error1
     hostname: error1
+    volumes:
+      - ./logs_microservices/error:/usr/src/app
     restart: always
     depends_on:
       - rabbitmq
@@ -272,12 +287,14 @@ services:
   ###############################################
   cart:
     build:
-      context: ./cart
+      context: ./simple_microservices/cart
       dockerfile: Dockerfile
     image: jrenaldi/cart:syopi
     container_name: cart1
     hostname: cart1
     restart: always
+    volumes:
+      - ./simple_microservices/cart:/usr/src/app
     environment:
       PYTHONUNBUFFERED: 1 
     ports:
@@ -290,11 +307,13 @@ services:
   ###############################################
   view_cart:
     build:
-      context: ./view_cart
+      context: ./complex_microservices/view_cart
       dockerfile: Dockerfile
     image: jrenaldi/view_cart:syopi
     container_name: view_cart1
     hostname: view_cart1
+    volumes:
+      - ./complex_microservices/view_cart:/usr/src/app
     restart: always
     depends_on:
       - user
@@ -315,11 +334,13 @@ services:
   ###############################################
   give_rating:
     build:
-      context: ./give_rating
+      context: ./complex_microservices/give_rating
       dockerfile: Dockerfile
     image: jrenaldi/give_rating:syopi
     container_name: give_rating1
     hostname: give_rating1
+    volumes:
+      - ./complex_microservices/give_rating:/usr/src/app
     restart: always
     depends_on:
       - review
@@ -339,11 +360,13 @@ services:
   ##################################
   search:
     build:
-      context: ./search
+      context: ./complex_microservices/search
       dockerfile: Dockerfile
     image: jrenaldi/search:syopi
     container_name: search1
     hostname: search1
+    volumes:
+      - ./complex_microservices/search:/usr/src/app
     restart: always
     depends_on:
       - product
@@ -360,12 +383,14 @@ services:
   ##################################
   stripe_app:
     build:
-      context: ./stripe_app
+      context: ./simple_microservices/stripe_app
       dockerfile: Dockerfile
     image: jrenaldi/stripe_app:syopi
     container_name: stripe_app1
     hostname: stripe_app1
     restart: always
+    volumes:
+      - ./simple_microservices/stripe_app:/usr/src/app
     depends_on:
       - product
     environment:
@@ -381,11 +406,13 @@ services:
   ##################################
   process_order:
     build:
-      context: ./process_order
+      context: ./complex_microservices/process_order
       dockerfile: Dockerfile
     image: jrenaldi/process_order:syopi
     container_name: process_order1
     hostname: process_order1
+    volumes:
+      - /complex_microservices/process_order:/usr/src/app
     restart: always
     depends_on:
       - product
