@@ -214,7 +214,7 @@ services:
     container_name: user1
     hostname: user1
     volumes:
-      - .user:/usr/src/app
+      - ./user:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -412,7 +412,7 @@ services:
     container_name: process_order1
     hostname: process_order1
     volumes:
-      - /complex_microservices/process_order:/usr/src/app
+      - ./complex_microservices/process_order:/usr/src/app
     restart: always
     depends_on:
       - product
