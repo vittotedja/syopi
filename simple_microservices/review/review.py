@@ -18,31 +18,90 @@ cors = CORS(app)
 def index():
     if request.method == 'GET':
         response = supabase.table('review').select("*").execute()
-        return response.data
+        if response:
+            return jsonify({
+                'message': 'Review found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+        else:
+            return jsonify({
+                'message': 'No review found.',
+                "data": None,
+                "code": 404
+            }), 404
+        
 
 @app.route('/review/<string:ProductId>', methods=['GET'])
 def get_review(ProductId):
     if request.method == 'GET':
         response = supabase.table('review').select("*").eq("ProductId", ProductId).execute()
-        return response.data
+        if response:
+            return jsonify({
+                'message': 'Review found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+        else:
+            return jsonify({
+                'message': 'No review found.',
+                "data": None,
+                "code": 404
+            }), 404
+        
     
 @app.route('/review/getreviewrating/<string:ProductId>', methods=['GET'])
 def get_review_rating(ProductId):
     if request.method == 'GET':
         response = supabase.table('review').select("Rating").eq("ProductId", ProductId).execute()
-        return response.data
+        if response:
+            return jsonify({
+                'message': 'Review found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+        else:
+            return jsonify({
+                'message': 'No review found.',
+                "data": None,
+                "code": 404
+            }), 404
     
 @app.route('/review/giverating', methods=['POST'])
 def give_rating():
     data = request.get_json()
     response = supabase.table('review').insert(data).execute()
-    return response.data
+    if response:
+        return jsonify({
+                'message': 'Review found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+    else:
+        return jsonify({
+                'message': 'No review found.',
+                "data": None,
+                "code": 404
+            }), 404
+        
 
 @app.route('/review/getreview/<string:ProductId>/<string:OrderId>', methods=['GET'])
 def get_review_by_order_productid(ProductId, OrderId):
     if request.method == 'GET':
         response = supabase.table('review').select("*").eq("ProductId", ProductId).eq("OrderId", OrderId).execute()
-        return response.data   
+        if response:
+            return jsonify({
+                'message': 'Review found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+        else:
+            return jsonify({
+                'message': 'No review found.',
+                "data": None,
+                "code": 404
+            }), 404
+          
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5003, debug=True)

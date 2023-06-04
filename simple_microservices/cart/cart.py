@@ -18,9 +18,18 @@ def get_cart(userid, productid):
     res = supabase.table('Cart').select('*').eq('UserId', userid).eq('ProductId', productid).execute()
     # Return JSON response 
     if res:
-        return res.data, 200
-    else:
-        return 'error: No users found.', 404
+       return jsonify({
+            'message': 'Cart found',
+            "data": res.data,
+            "code": 200
+        }), 200
+    return jsonify(
+        {
+            "code": 404,
+            "data": None,
+            "message": "Cart not found."
+        }
+    ), 404
 
 @app.route('/cart/addtocart/<string:userid>/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def signup(userid, productid, quantity):
@@ -30,33 +39,81 @@ def signup(userid, productid, quantity):
         "Quantity": quantity
         }).execute()
     
-    return res.data, 200
+    if res:
+       return jsonify({
+            'message': 'Cart found',
+            "data": res.data,
+            "code": 200
+        }), 200
+    return jsonify(
+        {
+            "code": 404,
+            "data": None,
+            "message": "Cart not found."
+        }
+    ), 404
 
 @app.route('/cart/keranjang/<string:userid>', methods=['POST', 'GET'])
 def keranjang(userid):
     res = supabase.table('Cart').select('*').eq('UserId', userid).execute()
-    return jsonify(res.data), 200
+    if res:
+       return jsonify({
+            'message': 'Cart found',
+            "data": res.data,
+            "code": 200
+        }), 200
+    return jsonify(
+        {
+            "code": 404,
+            "data": None,
+            "message": "Cart not found."
+        }
+    ), 404
 
 @app.route('/cart/tambahcart/<string:productid>/<string:quantity>', methods=['POST', 'GET'])
 def tambahcart(productid, quantity):
     response = supabase.table('Cart').select('*').eq('ProductId', productid).execute()
     cart = supabase.table('Cart').select('*').eq('UserId', "1").eq('ProductId', productid).execute()
     if len(cart.data) == 0:
-        supabase.table('Cart').insert({
+        res = supabase.table('Cart').insert({
         "ProductId": productid,
         "Quantity": quantity
         }).execute()
     else:
-        supabase.table('Cart').update({
+        res = supabase.table('Cart').update({
         "Quantity": int(response.data[0]['Quantity']) + int(quantity)
         }).eq('UserId', "1").eq('ProductId', productid).execute()
-    return response.data
+    if res:
+       return jsonify({
+            'message': 'Cart found',
+            "data": res.data,
+            "code": 200
+        }), 200
+    return jsonify(
+        {
+            "code": 404,
+            "data": None,
+            "message": "Cart not found."
+        }
+    ), 404
 
 @app.route('/cart/updatequantity', methods=['POST'])
 def updatequantity():
     data = request.get_json()
     res = supabase.table('Cart').update({'Quantity': data["Quantity"]}).eq('UserId', "1").eq('ProductId', data["ProductId"]).execute()
-    return res.data, 200
+    if res:
+       return jsonify({
+            'message': 'Cart found',
+            "data": res.data,
+            "code": 200
+        }), 200
+    return jsonify(
+        {
+            "code": 404,
+            "data": None,
+            "message": "Cart not found."
+        }
+    ), 404
 
 @app.route('/cart/clear/<string:userid>', methods=['POST'])
 def clear_cart(userid):
@@ -64,12 +121,30 @@ def clear_cart(userid):
     product_ids = data.get('product_ids', [])
     
     if not product_ids:
-        return {'status': 'error', 'message': 'No product IDs provided.'}, 400
+        return jsonify(
+            {
+                "code": 404,
+                "data": None,
+                "message": "No product IDs provided."
+            }
+        ), 404
 
     for product_id in product_ids:
         res = supabase.table('Cart').delete().eq('UserId', 1).eq('ProductId', product_id).execute()
-
-    return {'status': 'success'}, 200
+        if res:
+            return jsonify({
+                    'message': 'Cart found',
+                    "data": res.data,
+                    "code": 200
+                }), 200
+        else:
+            return jsonify(
+                {
+                    "code": 404,
+                    "data": None,
+                    "message": "Cart not found."
+                }
+            ), 404
 
 
 if __name__ == '__main__':
