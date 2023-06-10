@@ -2,11 +2,11 @@ version: "3.8"
 
 volumes:
   rabbitmq_data:
-  pgdata: 
+  pgdata:
   kongadata:
 
 services:
-   #######################################
+  #######################################
   # Postgres: The database used by Kong
   #######################################
   kong-database:
@@ -81,7 +81,7 @@ services:
       - user
       - process_order
       - stripe_app
-  
+
   #######################################
   # Konga: Kong GUI
   #######################################
@@ -89,7 +89,7 @@ services:
     image: pantsel/konga
     restart: always
     networks:
-        - kong-net
+      - kong-net
     environment:
       DB_ADAPTER: postgres
       DB_HOST: kong-database
@@ -102,7 +102,7 @@ services:
       - "1337:1337"
     volumes:
       - kongadata:/app/kongadata
- 
+
   ###################################
   # Order: The Order microservice
   ###################################
@@ -122,7 +122,7 @@ services:
       - "5001:5001"
     networks:
       - kong-net
- 
+
   #######################################################
   # Product: The Product microservice
   #######################################################
@@ -142,7 +142,7 @@ services:
       - "5002:5002"
     networks:
       - kong-net
-  
+
   #######################################################
   # Review: The Review microservice
   #######################################################
@@ -208,13 +208,13 @@ services:
   #######################################################
   user:
     build:
-      context: ./user
+      context: user
       dockerfile: Dockerfile
     image: jrenaldi/user:syopi
     container_name: user1
     hostname: user1
     volumes:
-      - .user:/usr/src/app
+      - ./user:/usr/src/app
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
@@ -224,7 +224,7 @@ services:
       - kong-net
 
   ####################################
-  # RabbitMQ: The messaging broker   
+  # RabbitMQ: The messaging broker
   ####################################
   rabbitmq:
     image: rabbitmq:3-management
@@ -233,11 +233,11 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    volumes: 
+    volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - kong-net
-      
+
   #################################################
   # Order Log: The Order Log microservice
   #################################################
@@ -296,7 +296,7 @@ services:
     volumes:
       - ./simple_microservices/cart:/usr/src/app
     environment:
-      PYTHONUNBUFFERED: 1 
+      PYTHONUNBUFFERED: 1
     ports:
       - "5007:5007"
     networks:
@@ -354,7 +354,6 @@ services:
     networks:
       - kong-net
 
-
   ##################################
   # search: The search microservice
   ##################################
@@ -378,7 +377,7 @@ services:
     networks:
       - kong-net
 
-   ##################################
+    ##################################
   # stripe: The stripe microservice
   ##################################
   stripe_app:
@@ -401,7 +400,7 @@ services:
     networks:
       - kong-net
 
-   ##################################
+    ##################################
   # process_order: The process microservice
   ##################################
   process_order:
@@ -412,7 +411,7 @@ services:
     container_name: process_order1
     hostname: process_order1
     volumes:
-      - /complex_microservices/process_order:/usr/src/app
+      - ./complex_microservices/process_order:/usr/src/app
     restart: always
     depends_on:
       - product
