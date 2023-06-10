@@ -25,18 +25,30 @@ def get_all_products():
         response = supabase.table('product').select("*, ImageUrls(ImageUrl)").limit(10).execute()
         if response:    
             return jsonify(response.data)
-        return jsonify(
-        {
+        else:
+            return jsonify({
             "code": 404,
-            "message": "Order not found."
-        }
-        ), 404
+            "message": "Product not found.",
+            'data': None
+            }), 404
 
     # POST request
     if request.method == 'POST':
         data = request.get_json()
         response = supabase.table('product').insert(data).execute()
-        return response.data
+        if response:
+            return jsonify({
+                'message': 'Review found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+        else:
+            return jsonify({
+                'message': 'No review found.',
+                "data": None,
+                "code": 404
+            }), 404
+        
 
 # Get products of a shop
 @app.route('/product/get_product_by_shop/<string:ShopId>')
@@ -44,25 +56,29 @@ def get_product_by_shop(ShopId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ShopId', '9413c28a-3b0b-4955-9ac9-5171a3f8631d').execute()
     if response:    
         return response.data
-    return jsonify(
-    {
+    return jsonify({
         "code": 404,
+        "data": None,
         "message": "No products yet. Add some products to start selling!"
-    }
-    ), 404
+    }), 404
         
 @app.route('/product/search/<string:keyword>', methods=['GET'])
 def search_bar(keyword):
     result = df_search[df_search.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
     if result.to_json(orient='records'):
         if result.to_json(orient='records')!="[]":
-            return result.to_json(orient='records')
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Order not found."
-        }
-    ), 404
+            return jsonify({
+            "code": 200,
+            "message": "Product found.",
+            'data': result.to_json(orient='records')
+            })
+    else:
+        return jsonify(
+            {
+                "code": 404,
+                "message": "Order not found."
+            }
+        ), 404
 
 
 
@@ -72,40 +88,70 @@ def search():
     keyword = request.args.get('keyword')
     page = int(request.args.get('page', 1))
     response = supabase.table('product').select('*, ImageUrls(ImageUrl)', count='exact').neq('Stock', 0).like('ProductName', f'%{keyword}%').order('AvgRating').range((page - 1)*10, page*10).execute()
-    return response.json()
+    if response:
+            return jsonify({
+                'message': 'Product found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+    else:
+        return jsonify({
+            'message': 'No product found.',
+            "data": None,
+            "code": 404
+        }), 404
+        
 
 # get product details
 @app.route('/product/<string:ProductId>', methods=['GET'])
 def product(ProductId):
     response = supabase.table('product').select("*, ImageUrls(ImageUrl)").eq('ProductId', ProductId).execute()
-    if response.data:
-        return jsonify(response.data)
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Order not found."
-        }
-    ), 404
+    if response:
+            return jsonify({
+                'message': 'Product found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+    else:
+        return jsonify({
+            'message': 'No product found.',
+            "data": None,
+            "code": 404
+        }), 404
 
 @app.route('/product/<string:ProductId>/<float:avgRating>', methods=['GET'])
 def update_rating(ProductId, avgRating):
     response = supabase.table('product').update({"AvgRating": avgRating}).eq("ProductId", ProductId).execute()
-    if response.data:
-        return jsonify(response.data)
-    return jsonify(
-        {
-            "code": 404,
-            "message": "Error in Rating Update."
-        }
-    ), 404
+    if response:
+            return jsonify({
+                'message': 'Rating updated.',
+                "data": response.data,
+                "code": 200
+            }), 200
+    else:
+        return jsonify({
+            'message': 'Error in updating rating.',
+            "data": None,
+            "code": 404
+        }), 404
 
 @app.route('/product/get_multiple_products', methods=['POST'])
 def get_multiple_products():
     data = request.get_json()
     # print(data["data"])   
     response = supabase.table('product').select("*").in_("ProductId", data["data"]).execute()
-    return response.data
-
+    if response:
+            return jsonify({
+                'message': 'Products found.',
+                "data": response.data,
+                "code": 200
+            }), 200
+    else:
+        return jsonify({
+            'message': 'Error in getting products.',
+            "data": None,
+            "code": 404
+        }), 404
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5002, debug=True)

@@ -100,13 +100,13 @@ def add_shop(): #form to be rendered in app.jsx
         if (shop.data):
             return jsonify(
                 {
-                    "code": 400,
+                    "code": 404,
                     "data": {
                         "name": form_name
                     },
                     "message": "Store already exists."
                 }
-            ), 400
+            ), 404
         else:
             data = supabase.table("shops").insert({
                 "ShopName": form_name,
@@ -228,7 +228,11 @@ def getshopbyid(shopId):
                 "data": response.data
                 })
     else:
-        return jsonify({})
+        return jsonify({
+                "code": 404,
+                "message": "Store not found",
+                "data": None
+            }), 404
     
 
 if __name__ == '__main__':

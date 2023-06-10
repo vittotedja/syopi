@@ -27,7 +27,11 @@ def place_order():
             # do the actual work
             # 1. Send order info {cart items}
             result = processPlaceOrder(order)
-            return jsonify(result), result["code"]
+            return jsonify( {
+                'message': 'No products found.',
+                "data": result,
+                "code": 200
+            }), 200
 
         except Exception as e:
             # Unexpected error in code
@@ -38,12 +42,14 @@ def place_order():
 
             return jsonify({
                 "code": 500,
+                'data': None,
                 "message": "place_order.py internal error: " + ex_str
             }), 500
 
     # if reached here, not a JSON request.
     return jsonify({
         "code": 400,
+        'data': None,
         "message": "Invalid JSON input: " + str(request.get_data())
     }), 400
 
@@ -125,7 +131,8 @@ def processPlaceOrder(order):
         "data": {
             "order_result": order_result,
             "shipping_result": shipping_result
-        }
+        },
+         "message": "Simulated shipping record and order creation"
 
     }
 
