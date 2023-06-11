@@ -24,7 +24,11 @@ def index(ProductId):
         count += 1
     avgRating = sum/count
     x = requests.get(f'{product_URL}/{ProductId}/{avgRating}')
-    return x.json()[0]
+    return jsonify({
+    "code" : 200,
+    "message": "Returning all users",
+    "data": x.json()[0]
+        })
 
 # @app.route('/giverating/<string:ProductId>', methods=['POST'])
 # def give_rating(ProductId):
