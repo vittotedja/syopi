@@ -79,7 +79,16 @@ export default function CourierCard({
       </button>
     );
   } else if (Status === "COMPLETED"){
-    
+    buttonDisplay = (
+      <button
+        className={`w-full h-full ${isHovered ? "cancel-button" : "success-button"}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => (isHovered ? cancelShipping(OrderId) : null)}
+      >
+        {isHovered ? "Report a problem" : "Completed"}
+      </button>
+    );
   }
   return (
     <Card className="order-card-user">
@@ -90,7 +99,7 @@ export default function CourierCard({
             <p>Order ID: {OrderId}</p>
             <p>Shipping Id: {ShippingId}</p>
           </div>
-          <div className="col-2" style={{ textAlign: "right" }}>
+          <div className="col-2 pt-2" style={{ textAlign: "right" }}>
             <h1>{Status}</h1>
           </div>
         </div>
