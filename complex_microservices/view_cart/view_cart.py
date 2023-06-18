@@ -32,9 +32,11 @@ def get_cart(userid):
 
         final_dict = a.merge(b, on='ShopId', how='left').to_dict('records')
         return jsonify({
+            "code": 200,
+            "message": "Cart Found",
             "data": final_dict
         })
-    return jsonify({'data': []})
+    return jsonify({'data': [], "code": 200, "message": "User Cart has no products"}),200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5008, debug=True)

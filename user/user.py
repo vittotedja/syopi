@@ -18,18 +18,35 @@ def get_owner_and_admin():
     res = supabase.table('UserPublic').select('*').execute()
     # Return JSON response
     if res:
-        return res.data, 200
+        return jsonify({
+        "code" : 200,
+        "message": "Returning all users",
+        "data": res.data
+         })
     else:
-        return 'error: No users found.', 404
+        return jsonify({
+        "code" : 404,
+        "message": "No users found",
+        "data": None
+    }), 404
+        
     
 @app.route('/get_shop/<string:user_id>', methods=['GET'])
 def get_shop(user_id):
     res = supabase.table('UserPublic').select('*').eq('id', user_id).execute()
     # Return JSON response
     if res:
-        return res.data, 200
+        return jsonify({
+        "code" : 200,
+        "message": "Returning all users",
+        "data": res.data
+         })
     else:
-        return 'error: No users found.', 404
+        return jsonify({
+        "code" : 404,
+        "message": "No users found",
+        "data": None
+    }), 404
     
 @app.route('/user/openshop', methods=['PUT'])
 def openshop():
@@ -55,18 +72,18 @@ def openshop():
             'admin_email': user_email
         }).execute()
             
+        
         return jsonify({
-            "code": 202,
-            "message": "yay",
-            "data": None
-        }), 202
-            
+        "code" : 200,
+        "message": "Shop succesfully opened",
+        "data": res.data
+         })
     else:
         return jsonify({
-                "code": 404,
-                "message": "User can only open 1 shop",
-                "data": None
-            }), 404
+        "code" : 404,
+        "message": "User can only have one shop",
+        "data": None
+    }), 404
 
     
 @app.route('/user/get_user_id', methods=['GET'])
@@ -75,9 +92,17 @@ def get_user_id():
     res = supabase.table('TempUser').select('*').execute()
         # Return JSON response 
     if res:
-        return res.data, 200
+        return jsonify({
+        "code" : 200,
+        "message": "Returning all users",
+        "data": res.data
+         })
     else:
-        return 'error: No users found.', 404
+        return jsonify({
+        "code" : 404,
+        "message": "No users found",
+        "data": None
+    }), 404
     
 
 @app.route('/user/assignadmin', methods=['PUT', 'POST'])
@@ -96,8 +121,12 @@ def assignadmin():
         if check_user:
             check_if_admin_exists = supabase.table('Admin').select('*').eq('admin_email', admin_email).execute().data
             print(check_if_admin_exists)
-            if check_if_admin_exists:
-                return "Inputted email is already admin", 404
+            if check_if_admin_exists:        
+                return jsonify({
+                    "code" : 404,
+                    "message": "Inputted email is already admin",
+                    "data": None
+                }), 404
             else:
                 shop = supabase.table('UserPublic').select('*').eq('id', sellerid).execute().data[0]
                 add_admin = supabase.table('Admin').insert({
@@ -109,10 +138,19 @@ def assignadmin():
                     'acc_type': 'seller',
                     'shopname': shop['shopname']
                     }).eq('email', admin_email).execute()
-                return "Yay", 202
+                if add_admin and set_admin:
+                    return jsonify({
+                    "code" : 200,
+                    "message": "Admin succesfully added",
+                    "data": set_admin.data
+                    })
+                else:
+                    return jsonify({
+                    "code" : 404,
+                    "message": "Email not found",
+                    "data": None
+                }), 404
                 
-        else:
-            return "Email not found", 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5006, debug=True)

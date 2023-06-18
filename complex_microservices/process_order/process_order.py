@@ -14,7 +14,18 @@ shipping_URL = os.environ.get("shipping_URL")
 def accept_order():
     # Update order status to 'Accepted'
     response = requests.post(order_URL+"/accept", json={"OrderId": request.get_json()['OrderId'], "OrderStatus": 'Accepted'})
-    return response.json()
+    if response:
+        return jsonify({
+        "code" : 200,
+        "message": "Shipping is accepted",
+        "data": response.json()
+         })
+    else:
+        return jsonify({
+        "code" : 404,
+        "message": "Shipping is not accepted",
+        "data": None
+    }), 404
 
 @app.route("/process_order/request_shipping", methods=['POST'])
 def request_shipping():
@@ -31,7 +42,18 @@ def request_shipping():
         "CustomerAddress": request.get_json()['CustomerAddress'],
         "CourierId": request.get_json()['CourierId'],
     })
-    return response.json()
+    if response:
+        return jsonify({
+        "code" : 200,
+        "message": "Shipping is requested",
+        "data": response.json()
+         })
+    else:
+        return jsonify({
+        "code" : 404,
+        "message": "Shipping is not requested",
+        "data": None
+    }), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5012, debug=True)
