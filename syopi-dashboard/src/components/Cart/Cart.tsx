@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import CartItem from "./CartItem";
-import Stripe from "../Payment/Stripe";
+import { HiShoppingBag } from "react-icons/hi";
 import { useNavigate } from "react-router";
 import Navbar from "../Navbar";
 
 function Cart() {
   let navigate = useNavigate();
   const [cart, setCart] = useState(Array);
-  // const [product, setProduct] = useState(Array)
-  // const [string, setString] = useState("/confirmation?data=");
   const [chosenProduct, setChosenProduct] = useState(Object);
-  const userId = 1
+  const userId = 1;
 
   function fetchData() {
     fetch(`http://127.0.0.1:5008/view_cart/1`)
@@ -19,43 +17,45 @@ function Cart() {
   }
 
   useEffect(() => {
-    console.log(chosenProduct)
+    console.log(chosenProduct);
   }, [chosenProduct]);
 
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   return (
     <>
-    <Navbar/>
-    <div>
-      Your Cart
-      {cart.map((item: any) => {
-        return (
-          <CartItem
-            key={item.ProductId}
-            productId={item.ProductId}
-            name={item.ProductName}
-            price={item.Price}
-            quantity={item.Quantity}
-            setChosenProduct={setChosenProduct}
-            chosenProduct={chosenProduct}
-          />
-        );
-      })}
-      <div>
-        <button 
-          onClick={() => {
-            navigate(`/confirmation?data=${JSON.stringify(chosenProduct)}`)
-          }}
-        >
-          Checkout
-        </button>
+      <Navbar />
+      <div className="mx-auto w-4/5 h-screen">
+        <div className="flex font-bold text-3xl py-5 w-full justify-center align-middle text-center">
+          <HiShoppingBag className="mr-2 h-full" />
+          Your Cart
+        </div>
+        {cart.map((item: any) => {
+          return (
+            <CartItem
+              key={item.ProductId}
+              productId={item.ProductId}
+              name={item.ProductName}
+              price={item.Price}
+              quantity={item.Quantity}
+              setChosenProduct={setChosenProduct}
+              chosenProduct={chosenProduct}
+            />
+          );
+        })}
+        <div>
+          <button
+            onClick={() => {
+              navigate(`/confirmation?data=${JSON.stringify(chosenProduct)}`);
+            }}
+          >
+            Checkout
+          </button>
+        </div>
+        {JSON.stringify(chosenProduct)}
       </div>
-      {JSON.stringify(chosenProduct)}
-      {/* <Stripe/> */}
-    </div>
     </>
   );
 }

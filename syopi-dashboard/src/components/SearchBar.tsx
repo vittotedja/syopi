@@ -1,31 +1,36 @@
-import { useState } from 'react';
-import AsyncSelect from 'react-select/async';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import AsyncSelect from "react-select/async";
+import { useSearchParams, useNavigate } from "react-router-dom";
 // import './SearchBar.css';
 
 function SearchBar(props: any) {
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchTerm = searchParams.get('q') || '';
+  const searchTerm = searchParams.get("q") || "";
 
   const searchMovies = async (inputValue: string) => {
     if (inputValue) {
-      const response = await fetch(`http://127.0.0.1:5002/product/search/${inputValue}`)
-      const data = await response.json()
-      return data;  
+      const response = await fetch(
+        `http://127.0.0.1:5002/product/search/${inputValue}`
+      );
+      const data = await response.json();
+      return data;
     }
     return [];
   };
 
-  const loadOptions = async (inputValue: string, callback: (options: any[]) => void) => {
+  const loadOptions = async (
+    inputValue: string,
+    callback: (options: any[]) => void
+  ) => {
     const options = await searchMovies(inputValue);
     callback(options);
   };
 
   const colourStyles = {
-    container: (style: Object) => ({...style, width: '70vw', flex: 1}),
-    indicatorSeparator: (style: Object) => ({...style, display: 'none'}),
-    dropdownIndicator: (style: Object) => ({...style, display: 'none'}),
+    container: (style: Object) => ({ ...style, width: "70vw", flex: 1 }),
+    indicatorSeparator: (style: Object) => ({ ...style, display: "none" }),
+    dropdownIndicator: (style: Object) => ({ ...style, display: "none" }),
     // control: (style: Object) => ({ ...style, backgroundColor: '#333', color: '#fff' }),
     // singleValue: (style: Object) => ({...style, color: '#fff',}),
     // input: (style: Object) => ({...style, color: '#fff',}),
@@ -42,18 +47,26 @@ function SearchBar(props: any) {
     // },
   };
 
-  let [keyword, setKeyword] = useState({productId: 0, productName: ''})
+  let [keyword, setKeyword] = useState({ productId: 0, productName: "" });
   return (
-    <div className='search-bar flex'>
+    <div className="search-bar flex">
       <AsyncSelect
         cacheOptions
         loadOptions={loadOptions}
         defaultOptions
-        placeholder='Search for products'
-        onChange={(selectedOption: Object) => setKeyword({productId: selectedOption.value, productName: selectedOption.label})}
+        placeholder="Search for products"
+        onChange={(selectedOption: Object) =>
+          setKeyword({
+            productId: selectedOption.value,
+            productName: selectedOption.label,
+          })
+        }
         styles={colourStyles}
       />
-      <button className='search-button' onClick={() => navigate(`/search?keyword=${keyword.productName}`)}>
+      <button
+        className="search-button"
+        onClick={() => navigate(`/search?keyword=${keyword.productName}`)}
+      >
         Search
       </button>
     </div>

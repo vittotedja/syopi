@@ -16,13 +16,13 @@ function ProductPage() {
     fetch(`http://127.0.0.1:5002/product/${productId}`)
       .then((response) => response.json())
       .then((data) => {
-        setData(data[0]);
-        setMainImage(data[0].ImageUrls[0].ImageUrl);
-        fetch(`http://127.0.0.1:5005/shop/getshopbyid/${data[0].ShopId}`)
+        setData(data.data[0]);
+        setMainImage(data.data[0].ImageUrls[0].ImageUrl);
+        fetch(`http://127.0.0.1:5005/shop/getshopbyid/${data.data[0].ShopId}`)
           .then((response) => response.json())
           .then((data) => setShopName(data.data[0].ShopName));
-      })
-    }
+      });
+  }
 
   function addToCart() {
     const sentData = {
@@ -59,7 +59,8 @@ function ProductPage() {
       <div>
         <div className="container">
           <div className="directory">
-            <a href="/">Home</a> &#62; <a href="/shop">{data.Category}</a> &#62;{" "}
+            <a href="/">Home</a> &#62;{" "}
+            <a href="/shop">{data.Category ? data.Category : "Misc"}</a> &#62;{" "}
             <a href={`/product/${productId}`}>{data.ProductName}</a>
           </div>
           <div className="row">
@@ -79,7 +80,12 @@ function ProductPage() {
                 </div>
               </div>
               <div className="row productPrice">
-                <p style={{ backgroundColor: "#F2EDE4" }} className="text-red-600">$ {data.Price}</p>
+                <p
+                  style={{ backgroundColor: "#F2EDE4" }}
+                  className="text-red-600"
+                >
+                  $ {data.Price}
+                </p>
               </div>
 
               {/* <div className='row'>
@@ -105,14 +111,19 @@ function ProductPage() {
               <div className="row"></div>
               <div className="row shop flex align-middle">
                 <div className="col-8">
-                  <div className="shopbutton" style={{ display: "flex", cursor: 'pointer', alignItems:'center'}}>
+                  <div
+                    className="shopbutton"
+                    style={{
+                      display: "flex",
+                      cursor: "pointer",
+                      alignItems: "center",
+                    }}
+                  >
                     <div className="col-2">
                       <img src={productpics} width="30px" className="shopimg" />
                     </div>
                     {/* <div className="col-10 text-red-600">Buy your things here</div> */}
-                    <div className="col-10">
-                      {shopName}
-                    </div>
+                    <div className="col-10">{shopName}</div>
                   </div>
                 </div>
                 {/* <div className="col-4 rating">

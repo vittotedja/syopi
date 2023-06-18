@@ -1,22 +1,21 @@
-.navbar{
-    background-color: #FFD3B6;
-    width: 100vw;
-    display: flex;
-    justify-content: space-around;
-    align-items:center;;
+.navbar {
+  background-color: #ffd3b6;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.icon{
-    font-size: 28px;
-    fill: white;
+.icon {
+  font-size: 28px;
+  fill: white;
 }
 
-.success-box{
-    background-color: #DCEDC1;
+.success-box {
+  background-color: #dcedc1;
 }
 
-.success-word{
-    font-size: 30px;
-    font-weight: bold;
-    padding: 20px;
+.success-word {
+  font-size: 30px;
+  font-weight: bold;
+  padding: 20px;
 }
