@@ -35,9 +35,27 @@ button:hover {
   background-color: #ffa163;
 }
 
+button:disabled {
+  background-color: grey;
+}
+
+button:disabled:hover {
+  background-color: grey;
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.cancel-button:hover {
+  background-color: red;
+  color: white;
+}
+
+.success-button{
+  background-color: limegreen;
+  color: white;
 }
 
 @media (prefers-color-scheme: light) {
