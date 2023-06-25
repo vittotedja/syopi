@@ -17,16 +17,12 @@ def get_all():
     if request.method == 'GET':
         res = requests.get('http://product1:5002/product')
         product_list = res.json()
-        return jsonify({
-        "code" : 200,
-        "message": "Recommended products returned succesfully",
-        "data": jsonify(sorted(product_list, key=lambda x: x['AvgRating']*x['AmountSold'], reverse=True))
-         })
+        return jsonify(sorted(product_list, key=lambda x: x['AvgRating']*x['AmountSold'], reverse=True))
     else:
         return jsonify({
-        "code" : 404,
-        "message": "Recommended products could not be returned",
-        "data": None
+            "code" : 404,
+            "message": "Recommended products could not be returned",
+            "data": None
     }), 404
         
     

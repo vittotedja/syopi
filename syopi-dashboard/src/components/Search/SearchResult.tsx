@@ -15,9 +15,9 @@ export default function SearchResult(props: any) {
   useEffect(() => {
     fetch("http://127.0.0.1:5002/product/search?keyword=" + keyword + "&page=" + page)
     .then((response) => response.json())
-    .then((data) => {setProducts(data.data), props.setCount(data.count)})
-  }, [page])
-
+    .then((data) => {console.log(data.count), setProducts(data.data), props.setCount(data.count)})
+  }, [keyword, page])
+  
   return (
   <div className="product-list">
     {products.map((product) => {

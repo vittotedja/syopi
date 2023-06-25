@@ -65,20 +65,18 @@ def get_product_by_shop(ShopId):
 @app.route('/product/search/<string:keyword>', methods=['GET'])
 def search_bar(keyword):
     result = df_search[df_search.ProductName.apply(lambda x: keyword.lower().translate(str.maketrans('', '', string.punctuation)) in x.lower().translate(str.maketrans('', '', string.punctuation)))].head(5).rename(columns={'ProductId': 'value', 'ProductName': 'label'})
-    if result.to_json(orient='records'):
-        if result.to_json(orient='records')!="[]":
-            return jsonify({
+    if result.to_json(orient='records')!="[]":
+        return jsonify({
             "code": 200,
             "message": "Product found.",
             'data': result.to_json(orient='records')
-            })
+        })
     else:
-        return jsonify(
-            {
-                "code": 404,
-                "message": "Order not found."
-            }
-        ), 404
+        return jsonify({
+            "code": 404,
+            "message": "Product not found.",
+            'data': '[]'
+            })
 
 
 
@@ -88,16 +86,19 @@ def search():
     keyword = request.args.get('keyword')
     page = int(request.args.get('page', 1))
     response = supabase.table('product').select('*, ImageUrls(ImageUrl)', count='exact').neq('Stock', 0).like('ProductName', f'%{keyword}%').order('AvgRating').range((page - 1)*10, page*10).execute()
+    print(response.count)
     if response:
-            return jsonify({
-                'message': 'Product found.',
-                "data": response.data,
-                "code": 200
-            }), 200
+        return jsonify({
+            'message': 'Product found.',
+            "data": response.data,
+            "count": response.count,
+            "code": 200
+        }), 200
     else:
         return jsonify({
             'message': 'No product found.',
             "data": None,
+            "count": response.count,
             "code": 404
         }), 404
         

@@ -10,14 +10,18 @@ function SearchBar(props: any) {
 
   const searchMovies = async (inputValue: string) => {
     if (inputValue) {
-      const response = await fetch(
-        `http://127.0.0.1:5002/product/search/${inputValue}`
-      );
-      const data = await response.json();
-      return data;
+      try {
+        const response = await fetch(`http://127.0.0.1:5002/product/search/${inputValue}`);
+        const json = await response.json();
+        console.log(JSON.parse(json.data));
+        return JSON.parse(json.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
     return [];
   };
+  
 
   const loadOptions = async (
     inputValue: string,
@@ -28,23 +32,9 @@ function SearchBar(props: any) {
   };
 
   const colourStyles = {
-    container: (style: Object) => ({ ...style, width: "70vw", flex: 1 }),
-    indicatorSeparator: (style: Object) => ({ ...style, display: "none" }),
-    dropdownIndicator: (style: Object) => ({ ...style, display: "none" }),
-    // control: (style: Object) => ({ ...style, backgroundColor: '#333', color: '#fff' }),
-    // singleValue: (style: Object) => ({...style, color: '#fff',}),
-    // input: (style: Object) => ({...style, color: '#fff',}),
-    // menu: (style: Object) => ({ ...style, backgroundColor: '#333', color: '#fff' }),
-    // option: (style: Object, { isDisabled, isFocused, isSelected }) => {
-    //   const backgroundColor = isDisabled ? '#444' : isSelected ? '#666' : isFocused ? '#555' : '#333';
-    //   const color = isDisabled ? '#888' : isSelected ? '#ccc' : isFocused ? '#fff' : '#ccc';
-    //   return {
-    //     ...style,
-    //     backgroundColor,
-    //     color,
-    //     cursor: isDisabled ? 'not-allowed' : 'default'
-    //   };
-    // },
+    container: (style: Object) => ({...style, width: '70vw', flex: 1}),
+    indicatorSeparator: (style: Object) => ({...style, display: 'none'}),
+    dropdownIndicator: (style: Object) => ({...style, display: 'none'})
   };
 
   let [keyword, setKeyword] = useState({ productId: 0, productName: "" });
@@ -62,6 +52,7 @@ function SearchBar(props: any) {
           })
         }
         styles={colourStyles}
+        noOptionsMessage={() => 'No products found'}
       />
       <button
         className="search-button"

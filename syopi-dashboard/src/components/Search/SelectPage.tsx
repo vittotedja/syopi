@@ -7,6 +7,7 @@ function SelectPage(props: any) {
   const keyword = props.keyword
   const page = props.page
   const pages = Math.ceil(props.count/10)
+  console.log(props.count)
 
   return (
   <div className="selectPage">
